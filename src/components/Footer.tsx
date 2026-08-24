@@ -1,4 +1,5 @@
 import { Instagram, Mail } from "lucide-react";
+import financeur1 from "@/assets/partenaires/financeur1 - ccll.jpg";
 
 const links = [
   { label: "Accueil", href: "/" },
@@ -25,6 +26,18 @@ export function Footer() {
               <span className="flex-1 bg-festival-purple" />
               <span className="flex-1 bg-festival-green" />
               <span className="flex-1 bg-festival-red" />
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <p className="text-label">Avec le soutien de</p>
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="flex h-16 w-40 items-center justify-center overflow-hidden border border-border bg-white p-2">
+                <img src={financeur1} alt="Logo du financeur CCLL" className="h-full w-full object-contain" />
+              </div>
+              <div className="flex h-16 w-40 items-center justify-center border border-border bg-white px-3 text-center font-display text-xs font-bold leading-tight text-[#262323]">
+                Commune de Rennes-sur-Loue
+              </div>
             </div>
           </div>
 

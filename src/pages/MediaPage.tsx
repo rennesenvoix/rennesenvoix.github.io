@@ -57,8 +57,7 @@ const MediaPage = () => {
           <span className="mb-8 block h-2 w-24 rounded-full bg-festival-orange" aria-hidden="true" />
           <h1 className="text-headline">Souvenez-vous</h1>
           {/* Vidéo principale du festival. */}
-          <section className="mt-10">
-            <h2 className="font-display text-2xl font-bold md:text-3xl">Vidéos</h2>
+          <section className="mt-5">
             <div className="mt-6 aspect-video overflow-hidden rounded-2xl border border-border bg-black">
               <iframe className="h-full w-full" src="https://www.youtube.com/embed/8eUK53WOZR8" title="Vidéo Rennes en Voix" loading="lazy" allowFullScreen />
             </div>

@@ -1,6 +1,6 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { CalendarDays, Mail, MapPin, UtensilsCrossed } from "lucide-react";
+import { Footprints, Mail, MapPin, UtensilsCrossed } from "lucide-react";
 import brushHero1 from "@/assets/brush-hero1.png";
 
 const ContactPage = () => {
@@ -28,7 +28,7 @@ const ContactPage = () => {
               <div className="flex gap-4">
                 <Mail className="mt-1 shrink-0 text-festival-red" size={24} aria-hidden="true" />
                 <div>
-                  <h2 className="font-display text-xl font-bold">Écrivez-nous</h2>
+                  <h2 className="font-display text-xl font-bold">Contactez-nous</h2>
                   <a href="mailto:rennesenvoix@gmail.com" className="mt-2 inline-block link-underline text-foreground/80">
                     rennesenvoix@gmail.com
                   </a>
@@ -37,36 +37,32 @@ const ContactPage = () => {
               <div className="flex gap-4">
                 <MapPin className="mt-1 shrink-0 text-festival-blue" size={24} aria-hidden="true" />
                 <div>
-                  <h2 className="font-display text-xl font-bold">Le festival</h2>
+                  <h2 className="font-display text-xl font-bold">Adresse</h2>
                   <p className="mt-2 text-foreground/80">
-                    Orangerie du château de Rennes-sur-Loue
+                    10 Rue du Pont
                     <br />
-                    25440 Rennes-sur-Loue, France
+                    25440 Rennes-sur-Loue
                   </p>
                 </div>
               </div>
               <div className="flex gap-4">
-                <CalendarDays className="mt-1 shrink-0 text-festival-purple" size={24} aria-hidden="true" />
+                <Footprints className="mt-1 shrink-0 text-festival-purple" size={24} aria-hidden="true" />
                 <div>
                   <h2 className="font-display text-xl font-bold">Accès</h2>
-                  <p className="mt-2 text-foreground/80">Entrée libre et sortie au château.</p>
+                  <p className="mt-2 text-foreground/80">
+                    Entrée libre, sortie au chapeau
+                    <br />
+                    Parking dans le village
+                  </p>
                 </div>
               </div>
               <div className="flex gap-4">
                 <UtensilsCrossed className="mt-1 shrink-0 text-festival-green" size={24} aria-hidden="true" />
                 <div>
-                  <h2 className="font-display text-xl font-bold">Restauration</h2>
-                  <p className="mt-2 text-foreground/80">Petite restauration sur place.</p>
+                  <h2 className="font-display text-xl font-bold">Petite restauration</h2>
+                  <p className="mt-2 text-foreground/80">Avant, pendant et après les concerts</p>
                 </div>
               </div>
-              <a
-                href="https://www.instagram.com/rennesenvoix"
-                target="_blank"
-                rel="noreferrer noopener"
-                className="inline-block link-underline font-semibold text-festival-purple"
-              >
-                Instagram
-              </a>
             </div>
 
             <div className="min-h-72 overflow-hidden rounded-2xl border border-border">

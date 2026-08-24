@@ -1,10 +1,11 @@
 import { Instagram, Mail } from "lucide-react";
 
 const links = [
-  { label: "Le Festival", href: "#festival" },
-  { label: "Programmation", href: "#programmation" },
-  { label: "Informations pratiques", href: "#infos" },
-  { label: "Contact", href: "#infos" },
+  { label: "Accueil", href: "/" },
+  { label: "Programmation", href: "/programmation" },
+  { label: "Soutenir", href: "/soutien" },
+  { label: "Galerie & vidéos", href: "/medias" },
+  { label: "Contact & infos", href: "/contact" },
 ];
 
 export function Footer() {
@@ -15,7 +16,7 @@ export function Footer() {
           <div className="max-w-sm space-y-3">
             <p className="font-display text-2xl font-bold">Rennes en Voix</p>
             <p className="text-sm text-foreground/70 leading-relaxed">
-              Festival de chant vocal a cappella, organisé par le comité des fêtes de
+              Festival vocal a capella, organisé par le comité des fêtes de
               Rennes-sur-Loue.
             </p>
             <div className="flex h-1.5 w-32 overflow-hidden rounded-full">

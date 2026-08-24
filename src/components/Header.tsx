@@ -3,10 +3,11 @@ import { Menu, X } from "lucide-react";
 import titleLogo from "@/assets/Titre ReV.png";
 
 const navItems = [
-  { label: "Le Festival", href: "/#festival" },
-  { label: "Programmation", href: "/#programmation" },
-  { label: "Infos pratiques", href: "/#infos" },
-  { label: "Éditions passées", href: "/editions" },
+  { label: "Accueil", href: "/" },
+  { label: "Programmation", href: "/programmation" },
+  { label: "Soutenir", href: "/soutien" },
+  { label: "Galerie & vidéos", href: "/medias" },
+  { label: "Contact & infos", href: "/contact" },
 ];
 
 export function Header() {
@@ -31,7 +32,7 @@ export function Header() {
               </a>
             ))}
             <a
-              href="#programmation"
+              href="/programmation"
               className="rounded-full bg-festival-purple px-5 py-2 text-xs font-semibold uppercase tracking-widest text-white transition-transform duration-300 hover:scale-105"
             >
               Réserver

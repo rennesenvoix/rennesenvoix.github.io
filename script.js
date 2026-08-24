@@ -1,5 +1,1179 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+  /* ==========================================================
+     CONFIGURATION
+  ========================================================== */
+
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  const hasFinePointer = window.matchMedia(
+    "(pointer: fine)"
+  ).matches;
+
+
+  /* ==========================================================
+     MENU MOBILE
+  ========================================================== */
+
+  const menuToggle = document.querySelector(".menu-toggle");
+  const navLinks = document.querySelector(".nav-links");
+
+  if (menuToggle && navLinks) {
+
+    menuToggle.addEventListener("click", () => {
+
+      const isOpen =
+        navLinks.classList.toggle("active");
+
+      menuToggle.setAttribute(
+        "aria-expanded",
+        String(isOpen)
+      );
+
+    });
+
+
+    document.querySelectorAll(
+      ".nav-links a"
+    ).forEach((link) => {
+
+      link.addEventListener("click", () => {
+
+        navLinks.classList.remove("active");
+
+        menuToggle.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
+      });
+
+    });
+
+  }
+
+
+  /* ==========================================================
+     APPARITION DES ÉLÉMENTS AU SCROLL
+  ========================================================== */
+
+  const revealElements = document.querySelectorAll(
+    ".event-card, " +
+    ".gallery-item, " +
+    ".about-content, " +
+    ".about-art, " +
+    ".contact-form, " +
+    ".section-heading"
+  );
+
+
+  if (!prefersReducedMotion && revealElements.length) {
+
+    const revealStyle =
+      document.createElement("style");
+
+    revealStyle.textContent = `
+
+      .scroll-reveal {
+        opacity: 0;
+        transform: translateY(35px);
+        transition:
+          opacity .8s ease,
+          transform .9s cubic-bezier(.2,.8,.2,1);
+      }
+
+      .scroll-reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .event-card.scroll-reveal:nth-child(2) {
+        transition-delay: .08s;
+      }
+
+      .event-card.scroll-reveal:nth-child(3) {
+        transition-delay: .16s;
+      }
+
+      .gallery-item.scroll-reveal:nth-child(2) {
+        transition-delay: .05s;
+      }
+
+      .gallery-item.scroll-reveal:nth-child(3) {
+        transition-delay: .1s;
+      }
+
+      .gallery-item.scroll-reveal:nth-child(4) {
+        transition-delay: .15s;
+      }
+
+      .gallery-item.scroll-reveal:nth-child(5) {
+        transition-delay: .2s;
+      }
+
+      .gallery-item.scroll-reveal:nth-child(6) {
+        transition-delay: .25s;
+      }
+
+      .gallery-item.scroll-reveal:nth-child(7) {
+        transition-delay: .3s;
+      }
+
+      .gallery-item.scroll-reveal:nth-child(8) {
+        transition-delay: .35s;
+      }
+
+    `;
+
+    document.head.appendChild(
+      revealStyle
+    );
+
+
+    revealElements.forEach((element) => {
+
+      element.classList.add(
+        "scroll-reveal"
+      );
+
+    });
+
+
+    const revealObserver =
+      new IntersectionObserver(
+        (entries, observer) => {
+
+          entries.forEach((entry) => {
+
+            if (!entry.isIntersecting) {
+              return;
+            }
+
+            entry.target.classList.add(
+              "is-visible"
+            );
+
+            observer.unobserve(
+              entry.target
+            );
+
+          });
+
+        },
+        {
+          threshold: 0.12,
+          rootMargin: "0px 0px -50px 0px"
+        }
+      );
+
+
+    revealElements.forEach((element) => {
+
+      revealObserver.observe(
+        element
+      );
+
+    });
+
+  } else {
+
+    revealElements.forEach((element) => {
+
+      element.classList.add(
+        "is-visible"
+      );
+
+    });
+
+  }
+
+
+  /* ==========================================================
+     SI PAS DE SOURIS FINE :
+     ON ARRÊTE ICI POUR ÉVITER DES EFFETS INUTILES
+  ========================================================== */
+
+  if (!hasFinePointer || prefersReducedMotion) {
+    return;
+  }
+
+
+  /* ==========================================================
+     HERO
+  ========================================================== */
+
+  const hero =
+    document.querySelector(".hero");
+
+  const heroContent =
+    document.querySelector(".hero-content");
+
+
+  /* ==========================================================
+     TRAITS DE PINCEAU ET TRAITS DE CRAYON
+  ========================================================== */
+
+  const brushStrokes =
+    document.querySelectorAll(
+      ".hero-strokes .brush-stroke"
+    );
+
+  const pencilLines =
+    document.querySelectorAll(
+      ".hero-strokes .pencil-line"
+    );
+
+
+  /*
+   * Chaque trait dispose de sa propre amplitude.
+   *
+   * Plus l'amplitude est grande,
+   * plus le trait suit le mouvement de la souris.
+   */
+
+  const brushAmplitudes = [
+    48,
+    25,
+    36,
+    62,
+    30,
+    54,
+    72,
+    22
+  ];
+
+
+  const brushDirections = [
+    { x: -1, y: 1 },
+    { x: 1, y: -0.7 },
+    { x: -0.7, y: -1 },
+    { x: 1, y: 1 },
+    { x: -1, y: -0.5 },
+    { x: 0.8, y: 1 },
+    { x: -0.6, y: 1 },
+    { x: 1, y: -1 }
+  ];
+
+
+  const strokeObjects = [];
+
+
+  brushStrokes.forEach(
+    (element, index) => {
+
+      strokeObjects.push({
+
+        element,
+
+        x: 0,
+        y: 0,
+
+        targetX: 0,
+        targetY: 0,
+
+        amplitude:
+          brushAmplitudes[index] || 35,
+
+        direction:
+          brushDirections[index] || {
+            x: 1,
+            y: 1
+          },
+
+        /*
+         * Chaque élément possède une inertie différente.
+         */
+
+        easing:
+          0.025 +
+          Math.random() * 0.025
+
+      });
+
+    }
+  );
+
+
+  /*
+   * Les traits de crayon sont plus discrets.
+   */
+
+  const pencilAmplitudes = [
+    18,
+    12,
+    26
+  ];
+
+
+  const pencilDirections = [
+    { x: 1, y: -1 },
+    { x: -1, y: 1 },
+    { x: 0.7, y: -1 }
+  ];
+
+
+  pencilLines.forEach(
+    (element, index) => {
+
+      strokeObjects.push({
+
+        element,
+
+        x: 0,
+        y: 0,
+
+        targetX: 0,
+        targetY: 0,
+
+        amplitude:
+          pencilAmplitudes[index] || 15,
+
+        direction:
+          pencilDirections[index] || {
+            x: 1,
+            y: 1
+          },
+
+        easing:
+          0.018 +
+          Math.random() * 0.012
+
+      });
+
+    }
+  );
+
+
+  /*
+   * Position actuelle du curseur
+   * dans le hero.
+   */
+
+  let heroMouseX = 0;
+  let heroMouseY = 0;
+
+
+  /*
+   * Position globale de la souris.
+   * Utilisée par les autres effets.
+   */
+
+  let globalMouseX =
+    window.innerWidth / 2;
+
+  let globalMouseY =
+    window.innerHeight / 2;
+
+
+  /* ==========================================================
+     MOUVEMENT DES TRAITS
+  ========================================================== */
+
+  if (hero) {
+
+    hero.addEventListener(
+      "mousemove",
+      (event) => {
+
+        const rect =
+          hero.getBoundingClientRect();
+
+
+        /*
+         * Coordonnées normalisées :
+         *
+         * gauche = -0.5
+         * centre = 0
+         * droite = +0.5
+         */
+
+        heroMouseX =
+          (event.clientX - rect.left) /
+          rect.width -
+          0.5;
+
+
+        heroMouseY =
+          (event.clientY - rect.top) /
+          rect.height -
+          0.5;
+
+
+        strokeObjects.forEach(
+          (stroke) => {
+
+            stroke.targetX =
+              heroMouseX *
+              stroke.amplitude *
+              stroke.direction.x;
+
+
+            stroke.targetY =
+              heroMouseY *
+              stroke.amplitude *
+              stroke.direction.y;
+
+          }
+        );
+
+      }
+    );
+
+
+    /*
+     * Lorsque la souris quitte le hero,
+     * les traits reviennent doucement
+     * vers leur position originale.
+     */
+
+    hero.addEventListener(
+      "mouseleave",
+      () => {
+
+        heroMouseX = 0;
+        heroMouseY = 0;
+
+
+        strokeObjects.forEach(
+          (stroke) => {
+
+            stroke.targetX = 0;
+            stroke.targetY = 0;
+
+          }
+        );
+
+      }
+    );
+
+  }
+
+
+  /* ==========================================================
+     PARALLAXE DU CONTENU HERO
+  ========================================================== */
+
+  let contentX = 0;
+  let contentY = 0;
+
+  let contentTargetX = 0;
+  let contentTargetY = 0;
+
+
+  if (hero && heroContent) {
+
+    hero.addEventListener(
+      "mousemove",
+      (event) => {
+
+        const rect =
+          hero.getBoundingClientRect();
+
+
+        const x =
+          (event.clientX - rect.left) /
+          rect.width -
+          0.5;
+
+
+        const y =
+          (event.clientY - rect.top) /
+          rect.height -
+          0.5;
+
+
+        /*
+         * Le contenu se déplace légèrement
+         * dans le sens inverse des pinceaux.
+         */
+
+        contentTargetX =
+          x * -7;
+
+
+        contentTargetY =
+          y * -5;
+
+      }
+    );
+
+
+    hero.addEventListener(
+      "mouseleave",
+      () => {
+
+        contentTargetX = 0;
+        contentTargetY = 0;
+
+      }
+    );
+
+  }
+
+
+  /* ==========================================================
+     BOUCLE D'ANIMATION PRINCIPALE
+  ========================================================== */
+
+  function animateHero() {
+
+    /*
+     * Animation des traits.
+     */
+
+    strokeObjects.forEach(
+      (stroke) => {
+
+        stroke.x +=
+          (
+            stroke.targetX -
+            stroke.x
+          ) *
+          stroke.easing;
+
+
+        stroke.y +=
+          (
+            stroke.targetY -
+            stroke.y
+          ) *
+          stroke.easing;
+
+
+        stroke.element.style.translate =
+          `${stroke.x}px ${stroke.y}px`;
+
+      }
+    );
+
+
+    /*
+     * Animation du contenu.
+     */
+
+    if (heroContent) {
+
+      contentX +=
+        (
+          contentTargetX -
+          contentX
+        ) * 0.045;
+
+
+      contentY +=
+        (
+          contentTargetY -
+          contentY
+        ) * 0.045;
+
+
+      heroContent.style.transform =
+        `translate3d(
+          ${contentX}px,
+          ${contentY}px,
+          0
+        )`;
+
+    }
+
+
+    requestAnimationFrame(
+      animateHero
+    );
+
+  }
+
+
+  animateHero();
+
+
+  /* ==========================================================
+     SOURIS GLOBALE
+  ========================================================== */
+
+  document.addEventListener(
+    "mousemove",
+    (event) => {
+
+      globalMouseX =
+        event.clientX;
+
+      globalMouseY =
+        event.clientY;
+
+    }
+  );
+
+
+  /* ==========================================================
+     EFFET MAGNÉTIQUE DES BOUTONS
+  ========================================================== */
+
+  const magneticButtons =
+    document.querySelectorAll(
+      ".btn"
+    );
+
+
+  magneticButtons.forEach(
+    (button) => {
+
+      button.addEventListener(
+        "mousemove",
+        (event) => {
+
+          const rect =
+            button.getBoundingClientRect();
+
+
+          const x =
+            event.clientX -
+            rect.left -
+            rect.width / 2;
+
+
+          const y =
+            event.clientY -
+            rect.top -
+            rect.height / 2;
+
+
+          /*
+           * Effet magnétique légèrement amplifié.
+           */
+
+          const magneticX =
+            x * 0.16;
+
+
+          const magneticY =
+            y * 0.16;
+
+
+          button.style.transform =
+            `
+            translate(
+              ${magneticX}px,
+              ${magneticY}px
+            )
+            scale(1.055)
+            `;
+
+        }
+      );
+
+
+      button.addEventListener(
+        "mouseleave",
+        () => {
+
+          button.style.transform =
+            "";
+
+        }
+      );
+
+    }
+  );
+
+
+  /* ==========================================================
+     TILT DES CARTES
+  ========================================================== */
+
+  const tiltElements =
+    document.querySelectorAll(
+      ".event-card, .gallery-item"
+    );
+
+
+  tiltElements.forEach(
+    (card) => {
+
+      card.style.transformStyle =
+        "preserve-3d";
+
+
+      card.addEventListener(
+        "mousemove",
+        (event) => {
+
+          const rect =
+            card.getBoundingClientRect();
+
+
+          const x =
+            event.clientX -
+            rect.left;
+
+
+          const y =
+            event.clientY -
+            rect.top;
+
+
+          const centerX =
+            rect.width / 2;
+
+
+          const centerY =
+            rect.height / 2;
+
+
+          /*
+           * Inclinaison volontairement légère.
+           */
+
+          const rotateX =
+            ((y - centerY) /
+              centerY) *
+            -2.2;
+
+
+          const rotateY =
+            ((x - centerX) /
+              centerX) *
+            2.2;
+
+
+          card.style.transform =
+            `
+            perspective(900px)
+            rotateX(${rotateX}deg)
+            rotateY(${rotateY}deg)
+            translateY(-4px)
+            scale(1.012)
+            `;
+
+        }
+      );
+
+
+      card.addEventListener(
+        "mouseleave",
+        () => {
+
+          card.style.transform =
+            "";
+
+        }
+      );
+
+    }
+  );
+
+
+  /* ==========================================================
+     ÉLÉMENTS ABSTRAITS DES SECTIONS
+  ========================================================== */
+
+  const abstractElements =
+    document.querySelectorAll(
+      ".about-art, .contact-decoration"
+    );
+
+
+  let abstractFrame = null;
+
+
+  function updateAbstractElements() {
+
+    abstractElements.forEach(
+      (element, index) => {
+
+        const strength =
+          index % 2 === 0
+            ? 16
+            : 24;
+
+
+        const x =
+          (
+            globalMouseX /
+            window.innerWidth -
+            0.5
+          ) *
+          strength;
+
+
+        const y =
+          (
+            globalMouseY /
+            window.innerHeight -
+            0.5
+          ) *
+          strength;
+
+
+        element.style.transform =
+          `translate3d(
+            ${x}px,
+            ${y}px,
+            0
+          )`;
+
+      }
+    );
+
+
+    abstractFrame = null;
+
+  }
+
+
+  document.addEventListener(
+    "mousemove",
+    () => {
+
+      if (!abstractFrame) {
+
+        abstractFrame =
+          requestAnimationFrame(
+            updateAbstractElements
+          );
+
+      }
+
+    }
+  );
+
+
+  /* ==========================================================
+     ÉCLABOUSSURES ORGANIQUES
+  ========================================================== */
+
+  let lastSplashTime = 0;
+
+
+  document.addEventListener(
+    "mousemove",
+    (event) => {
+
+      const now =
+        performance.now();
+
+
+      /*
+       * Limite le nombre d'éclaboussures
+       * pour garder l'effet élégant.
+       */
+
+      if (
+        now - lastSplashTime <
+        115
+      ) {
+        return;
+      }
+
+
+      /*
+       * On ne crée les éclaboussures
+       * que dans le hero.
+       */
+
+      const element =
+        document.elementFromPoint(
+          event.clientX,
+          event.clientY
+        );
+
+
+      if (
+        !element ||
+        !element.closest(".hero")
+      ) {
+        return;
+      }
+
+
+      lastSplashTime =
+        now;
+
+
+      createOrganicSplash(
+        event.clientX,
+        event.clientY
+      );
+
+    }
+  );
+
+
+  function createOrganicSplash(
+    x,
+    y
+  ) {
+
+    const splash =
+      document.createElement("span");
+
+
+    splash.className =
+      "cursor-splash";
+
+
+    /*
+     * Palette du festival.
+     */
+
+    const colors = [
+      "#145cff",
+      "#35d66f",
+      "#8d43ff",
+      "#ff762e"
+    ];
+
+
+    const color =
+      colors[
+        Math.floor(
+          Math.random() *
+          colors.length
+        )
+      ];
+
+
+    /*
+     * Dimensions très variables.
+     */
+
+    const width =
+      7 +
+      Math.random() *
+      25;
+
+
+    const height =
+      3 +
+      Math.random() *
+      15;
+
+
+    /*
+     * Direction aléatoire.
+     */
+
+    const angle =
+      Math.random() *
+      Math.PI *
+      2;
+
+
+    const distance =
+      18 +
+      Math.random() *
+      48;
+
+
+    /*
+     * Rotation très irrégulière.
+     */
+
+    const rotation =
+      Math.random() *
+      180 -
+      90;
+
+
+    const rotationEnd =
+      rotation +
+      (
+        Math.random() *
+        260 -
+        130
+      );
+
+
+    splash.style.left =
+      `${x}px`;
+
+
+    splash.style.top =
+      `${y}px`;
+
+
+    splash.style.width =
+      `${width}px`;
+
+
+    splash.style.height =
+      `${height}px`;
+
+
+    splash.style.background =
+      color;
+
+
+    splash.style.setProperty(
+      "--dx",
+      `${Math.cos(angle) * distance}px`
+    );
+
+
+    splash.style.setProperty(
+      "--dy",
+      `${Math.sin(angle) * distance}px`
+    );
+
+
+    splash.style.setProperty(
+      "--r",
+      `${rotation}deg`
+    );
+
+
+    splash.style.setProperty(
+      "--r2",
+      `${rotationEnd}deg`
+    );
+
+
+    document.body.appendChild(
+      splash
+    );
+
+
+    /*
+     * Nettoyage.
+     */
+
+    window.setTimeout(
+      () => {
+
+        splash.remove();
+
+      },
+      800
+    );
+
+  }
+
+
+  /* ==========================================================
+     HOVER DES LIENS
+  ========================================================== */
+
+  const interactiveLinks =
+    document.querySelectorAll(
+      "a, button"
+    );
+
+
+  interactiveLinks.forEach(
+    (element) => {
+
+      element.addEventListener(
+        "mouseenter",
+        () => {
+
+          element.classList.add(
+            "is-hovered"
+          );
+
+        }
+      );
+
+
+      element.addEventListener(
+        "mouseleave",
+        () => {
+
+          element.classList.remove(
+            "is-hovered"
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  /* ==========================================================
+     EFFET SUR LE LOGO
+  ========================================================== */
+
+  const logo =
+    document.querySelector(".logo");
+
+
+  if (logo) {
+
+    logo.addEventListener(
+      "mousemove",
+      (event) => {
+
+        const rect =
+          logo.getBoundingClientRect();
+
+
+        const x =
+          event.clientX -
+          rect.left -
+          rect.width / 2;
+
+
+        const y =
+          event.clientY -
+          rect.top -
+          rect.height / 2;
+
+
+        logo.style.transform =
+          `
+          translate(
+            ${x * 0.06}px,
+            ${y * 0.06}px
+          )
+          `;
+
+      }
+    );
+
+
+    logo.addEventListener(
+      "mouseleave",
+      () => {
+
+        logo.style.transform =
+          "";
+
+      }
+    );
+
+  }
+
+
+  /* ==========================================================
+     NETTOYAGE SI LA FENÊTRE EST REDIMENSIONNÉE
+  ========================================================== */
+
+  window.addEventListener(
+    "resize",
+    () => {
+
+      /*
+       * On remet les positions cibles
+       * des traits à zéro pour éviter
+       * un saut lors du changement de taille.
+       */
+
+      strokeObjects.forEach(
+        (stroke) => {
+
+          stroke.targetX = 0;
+          stroke.targetY = 0;
+
+        }
+      );
+
+    }
+  );
+
+});document.addEventListener("DOMContentLoaded", () => {
+
   // ==========================================================
   // MENU MOBILE
   // ==========================================================

@@ -3,226 +3,441 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Rennes en Voix — Festival a cappella">
-  <title>Rennes en Voix — Festival a cappella</title>
+
+  <meta
+    name="description"
+    content="Rennes en Voix — Festival de musique vocale à l'Orangerie du château de Rennes-sur-Loue, organisé par Les Regnaux."
+  >
+
+  <title>Rennes en Voix — Festival de musique vocale</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  >
 
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <!-- Navigation -->
+  <!-- =========================
+       NAVIGATION
+  ========================== -->
+
   <header class="site-header">
     <nav class="navbar container">
-      <a href="#accueil" class="logo">
+
+      <a href="#accueil" class="logo" aria-label="Rennes en Voix - Accueil">
         <span>Rennes</span>
         <strong>en Voix</strong>
       </a>
 
-      <button class="menu-toggle" aria-label="Ouvrir le menu">
+      <button
+        class="menu-toggle"
+        aria-label="Ouvrir le menu"
+        aria-expanded="false"
+        type="button"
+      >
         <span></span>
         <span></span>
         <span></span>
       </button>
 
       <ul class="nav-links">
-        <li><a href="#apropos">À propos</a></li>
+        <li><a href="#apropos">Le festival</a></li>
         <li><a href="#programme">Programme</a></li>
         <li><a href="#galerie">Galerie</a></li>
         <li><a href="#contact">Contact</a></li>
         <li><a href="#partenaires">Partenaires</a></li>
       </ul>
+
     </nav>
   </header>
 
+
   <main>
 
-    <!-- HERO -->
+    <!-- =========================
+         HERO
+    ========================== -->
+
     <section id="accueil" class="hero section-snap">
+
+      <!-- Éléments graphiques -->
       <div class="brush brush-blue"></div>
       <div class="brush brush-green"></div>
       <div class="brush brush-orange"></div>
       <div class="brush brush-purple"></div>
 
       <div class="container hero-content">
-        <div class="hero-tag">ÉDITION 2026 · RENNES</div>
+
+        <div class="hero-tag">
+          FESTIVAL · RENNES-SUR-LOUE
+        </div>
 
         <h1>
           Rennes<br>
           <span>en Voix</span>
         </h1>
 
-        <p class="hero-subtitle">Festival a cappella</p>
+        <p class="hero-subtitle">
+          Festival de musique vocale
+        </p>
 
         <p class="hero-description">
-          Découvrez des talents vocaux uniques dans des lieux insolites.
-          Un festival dédié à la musique amateur de qualité, ouvert à tous.
+          Chaque été, Rennes en Voix investit l’Orangerie du château
+          de Rennes-sur-Loue pour faire découvrir la richesse et la
+          diversité des expressions vocales, dans un cadre exceptionnel.
         </p>
 
         <a href="#programme" class="btn btn-primary">
-          Voir le programme
+          Découvrir le programme
           <span>↗</span>
         </a>
+
       </div>
 
       <div class="hero-note">
         <span>VOIX</span>
         <span>PARTAGE</span>
-        <span>CRÉATION</span>
+        <span>DÉCOUVERTE</span>
       </div>
+
     </section>
 
-    <!-- À PROPOS -->
+
+    <!-- =========================
+         À PROPOS
+    ========================== -->
+
     <section id="apropos" class="about section-snap">
+
       <div class="container about-grid">
 
         <div class="section-label">
           <span>01</span>
-          À propos
+          Le festival
         </div>
 
         <div class="about-content">
+
           <h2>
-            Des voix qui<br>
-            <em>sortent du cadre.</em>
+            La voix<br>
+            <em>sort du cadre.</em>
           </h2>
 
           <p class="lead">
-            Rennes en Voix célèbre la diversité des pratiques vocales non dirigées.
-            Nous organisons des concerts grand public, des ateliers, et des événements
-            dans des lieux atypiques pour promouvoir la musique amateur.
+            Rennes en Voix est un festival dédié à la musique vocale,
+            qu’elle soit amateur ou professionnelle. Chaque été,
+            il prend place dans l’Orangerie du château de Rennes-sur-Loue
+            pour proposer une programmation de concerts variés.
+          </p>
+
+          <p class="lead">
+            Le festival met particulièrement en lumière des pratiques
+            vocales non dirigées, différentes des chorales traditionnelles,
+            et invite le public à découvrir d’autres façons de faire vivre
+            la voix.
           </p>
 
           <div class="about-stats">
+
             <div>
-              <strong>12</strong>
-              <span>concerts</span>
+              <strong>01</strong>
+              <span>Lieu exceptionnel</span>
             </div>
+
             <div>
-              <strong>08</strong>
-              <span>ateliers</span>
+              <strong>100%</strong>
+              <span>Musique vocale</span>
             </div>
+
             <div>
-              <strong>20+</strong>
-              <span>groupes vocaux</span>
+              <strong>∞</strong>
+              <span>Façons de chanter</span>
             </div>
+
           </div>
+
         </div>
 
-        <div class="about-art">
+        <div class="about-art" aria-hidden="true">
           <div class="art-circle"></div>
           <div class="art-line"></div>
           <span class="art-word">VOX</span>
         </div>
 
       </div>
+
     </section>
 
-    <!-- PROGRAMME -->
-    <section id="programme" class="program section-snap">
+
+    <!-- =========================
+         L'ESPRIT DU FESTIVAL
+    ========================== -->
+
+    <section class="program section-snap">
+
       <div class="container">
 
         <div class="section-heading">
+
           <div class="section-label">
             <span>02</span>
-            Programme
+            L'esprit Rennes en Voix
           </div>
-          <h2>Programme <em>2026</em></h2>
-          <p>Trois jours de voix, de rencontres et de découvertes.</p>
+
+          <h2>
+            Une fête de la voix<br>
+            <em>pour tous.</em>
+          </h2>
+
+          <p>
+            Des concerts variés, un lieu chargé d’histoire et une ambiance
+            simple et conviviale : Rennes en Voix célèbre la musique
+            dans toutes ses formes.
+          </p>
+
         </div>
 
         <div class="events">
 
           <article class="event-card event-blue">
+
             <div class="event-number">01</div>
+
             <div class="event-info">
-              <span class="event-date">Samedi 12 septembre · 18h</span>
-              <h3>Ouverture en voix</h3>
-              <p>Concert de chorales amateures dans un cadre historique exceptionnel.</p>
-              <span class="event-place">Château de Rennes-sur-Loue</span>
+
+              <span class="event-date">
+                MUSIQUE VOCALE
+              </span>
+
+              <h3>
+                Des voix sans frontières
+              </h3>
+
+              <p>
+                Le festival accueille des artistes et des formations
+                amateurs ou professionnelles pour présenter des univers
+                vocaux variés et des pratiques originales.
+              </p>
+
+              <span class="event-place">
+                Concerts · Créations · Découvertes
+              </span>
+
             </div>
+
             <span class="event-arrow">↗</span>
+
           </article>
+
 
           <article class="event-card event-green">
+
             <div class="event-number">02</div>
+
             <div class="event-info">
-              <span class="event-date">Samedi 12 septembre · 21h</span>
-              <h3>Nuit polyphonique</h3>
-              <p>Une soirée immersive où les voix se répondent sans chef ni partition.</p>
-              <span class="event-place">La Chapelle des Carmélites</span>
+
+              <span class="event-date">
+                UN LIEU D'EXCEPTION
+              </span>
+
+              <h3>
+                L'Orangerie du château
+              </h3>
+
+              <p>
+                Chaque été, Rennes en Voix investit l’Orangerie du château
+                de Rennes-sur-Loue pour offrir aux concerts un écrin
+                singulier, historique et plein de charme.
+              </p>
+
+              <span class="event-place">
+                Rennes-sur-Loue · Jura
+              </span>
+
             </div>
+
             <span class="event-arrow">↗</span>
+
           </article>
+
 
           <article class="event-card event-purple">
+
             <div class="event-number">03</div>
+
             <div class="event-info">
-              <span class="event-date">Dimanche 13 septembre · 11h</span>
-              <h3>Voix & Impro</h3>
-              <p>Atelier d'improvisation vocale ouvert à toutes et tous, débutants bienvenus.</p>
-              <span class="event-place">Maison des Associations</span>
+
+              <span class="event-date">
+                CONVIVIALITÉ
+              </span>
+
+              <h3>
+                Musique & petite restauration
+              </h3>
+
+              <p>
+                Parce qu’un festival est aussi un moment de rencontre,
+                une petite restauration est proposée sur place pour
+                prolonger les échanges avant et après les concerts.
+              </p>
+
+              <span class="event-place">
+                Une ambiance simple et chaleureuse
+              </span>
+
             </div>
+
             <span class="event-arrow">↗</span>
+
           </article>
 
+
           <article class="event-card event-orange">
+
             <div class="event-number">04</div>
+
             <div class="event-info">
-              <span class="event-date">Dimanche 13 septembre · 16h</span>
-              <h3>Chœur sauvage</h3>
-              <p>Une expérience participative dans les rues de Rennes avec tous les publics.</p>
-              <span class="event-place">Place Sainte-Anne</span>
+
+              <span class="event-date">
+                UNE AVENTURE COLLECTIVE
+              </span>
+
+              <h3>
+                Une équipe bénévole
+              </h3>
+
+              <p>
+                Porté par une équipe bénévole et passionnée, le festival
+                s’appuie également sur des partenariats locaux, notamment
+                pour la récupération et le prêt de matériel.
+              </p>
+
+              <span class="event-place">
+                Les Regnaux · Comité des fêtes
+              </span>
+
             </div>
+
             <span class="event-arrow">↗</span>
+
           </article>
 
         </div>
+
       </div>
+
     </section>
 
-    <!-- GALERIE -->
+
+    <!-- =========================
+         PROGRAMME
+    ========================== -->
+
+    <section id="programme" class="about section-snap">
+
+      <div class="container about-grid">
+
+        <div class="section-label">
+          <span>03</span>
+          Programme
+        </div>
+
+        <div class="about-content">
+
+          <h2>
+            Des concerts<br>
+            <em>à découvrir.</em>
+          </h2>
+
+          <p class="lead">
+            Les concerts sont au cœur de Rennes en Voix. La programmation
+            fait dialoguer différentes pratiques vocales et propose au
+            public de découvrir des artistes et des formations aux
+            univers singuliers.
+          </p>
+
+          <p class="lead">
+            La programmation détaillée de la prochaine édition sera
+            annoncée prochainement.
+          </p>
+
+          <a href="#contact" class="btn btn-primary">
+            Être informé
+            <span>→</span>
+          </a>
+
+        </div>
+
+        <div class="about-art" aria-hidden="true">
+          <div class="art-circle"></div>
+          <div class="art-line"></div>
+          <span class="art-word">LIVE</span>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         GALERIE
+    ========================== -->
+
     <section id="galerie" class="gallery section-snap">
+
       <div class="container">
 
         <div class="section-heading gallery-heading">
+
           <div>
+
             <div class="section-label">
-              <span>03</span>
+              <span>04</span>
               Galerie
             </div>
-            <h2>Des souvenirs<br><em>en mouvement.</em></h2>
+
+            <h2>
+              Le festival<br>
+              <em>en images.</em>
+            </h2>
+
           </div>
 
           <p>
-            Découvrez les moments forts<br>
-            des éditions précédentes.
+            Des voix, des rencontres et des moments partagés
+            dans le cadre unique de l’Orangerie.
           </p>
+
         </div>
 
+
         <div class="gallery-grid">
+
           <div class="gallery-item gallery-1">
             <div class="abstract abstract-blue"></div>
-            <span>Voix collective</span>
+            <span>La scène vocale</span>
           </div>
 
           <div class="gallery-item gallery-2">
             <div class="abstract abstract-orange"></div>
-            <span>Sur scène</span>
+            <span>Concerts</span>
           </div>
 
           <div class="gallery-item gallery-3">
             <div class="abstract abstract-purple"></div>
-            <span>Improvisation</span>
+            <span>Pratiques vocales</span>
           </div>
 
           <div class="gallery-item gallery-4">
             <div class="abstract abstract-green"></div>
-            <span>Ensemble</span>
+            <span>Rennes-sur-Loue</span>
           </div>
 
           <div class="gallery-item gallery-5">
@@ -232,73 +447,241 @@
 
           <div class="gallery-item gallery-6">
             <div class="abstract abstract-blue-purple"></div>
-            <span>La scène ouverte</span>
+            <span>La musique en direct</span>
           </div>
 
           <div class="gallery-item gallery-7">
             <div class="abstract abstract-rainbow"></div>
-            <span>Festival 2025</span>
+            <span>Une programmation variée</span>
           </div>
 
           <div class="gallery-item gallery-8">
             <div class="abstract abstract-green-orange"></div>
-            <span>En plein air</span>
+            <span>Un cadre exceptionnel</span>
           </div>
+
         </div>
 
       </div>
+
     </section>
 
-    <!-- CONTACT -->
+
+    <!-- =========================
+         ASSOCIATION
+    ========================== -->
+
+    <section class="program section-snap">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <div class="section-label">
+            <span>05</span>
+            Qui sommes-nous ?
+          </div>
+
+          <h2>
+            Une fête locale,<br>
+            <em>une touche originale.</em>
+          </h2>
+
+        </div>
+
+
+        <div class="events">
+
+          <article class="event-card event-orange">
+
+            <div class="event-number">01</div>
+
+            <div class="event-info">
+
+              <span class="event-date">
+                ORGANISATION
+              </span>
+
+              <h3>
+                Les Regnaux
+              </h3>
+
+              <p>
+                Rennes en Voix est organisé par l’association
+                <strong>Les Regnaux</strong>, comité des fêtes de
+                Rennes-sur-Loue.
+              </p>
+
+              <span class="event-place">
+                Association · Rennes-sur-Loue
+              </span>
+
+            </div>
+
+            <span class="event-arrow">↗</span>
+
+          </article>
+
+
+          <article class="event-card event-blue">
+
+            <div class="event-number">02</div>
+
+            <div class="event-info">
+
+              <span class="event-date">
+                BÉNÉVOLAT
+              </span>
+
+              <h3>
+                Une équipe passionnée
+              </h3>
+
+              <p>
+                Derrière le festival, une équipe bénévole s’investit
+                pour faire vivre un événement culturel accessible,
+                chaleureux et ancré dans la vie locale.
+              </p>
+
+              <span class="event-place">
+                Ensemble · Avec passion
+              </span>
+
+            </div>
+
+            <span class="event-arrow">↗</span>
+
+          </article>
+
+
+          <article class="event-card event-green">
+
+            <div class="event-number">03</div>
+
+            <div class="event-info">
+
+              <span class="event-date">
+                PARTENARIATS LOCAUX
+              </span>
+
+              <h3>
+                Faire ensemble
+              </h3>
+
+              <p>
+                Le festival s’appuie sur des partenariats locaux,
+                notamment pour la récupération et le prêt de matériel,
+                afin de construire un événement de qualité.
+              </p>
+
+              <span class="event-place">
+                Un événement ancré dans son territoire
+              </span>
+
+            </div>
+
+            <span class="event-arrow">↗</span>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         CONTACT
+    ========================== -->
+
     <section id="contact" class="contact section-snap">
+
       <div class="contact-decoration"></div>
 
       <div class="container contact-grid">
 
         <div class="contact-intro">
+
           <div class="section-label">
-            <span>04</span>
+            <span>06</span>
             Contact
           </div>
 
           <h2>
-            Faisons<br>
-            <em>vibrer les voix.</em>
+            Parlons<br>
+            <em>musique.</em>
           </h2>
 
           <p>
-            Une question, une envie de participer ou simplement
-            envie de nous dire bonjour ? Écrivez-nous.
+            Une question sur le festival, la programmation, les concerts
+            ou les possibilités de partenariat ? L’équipe de Rennes en Voix
+            est à votre écoute.
           </p>
 
           <div class="contact-details">
+
             <a href="mailto:contact@rennesenvoix.fr">
               contact@rennesenvoix.fr
             </a>
 
             <div class="social-links">
-              <a href="#" aria-label="Facebook">Facebook ↗</a>
-              <a href="#" aria-label="Instagram">Instagram ↗</a>
+              <a href="#" aria-label="Facebook de Rennes en Voix">
+                Facebook ↗
+              </a>
+
+              <a href="#" aria-label="Instagram de Rennes en Voix">
+                Instagram ↗
+              </a>
             </div>
+
           </div>
+
         </div>
+
 
         <form class="contact-form" id="contactForm">
 
           <div class="form-field">
             <label for="name">Nom</label>
-            <input type="text" id="name" name="name" placeholder="Votre nom" required>
+
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Votre nom"
+              autocomplete="name"
+              required
+            >
           </div>
+
 
           <div class="form-field">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="vous@exemple.fr" required>
+
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="vous@exemple.fr"
+              autocomplete="email"
+              required
+            >
           </div>
+
 
           <div class="form-field">
             <label for="message">Message</label>
-            <textarea id="message" name="message" rows="5" placeholder="Votre message..." required></textarea>
+
+            <textarea
+              id="message"
+              name="message"
+              rows="5"
+              placeholder="Votre message..."
+              required
+            ></textarea>
           </div>
+
 
           <button type="submit" class="btn btn-submit">
             Envoyer
@@ -306,52 +689,117 @@
           </button>
 
           <p class="form-message" id="formMessage"></p>
+
         </form>
 
       </div>
+
     </section>
 
-    <!-- PARTENAIRES -->
+
+    <!-- =========================
+         PARTENAIRES
+    ========================== -->
+
     <section id="partenaires" class="partners">
+
       <div class="container partners-inner">
-        <span>AVEC LE SOUTIEN DE</span>
+
+        <span>
+          AVEC LE SOUTIEN DE NOS PARTENAIRES LOCAUX
+        </span>
+
         <div class="partner-list">
-          <strong>VILLE DE RENNES</strong>
-          <strong>RÉGION BRETAGNE</strong>
-          <strong>ARTS & CULTURES</strong>
-          <strong>RADIO RENNES</strong>
+
+          <strong>
+            PARTENAIRES LOCAUX
+          </strong>
+
+          <strong>
+            LES REGNAUX
+          </strong>
+
+          <strong>
+            RENNES-SUR-LOUE
+          </strong>
+
+          <strong>
+            BÉNÉVOLES
+          </strong>
+
         </div>
+
       </div>
+
     </section>
 
   </main>
 
-  <!-- FOOTER -->
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
   <footer class="site-footer">
+
     <div class="container footer-top">
 
       <a href="#accueil" class="logo footer-logo">
+
         <span>Rennes</span>
         <strong>en Voix</strong>
+
       </a>
 
+
       <div class="footer-links">
-        <a href="#apropos">À propos</a>
-        <a href="#programme">Programme</a>
-        <a href="#galerie">Galerie</a>
-        <a href="#contact">Contact</a>
-        <a href="#partenaires">Partenaires</a>
+
+        <a href="#apropos">
+          Le festival
+        </a>
+
+        <a href="#programme">
+          Programme
+        </a>
+
+        <a href="#galerie">
+          Galerie
+        </a>
+
+        <a href="#contact">
+          Contact
+        </a>
+
+        <a href="#partenaires">
+          Partenaires
+        </a>
+
       </div>
 
-      <a href="#accueil" class="back-top">Retour en haut ↑</a>
+
+      <a href="#accueil" class="back-top">
+        Retour en haut ↑
+      </a>
+
     </div>
+
 
     <div class="container footer-bottom">
-      <span>© 2026 Rennes en Voix. Tous droits réservés.</span>
-      <span>Festival a cappella · Rennes</span>
+
+      <span>
+        © 2026 Rennes en Voix. Tous droits réservés.
+      </span>
+
+      <span>
+        Organisé par Les Regnaux · Comité des fêtes de Rennes-sur-Loue
+      </span>
+
     </div>
+
   </footer>
 
+
   <script src="script.js"></script>
+
 </body>
 </html>

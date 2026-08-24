@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { PastEditions } from "@/components/PastEditions";
-import { MapPin, CalendarDays, UtensilsCrossed, Mail, Ticket } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { MapPin, CalendarDays, UtensilsCrossed, Mail, Ticket, X } from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel";
 import groupeColore from "@/assets/groupe-coloré.png";
 import brushHero1 from "@/assets/brush-hero1.png";
@@ -17,6 +15,7 @@ const groups = [
     photo: "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=1200&auto=format&fit=crop",
     alt: "Chanteurs réunis sur scène pendant un concert",
     tabColor: "data-[state=active]:bg-festival-blue data-[state=active]:text-white",
+    accent: "bg-festival-blue",
   },
   {
     id: "groupe-2",
@@ -26,6 +25,7 @@ const groups = [
     photo: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=1200&auto=format&fit=crop",
     alt: "Chanteuse interprétant un morceau devant un public",
     tabColor: "data-[state=active]:bg-festival-red data-[state=active]:text-white",
+    accent: "bg-festival-red",
   },
   {
     id: "groupe-3",
@@ -35,6 +35,7 @@ const groups = [
     photo: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=1200&auto=format&fit=crop",
     alt: "Groupe de musique se produisant en plein air",
     tabColor: "data-[state=active]:bg-festival-purple data-[state=active]:text-white",
+    accent: "bg-festival-purple",
   },
 ];
 
@@ -163,7 +164,7 @@ const GalleryCarousel = ({
     <div className="mt-10">
       <h3 className="mb-4 font-display text-xl font-bold md:text-2xl">{title}</h3>
       <Carousel
-        opts={{ loop: true }}
+        opts={{ loop: true, duration: 40 }}
         setApi={setApi}
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
@@ -203,7 +204,9 @@ const Index = () => {
     if (!selectedImage) return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setSelectedImage(null);
+      if (event.key === "Escape") {
+        setSelectedImage(null);
+      }
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -294,28 +297,31 @@ const Index = () => {
             </div>
           </div>
 
-            <Tabs defaultValue={groups[0].id} className="mt-12">
-            <TabsList className="grid h-auto w-full grid-cols-3 gap-1 rounded-xl bg-muted p-1">
+            <div className="mt-12 space-y-5">
               {groups.map((group) => (
-                <TabsTrigger key={group.id} value={group.id} className={`min-h-12 px-2 text-xs sm:text-sm ${group.tabColor}`}>
-                  {group.name}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-            {groups.map((group) => (
-              <TabsContent key={group.id} value={group.id} className="mt-6">
-                <article className="grid overflow-hidden rounded-2xl bg-festival-blue text-white md:grid-cols-2">
-                  <img src={group.photo} alt={group.alt} loading="lazy" className="h-64 w-full object-cover md:h-full" />
+                <article
+                  key={group.id}
+                  className="grid overflow-hidden rounded-2xl border border-border bg-card shadow-sm md:grid-cols-[1fr_1.35fr]"
+                >
                   <div className="flex flex-col justify-center p-7 md:p-10">
-                    <p className="text-xs font-semibold uppercase tracking-widest text-white/80">Samedi 03 juillet 2027 · Orangerie du château</p>
-                    <h3 className="mt-4 font-display text-3xl font-bold">{group.name}</h3>
-                    <p className="mt-2 text-lg font-semibold text-white/90">{group.style}</p>
-                    <p className="mt-4 leading-relaxed text-white/85">{group.description}</p>
+                    <span className={`mb-5 block h-2 w-16 rounded-full ${group.accent}`} aria-hidden="true" />
+                    <h3 className="font-display text-2xl font-bold md:text-3xl">{group.name}</h3>
+                    <p className="mt-2 text-lg font-semibold text-foreground/80">{group.style}</p>
+                    <p className="mt-4 max-w-xl leading-relaxed text-foreground/75">{group.description}</p>
+                    <div className="mt-6 flex flex-wrap gap-5 text-sm font-semibold uppercase tracking-wider">
+                      <a href="mailto:rennesenvoix@gmail.com?subject=Renseignements%20sur%20le%20groupe" className="link-underline text-festival-orange">
+                        Réserver
+                      </a>
+                      <a href="https://www.instagram.com" target="_blank" rel="noreferrer noopener" className="link-underline text-foreground/70">
+                        Instagram
+                      </a>
+                    </div>
                   </div>
+                  <img src={group.photo} alt={group.alt} loading="lazy" className="order-first h-64 w-full object-cover md:order-none md:h-full" />
                 </article>
-              </TabsContent>
-            ))}
-            </Tabs>
+              ))}
+            </div>
+
           </div>
         </section>
 
@@ -327,28 +333,9 @@ const Index = () => {
             Quelques instants de musique, de partage et de convivialité.
           </p>
 
-          <GalleryCarousel images={firstGalleryImages} delay={7000} title="Les voix réunies" onImageClick={setSelectedImage} />
-          <GalleryCarousel images={secondGalleryImages} delay={8000} title="Les instants du festival" reverse onImageClick={setSelectedImage} />
-          <GalleryCarousel images={thirdGalleryImages} delay={9000} title="La musique au grand air" onImageClick={setSelectedImage} />
-        </section>
-
-        {/* ÉDITIONS PASSÉES / GALERIE PHOTO */}
-        <section id="editions" className="relative overflow-hidden">
-          <img
-            src={brushHero1}
-            alt=""
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-15"
-          />
-          <div className="container-wide relative py-20 md:py-28">
-            <span className="mb-8 block h-2 w-24 rounded-full bg-festival-red" aria-hidden="true" />
-            <h2 className="text-headline">Éditions passées</h2>
-            <p className="mt-4 max-w-2xl text-base md:text-lg text-foreground/80">
-              Retrouvez les souvenirs et la galerie photo des éditions précédentes.
-            </p>
-
-            <PastEditions />
-          </div>
+          <GalleryCarousel images={firstGalleryImages} delay={3000} title="Les voix réunies" onImageClick={setSelectedImage} />
+          <GalleryCarousel images={secondGalleryImages} delay={3500} title="Les instants du festival" reverse onImageClick={setSelectedImage} />
+          <GalleryCarousel images={thirdGalleryImages} delay={4000} title="La musique au grand air" onImageClick={setSelectedImage} />
         </section>
 
         {/* INFOS PRATIQUES */}

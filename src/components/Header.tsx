@@ -3,9 +3,10 @@ import { Menu, X } from "lucide-react";
 import titleLogo from "@/assets/Titre ReV.png";
 
 const navItems = [
-  { label: "Le Festival", href: "#festival" },
-  { label: "Programmation", href: "#programmation" },
-  { label: "Infos pratiques", href: "#infos" },
+  { label: "Le Festival", href: "/#festival" },
+  { label: "Programmation", href: "/#programmation" },
+  { label: "Infos pratiques", href: "/#infos" },
+  { label: "Éditions passées", href: "/editions" },
 ];
 
 export function Header() {
@@ -15,7 +16,7 @@ export function Header() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/85 backdrop-blur-md border-b border-border">
       <div className="container-wide">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <a href="#accueil" aria-label="Rennes en Voix, accueil">
+          <a href="/" aria-label="Rennes en Voix, accueil">
             <img src={titleLogo} alt="Rennes en Voix" className="h-10 w-auto object-contain md:h-14" />
           </a>
 

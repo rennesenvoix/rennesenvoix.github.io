@@ -71,7 +71,10 @@ const Index = () => {
           />
           <div className="container-wide relative py-20 md:py-32">
             <div className="max-w-3xl animate-fade-in-up">
-              <h1 className="text-display">Rennes en VOIX</h1>
+              <p className="mt-6 max-w-2xl text-base md:text-lg leading-relaxed text-foreground/80">
+                SAMEDI 03 JUILLET 2027
+              </p>
+              <h1 className="text-display">RENNES EN VOIX</h1>
               <p className="mt-6 text-xl md:text-2xl font-display font-semibold leading-snug">
                 Le festival qui fait résonner l'orangerie de Rennes-sur-Loue.
               </p>

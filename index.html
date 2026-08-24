@@ -1,1066 +1,343 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <meta
-    name="description"
-    content="Rennes en Voix — Festival de musique vocale à l'Orangerie du château de Rennes-sur-Loue, organisé par Les Regnaux depuis 2024."
-  >
-
-  <title>Rennes en Voix — Festival de musique vocale</title>
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Rennes en Voix — festival a cappella à Rennes-sur-Loue. Polyphonies, ensembles vocaux, rencontres et mémoire des éditions passées.">
+  <title>Rennes en Voix — Festival a cappella</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
-    rel="stylesheet"
-  >
-
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-  <!-- =========================
-       NAVIGATION
-  ========================== -->
+  <div class="page-noise" aria-hidden="true"></div>
 
+  <!-- HEADER -->
   <header class="site-header">
-    <nav class="navbar container">
-
-      <a href="#accueil" class="logo" aria-label="Rennes en Voix - Accueil">
-        <span>Rennes</span>
-        <strong>en Voix</strong>
+    <div class="container navbar">
+      <a href="#accueil" class="logo" aria-label="Rennes en Voix — accueil">
+        <span>RENNES</span>
+        <strong>EN VOIX</strong>
       </a>
-
-      <button
-        class="menu-toggle"
-        aria-label="Ouvrir le menu"
-        aria-expanded="false"
-        type="button"
-      >
-        <span></span>
-        <span></span>
-        <span></span>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Ouvrir le menu">
+        <span></span><span></span><span></span>
       </button>
-
-      <ul class="nav-links">
-        <li><a href="#festival">Le festival</a></li>
-        <li><a href="#programme">Programme</a></li>
-        <li><a href="#galerie">Galerie</a></li>
-        <li><a href="#regnaux">Les Regnaux</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-
-    </nav>
+      <nav id="primary-nav" class="nav-links" aria-label="Navigation principale">
+        <a href="#programme">Programme</a>
+        <a href="#editions">Éditions</a>
+        <a href="#experience">L'expérience</a>
+        <a href="#partenaires">Partenaires</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
   </header>
 
-
   <main>
-
-    <!-- =========================
-         HERO
-    ========================== -->
-
+    <!-- 01 ACCUEIL / HERO -->
     <section id="accueil" class="hero section-snap">
-
       <div class="hero-strokes" aria-hidden="true">
-      
-        <span class="brush-stroke stroke-blue stroke-1"></span>
-        <span class="brush-stroke stroke-blue stroke-2"></span>
-      
-        <span class="brush-stroke stroke-green stroke-1"></span>
-        <span class="brush-stroke stroke-green stroke-2"></span>
-      
-        <span class="brush-stroke stroke-orange stroke-1"></span>
-        <span class="brush-stroke stroke-orange stroke-2"></span>
-      
-        <span class="brush-stroke stroke-purple stroke-1"></span>
-        <span class="brush-stroke stroke-purple stroke-2"></span>
-      
-        <span class="pencil-line pencil-1"></span>
-        <span class="pencil-line pencil-2"></span>
-        <span class="pencil-line pencil-3"></span>
-      
+        <span class="brush-stroke stroke-blue color-mark"></span>
+        <span class="brush-stroke stroke-green color-mark"></span>
+        <span class="brush-stroke stroke-orange color-mark"></span>
+        <span class="brush-stroke stroke-purple color-mark"></span>
+        <span class="pencil-line line-black"></span>
       </div>
 
-      <div class="container hero-content">
-
-        <div class="hero-tag">
-          DEPUIS 2024 · RENNES-SUR-LOUE
-        </div>
-
-        <h1>
-          Rennes<br>
-          <span>en Voix</span>
-        </h1>
-
-        <p class="hero-subtitle">
-          Le festival qui fait résonner l’Orangerie
-        </p>
-
-        <p class="hero-description">
-          Chaque été, Rennes en Voix fait vibrer l’Orangerie du château
-          de Rennes-sur-Loue avec une programmation de concerts dédiée
-          à la richesse et à la diversité de la musique vocale.
-        </p>
-
-        <div class="hero-actions">
-
-          <a href="#programme" class="btn btn-primary">
-            Découvrir le festival
-            <span>↗</span>
-          </a>
-
-          <a href="#contact" class="hero-link">
-            Être informé de la prochaine édition →
-          </a>
-
-        </div>
-
-      </div>
-
-      <div class="hero-note">
-        <span>VOIX</span>
-        <span>PATRIMOINE</span>
-        <span>PARTAGE</span>
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         LE FESTIVAL
-    ========================== -->
-
-    <section id="festival" class="about section-snap">
-
-      <div class="container about-grid">
-
-        <div class="section-label">
-          <span>01</span>
-          Le festival
-        </div>
-
-        <div class="about-content">
-
-          <h2>
-            Faire résonner<br>
-            <em>un lieu unique.</em>
-          </h2>
-
-          <p class="lead">
-            Depuis son lancement en <strong>2024</strong>, Rennes en Voix
-            s’installe chaque été dans l’écrin exceptionnel de l’Orangerie
-            du château de Rennes-sur-Loue.
-          </p>
-
-          <p class="lead">
-            Le festival est dédié à la musique vocale, amateur comme
-            professionnelle, et propose une programmation de concerts
-            variés qui célèbre des voix et des répertoires de tous horizons.
-          </p>
-
-          <div class="about-stats">
-
-            <div>
-              <strong>2024</strong>
-              <span>Première édition</span>
-            </div>
-
-            <div>
-              <strong>ÉTÉ</strong>
-              <span>Rendez-vous annuel</span>
-            </div>
-
-            <div>
-              <strong>∞</strong>
-              <span>Voix à découvrir</span>
-            </div>
-
+      <div class="container hero-grid">
+        <div class="hero-type">
+          <div class="eyebrow">
+            <span class="eyebrow-mark color-mark"></span> FESTIVAL · RENNES-SUR-LOUE
           </div>
-
+          <h1>RENNES <span>EN</span><br><strong>VOIX</strong></h1>
+          <p class="hero-kicker">Festival a cappella · pop · rock · jazz</p>
+          <p class="hero-text">Chaque été, Rennes en Voix réunit des ensembles vocaux amateurs et professionnels à l'Orangerie du château de Rennes-sur-Loue.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#programme">Découvrir le programme <span>↗</span></a>
+            <a class="text-link" href="#editions">Voir les éditions passées <span>→</span></a>
+          </div>
         </div>
 
-        <div class="about-art" aria-hidden="true">
-          <div class="art-circle"></div>
-          <div class="art-line"></div>
-          <span class="art-word">VOX</span>
+        <div class="hero-signature" aria-hidden="true">
+          <div class="stamp">VOIX!</div>
+          <div class="hero-note-lines">
+            <span class="color-mark">POLYPHONIES</span>
+            <span class="color-mark">RENCONTRES</span>
+            <span class="color-mark">PATRIMOINE</span>
+          </div>
         </div>
-
       </div>
 
+      <div class="hero-bottom">
+        <span>VOIX · PARTAGE · DÉCOUVERTE</span>
+        <span>↓ SCROLL</span>
+      </div>
     </section>
 
-
-    <!-- =========================
-         L'ORANGERIE
-    ========================== -->
-
-    <section class="program section-snap">
-
+    <!-- 02 PROGRAMME -->
+    <section id="programme" class="section soft-section section-snap">
       <div class="container">
-
         <div class="section-heading">
-
-          <div class="section-label">
+          <div class="section-index">
             <span>02</span>
-            Le lieu
+            <p>PROGRAMME</p>
           </div>
-
-          <h2>
-            L’Orangerie<br>
-            <em>du château.</em>
-          </h2>
-
-          <p>
-            Un cadre chargé d’histoire et de charme pour des soirées
-            musicales hors du commun.
-          </p>
-
+          <h2>À écouter<br><em>cette année.</em></h2>
         </div>
 
-
-        <div class="events">
-
-          <article class="event-card event-orange">
-
-            <div class="event-number">01</div>
-
-            <div class="event-info">
-
-              <span class="event-date">
-                RENNES-SUR-LOUE
-              </span>
-
-              <h3>
-                Un écrin pour les voix
-              </h3>
-
-              <p>
-                Chaque été, l’Orangerie du château accueille les concerts
-                de Rennes en Voix et devient le temps du festival un lieu
-                de rencontre entre artistes et public.
-              </p>
-
-              <span class="event-place">
-                Orangerie du château de Rennes-sur-Loue
-              </span>
-
-            </div>
-
-            <span class="event-arrow">↗</span>
-
-          </article>
-
-
-          <article class="event-card event-blue">
-
-            <div class="event-number">02</div>
-
-            <div class="event-info">
-
-              <span class="event-date">
-                PATRIMOINE & CRÉATION
-              </span>
-
-              <h3>
-                Entre histoire et modernité
-              </h3>
-
-              <p>
-                En choisissant ce lieu patrimonial, le festival crée
-                un dialogue entre un patrimoine exceptionnel et des
-                expressions musicales contemporaines.
-              </p>
-
-              <span class="event-place">
-                Patrimoine · Musique · Création
-              </span>
-
-            </div>
-
-            <span class="event-arrow">↗</span>
-
-          </article>
-
-
-          <article class="event-card event-green">
-
-            <div class="event-number">03</div>
-
-            <div class="event-info">
-
-              <span class="event-date">
-                CONVIVIALITÉ
-              </span>
-
-              <h3>
-                Une soirée à partager
-              </h3>
-
-              <p>
-                Une petite restauration est proposée sur place afin
-                de permettre au public de profiter pleinement de la
-                soirée dans une ambiance chaleureuse et détendue.
-              </p>
-
-              <span class="event-place">
-                Concerts · Rencontres · Petite restauration
-              </span>
-
-            </div>
-
-            <span class="event-arrow">↗</span>
-
-          </article>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         PROGRAMMATION
-    ========================== -->
-
-    <section id="programme" class="about section-snap">
-
-      <div class="container about-grid">
-
-        <div class="section-label">
-          <span>03</span>
-          Programmation
-        </div>
-
-        <div class="about-content">
-
-          <h2>
-            Des concerts<br>
-            <em>pour toutes les oreilles.</em>
-          </h2>
-
-          <p class="lead">
-            Rennes en Voix met en avant des pratiques vocales non dirigées,
-            offrant une alternative aux chorales traditionnelles.
-          </p>
-
-          <p class="lead">
-            Amateurs passionnés ou interprètes confirmés, les artistes
-            invités proposent des performances aux répertoires variés
-            et font découvrir au public la richesse des expressions vocales.
-          </p>
-
-          <p class="lead">
-            La programmation de la prochaine édition sera annoncée
-            prochainement.
-          </p>
-
-          <a href="#contact" class="btn btn-primary">
-            Recevoir les informations
-            <span>→</span>
-          </a>
-
-        </div>
-
-        <div class="about-art" aria-hidden="true">
-          <div class="art-circle"></div>
-          <div class="art-line"></div>
-          <span class="art-word">LIVE</span>
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         VALEURS
-    ========================== -->
-
-    <section class="program section-snap">
-
-      <div class="container">
-
-        <div class="section-heading">
-
-          <div class="section-label">
-            <span>04</span>
-            L’esprit du festival
-          </div>
-
-          <h2>
-            Une aventure<br>
-            <em>locale et collective.</em>
-          </h2>
-
-          <p>
-            Un festival pensé pour rassembler, faire découvrir
-            et faire vivre le territoire.
-          </p>
-
-        </div>
-
-
-        <div class="events">
-
-          <article class="event-card event-purple">
-
-            <div class="event-number">01</div>
-
-            <div class="event-info">
-
-              <span class="event-date">
-                ACCESSIBLE À TOUS
-              </span>
-
-              <h3>
-                La musique comme lien
-              </h3>
-
-              <p>
-                Le festival s’adresse à tous les publics, quels que soient
-                l’âge ou les goûts musicaux. Habitants de la région et
-                visiteurs de passage sont invités à partager ces moments.
-              </p>
-
-              <span class="event-place">
-                Tous les publics · Toutes les générations
-              </span>
-
-            </div>
-
-            <span class="event-arrow">↗</span>
-
-          </article>
-
-
-          <article class="event-card event-green">
-
-            <div class="event-number">02</div>
-
-            <div class="event-info">
-
-              <span class="event-date">
-                ANCRAGE LOCAL
-              </span>
-
-              <h3>
-                Faire ensemble
-              </h3>
-
-              <p>
-                Rennes en Voix s’appuie sur des partenariats locaux,
-                notamment pour la récupération et le prêt de matériel,
-                afin de construire un événement de qualité au cœur
-                du territoire.
-              </p>
-
-              <span class="event-place">
-                Partenaires · Bénévoles · Territoire
-              </span>
-
-            </div>
-
-            <span class="event-arrow">↗</span>
-
-          </article>
-
-
-          <article class="event-card event-orange">
-
-            <div class="event-number">03</div>
-
-            <div class="event-info">
-
-              <span class="event-date">
-                PARTAGE & DÉCOUVERTE
-              </span>
-
-              <h3>
-                Célébrer la musique
-              </h3>
-
-              <p>
-                Rennes en Voix souhaite faire découvrir la richesse
-                des expressions vocales et créer des rencontres entre
-                artistes, habitants et visiteurs.
-              </p>
-
-              <span class="event-place">
-                Une fête de la musique vocale
-              </span>
-
-            </div>
-
-            <span class="event-arrow">↗</span>
-
-          </article>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         GALERIE
-    ========================== -->
-
-    <section id="galerie" class="gallery section-snap">
-
-      <div class="container">
-
-        <div class="section-heading gallery-heading">
-
+        <div class="program-intro">
           <div>
+            <span class="mini-label">SÉLECTION 2026</span>
+            <h3>Une immersion polyphonique</h3>
+          </div>
+          <p>Les ensembles invités et les informations de la prochaine édition prennent place ici. Le site donne envie d'écouter avant même d'entrer dans le détail.</p>
+        </div>
 
-            <div class="section-label">
-              <span>05</span>
-              Galerie
+        <div class="program-placeholder">
+          <article class="program-card">
+            <span class="program-card-number">01</span>
+            <div>
+              <p class="eyebrow">ENSEMBLE / CONCERT</p>
+              <h3>Programmation à venir</h3>
+              <p>Nom de l'ensemble, univers, horaire et informations pratiques.</p>
             </div>
+            <span class="status-dot"></span>
+          </article>
 
-            <h2>
-              Rennes en Voix<br>
-              <em>en images.</em>
-            </h2>
+          <article class="program-card">
+            <span class="program-card-number">02</span>
+            <div>
+              <p class="eyebrow">ENSEMBLE / CONCERT</p>
+              <h3>Programmation à venir</h3>
+              <p>Une seconde proposition, présentée avec la même lecture directe.</p>
+            </div>
+            <span class="status-dot"></span>
+          </article>
 
-          </div>
-
-          <p>
-            Concerts, voix, rencontres et patrimoine :
-            découvrez l’univers du festival.
-          </p>
-
+          <article class="program-card">
+            <span class="program-card-number">03</span>
+            <div>
+              <p class="eyebrow">ENSEMBLE / CONCERT</p>
+              <h3>Programmation à venir</h3>
+              <p>Les détails complets apparaîtront dès l'annonce officielle.</p>
+            </div>
+            <span class="status-dot"></span>
+          </article>
         </div>
-
-
-        <div class="gallery-grid">
-
-          <div class="gallery-item gallery-1">
-            <div class="abstract abstract-blue"></div>
-            <span>Les voix sur scène</span>
-          </div>
-
-          <div class="gallery-item gallery-2">
-            <div class="abstract abstract-orange"></div>
-            <span>Les concerts</span>
-          </div>
-
-          <div class="gallery-item gallery-3">
-            <div class="abstract abstract-purple"></div>
-            <span>Les artistes</span>
-          </div>
-
-          <div class="gallery-item gallery-4">
-            <div class="abstract abstract-green"></div>
-            <span>L’Orangerie</span>
-          </div>
-
-          <div class="gallery-item gallery-5">
-            <div class="abstract abstract-mix"></div>
-            <span>Moments partagés</span>
-          </div>
-
-          <div class="gallery-item gallery-6">
-            <div class="abstract abstract-blue-purple"></div>
-            <span>La musique vocale</span>
-          </div>
-
-          <div class="gallery-item gallery-7">
-            <div class="abstract abstract-rainbow"></div>
-            <span>Les différentes voix</span>
-          </div>
-
-          <div class="gallery-item gallery-8">
-            <div class="abstract abstract-green-orange"></div>
-            <span>Rennes-sur-Loue</span>
-          </div>
-
-        </div>
-
       </div>
-
     </section>
 
-
-    <!-- =========================
-         LES REGNAUX
-    ========================== -->
-
-    <section id="regnaux" class="about section-snap">
-
-      <div class="container about-grid">
-
-        <div class="section-label">
-          <span>06</span>
-          Les Regnaux
-        </div>
-
-        <div class="about-content">
-
-          <h2>
-            Une association<br>
-            <em>au cœur du village.</em>
-          </h2>
-
-          <p class="lead">
-            <strong>Les Regnaux</strong> est le comité des fêtes de
-            Rennes-sur-Loue. L’association s’engage pour faire vivre
-            la vie culturelle et festive du village et de ses environs.
-          </p>
-
-          <p class="lead">
-            Avec Rennes en Voix, Les Regnaux souhaitent promouvoir
-            la musique et les arts tout en valorisant le patrimoine
-            de la région.
-          </p>
-
-          <p class="lead">
-            Le festival s’inscrit dans un ensemble d’actions qui font
-            vivre l’association tout au long de l’année.
-          </p>
-
-        </div>
-
-        <div class="about-art" aria-hidden="true">
-          <div class="art-circle"></div>
-          <div class="art-line"></div>
-          <span class="art-word">LOCAL</span>
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         LES AUTRES ACTIONS
-    ========================== -->
-
-    <section class="program section-snap">
-
+    <!-- 03 ÉDITIONS PASSÉES -->
+    <section id="editions" class="section section-snap">
       <div class="container">
-
-        <div class="section-heading">
-
-          <div class="section-label">
-            <span>07</span>
-            La vie des Regnaux
+        <div class="section-heading split-heading">
+          <div>
+            <div class="section-index inline-index">
+              <span>03</span>
+              <p>ÉDITIONS PASSÉES</p>
+            </div>
+            <h2>Une mémoire<br><em>en images.</em></h2>
           </div>
-
-          <h2>
-            Bien plus<br>
-            <em>qu’un festival.</em>
-          </h2>
-
-          <p>
-            Rennes en Voix fait partie des initiatives qui permettent
-            aux Regnaux de faire vivre les traditions et les rendez-vous
-            conviviaux de Rennes-sur-Loue.
-          </p>
-
+          <p class="heading-intro">Chaque édition garde son propre visage : une programmation, une ambiance, des voix et une mémoire dédiée.</p>
         </div>
 
-
-        <div class="events">
-
-          <article class="event-card event-blue">
-
-            <div class="event-number">01</div>
-
-            <div class="event-info">
-
-              <span class="event-date">
-                POUR LES ENFANTS
-              </span>
-
-              <h3>
-                Les cadeaux de Noël
-              </h3>
-
-              <p>
-                Les Regnaux participent à la vie du village en organisant
-                notamment les cadeaux de Noël destinés aux enfants
-                de Rennes-sur-Loue.
-              </p>
-
-              <span class="event-place">
-                Vie du village
-              </span>
-
+        <div class="edition-grid">
+          <article class="edition-card">
+            <span>2025</span>
+            <div>
+              <p class="eyebrow">ÉDITION PASSÉE</p>
+              <strong>Retour sur 2025</strong>
+              <p>Les ensembles invités, les moments forts et les images de l'édition.</p>
             </div>
-
-            <span class="event-arrow">↗</span>
-
+            <a href="#" class="text-link">En images ↗</a>
+            <div class="mini-gallery">
+              <span class="memory color-mark"></span>
+              <span class="memory color-mark"></span>
+              <span class="memory color-mark"></span>
+            </div>
           </article>
 
-
-          <article class="event-card event-orange">
-
-            <div class="event-number">02</div>
-
-            <div class="event-info">
-
-              <span class="event-date">
-                AU PRINTEMPS
-              </span>
-
-              <h3>
-                La chasse aux œufs
-              </h3>
-
-              <p>
-                Une autre occasion de réunir les familles et de faire
-                vivre les traditions locales autour d’un rendez-vous
-                convivial pour les enfants.
-              </p>
-
-              <span class="event-place">
-                Pâques · Rennes-sur-Loue
-              </span>
-
+          <article class="edition-card">
+            <span>2024</span>
+            <div>
+              <p class="eyebrow">ÉDITION PASSÉE</p>
+              <strong>Retour sur 2024</strong>
+              <p>Une trace vivante du programme et des rencontres de l'année.</p>
             </div>
-
-            <span class="event-arrow">↗</span>
-
+            <a href="#" class="text-link">En images ↗</a>
+            <div class="mini-gallery">
+              <span class="memory color-mark"></span>
+              <span class="memory color-mark"></span>
+              <span class="memory color-mark"></span>
+            </div>
           </article>
 
-
-          <article class="event-card event-green">
-
-            <div class="event-number">03</div>
-
-            <div class="event-info">
-
-              <span class="event-date">
-                TOUT AU LONG DE L’ANNÉE
-              </span>
-
-              <h3>
-                Des moments entre villageois
-              </h3>
-
-              <p>
-                Repas et rendez-vous conviviaux permettent également
-                aux habitants de se retrouver et de renforcer les liens
-                qui font vivre la commune.
-              </p>
-
-              <span class="event-place">
-                Rencontre · Convivialité · Village
-              </span>
-
+          <article class="edition-card edition-future">
+            <span>2026</span>
+            <div>
+              <p class="eyebrow">ÉDITION EN COURS</p>
+              <strong>La prochaine voix</strong>
+              <p>Le programme sera ajouté ici, puis l'édition deviendra à son tour une mémoire en images.</p>
             </div>
-
-            <span class="event-arrow">↗</span>
-
+            <a href="#programme" class="text-link">Voir le programme ↗</a>
+            <div class="mini-gallery">
+              <span class="memory color-mark"></span>
+              <span class="memory color-mark"></span>
+              <span class="memory color-mark"></span>
+            </div>
           </article>
-
         </div>
-
       </div>
-
     </section>
 
-
-    <!-- =========================
-         INFORMATIONS PRATIQUES
-    ========================== -->
-
-    <section class="about section-snap">
-
-      <div class="container about-grid">
-
-        <div class="section-label">
-          <span>08</span>
-          Infos pratiques
+    <!-- 04 L'EXPÉRIENCE & L'ASSOCIATION -->
+    <section id="experience" class="section soft-section section-snap">
+      <div class="container two-column">
+        <div class="section-index">
+          <span>04</span>
+          <p>L'EXPÉRIENCE</p>
         </div>
 
-        <div class="about-content">
+        <div class="section-body">
+          <h2>Un festival<br><em>fait ensemble.</em></h2>
+          <p class="lead">Ce que l'on vient écouter, ce que l'on vit sur place et celles et ceux qui rendent le projet possible.</p>
 
-          <h2>
-            Rendez-vous<br>
-            <em>à Rennes-sur-Loue.</em>
-          </h2>
+          <div class="experience-list">
+            <article class="feature-card color-blue">
+              <span class="feature-num">01</span>
+              <div>
+                <p class="eyebrow">LES VOIX</p>
+                <h3>Des ensembles qui sortent du cadre</h3>
+                <p>Polyphonies, arrangements, précision et personnalités vocales : la programmation fait entendre des formes a cappella multiples.</p>
+              </div>
+              <span class="feature-arrow">↗</span>
+            </article>
 
-          <div class="about-stats">
+            <article class="feature-card color-orange">
+              <span class="feature-num">02</span>
+              <div>
+                <p class="eyebrow">LE LIEU & LE MOMENT</p>
+                <h3>L'Orangerie comme point de rencontre</h3>
+                <p>Un lieu singulier, une petite restauration et des temps d'échange prolongent les concerts.</p>
+              </div>
+              <span class="feature-arrow">↗</span>
+            </article>
 
-            <div>
-              <strong>Où ?</strong>
-              <span>Orangerie du château de Rennes-sur-Loue</span>
-            </div>
+            <article class="feature-card color-green">
+              <span class="feature-num">03</span>
+              <div>
+                <p class="eyebrow">L'ASSOCIATION</p>
+                <h3>Les Regnaux</h3>
+                <p>Le comité des fêtes de Rennes-sur-Loue porte Rennes en Voix et l'inscrit dans la vie du village.</p>
+              </div>
+              <span class="feature-arrow">↗</span>
+            </article>
 
-            <div>
-              <strong>Quand ?</strong>
-              <span>Chaque été · Dates à préciser</span>
-            </div>
-
-            <div>
-              <strong>Quoi ?</strong>
-              <span>Concerts variés & petite restauration</span>
-            </div>
-
+            <article class="feature-card color-purple">
+              <span class="feature-num">04</span>
+              <div>
+                <p class="eyebrow">LE COLLECTIF</p>
+                <h3>Une cinquantaine de bénévoles</h3>
+                <p>Préparer, accueillir, installer, servir, accompagner : le festival existe grâce à une énergie collective et locale.</p>
+              </div>
+              <span class="feature-arrow">↗</span>
+            </article>
           </div>
-
-          <p class="lead">
-            Les modalités d’accès — entrée libre ou réservation —
-            peuvent varier selon les éditions. Les informations
-            détaillées seront communiquées avec la programmation.
-          </p>
-
         </div>
 
-        <div class="about-art" aria-hidden="true">
-          <div class="art-circle"></div>
-          <div class="art-line"></div>
-          <span class="art-word">2026</span>
+        <div class="section-art" aria-hidden="true">
+          <span class="art-stroke art-blue"></span>
+          <span class="art-stroke art-orange"></span>
+          <span class="art-stroke art-green"></span>
+          <span class="art-letter">RV</span>
         </div>
-
       </div>
-
     </section>
 
-
-    <!-- =========================
-         CONTACT
-    ========================== -->
-
-    <section id="contact" class="contact section-snap">
-
-      <div class="contact-decoration"></div>
-
-      <div class="container contact-grid">
-
-        <div class="contact-intro">
-
-          <div class="section-label">
-            <span>09</span>
-            Contact
-          </div>
-
-          <h2>
-            Parlons<br>
-            <em>musique.</em>
-          </h2>
-
-          <p>
-            Vous souhaitez en savoir plus sur Rennes en Voix,
-            la prochaine édition, la programmation ou les possibilités
-            de partenariat avec le festival ?
-          </p>
-
-          <div class="contact-details">
-
-            <a href="mailto:contact@rennesenvoix.fr">
-              contact@rennesenvoix.fr
-            </a>
-
-            <div class="social-links">
-
-              <a
-                href="#"
-                aria-label="Facebook de Rennes en Voix"
-              >
-                Facebook ↗
-              </a>
-
-              <a
-                href="#"
-                aria-label="Instagram de Rennes en Voix"
-              >
-                Instagram ↗
-              </a>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <form class="contact-form" id="contactForm">
-
-          <div class="form-field">
-
-            <label for="name">
-              Nom
-            </label>
-
-            <input
-              type="text"
-              id="name"
-              name="name"
-              placeholder="Votre nom"
-              autocomplete="name"
-              required
-            >
-
-          </div>
-
-
-          <div class="form-field">
-
-            <label for="email">
-              Email
-            </label>
-
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="vous@exemple.fr"
-              autocomplete="email"
-              required
-            >
-
-          </div>
-
-
-          <div class="form-field">
-
-            <label for="message">
-              Message
-            </label>
-
-            <textarea
-              id="message"
-              name="message"
-              rows="5"
-              placeholder="Votre message..."
-              required
-            ></textarea>
-
-          </div>
-
-
-          <button type="submit" class="btn btn-submit">
-            Envoyer
-            <span>→</span>
-          </button>
-
-          <p
-            class="form-message"
-            id="formMessage"
-            aria-live="polite"
-          ></p>
-
-        </form>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         PARTENAIRES
-    ========================== -->
-
-    <section id="partenaires" class="partners">
-
+    <!-- 05 PARTENAIRES -->
+    <section id="partenaires" class="section partners-section section-snap">
       <div class="container partners-inner">
-
-        <span>
-          UN FESTIVAL ANCRÉ DANS SON TERRITOIRE
-        </span>
-
-        <div class="partner-list">
-
-          <strong>
-            LES REGNAUX
-          </strong>
-
-          <strong>
-            RENNES-SUR-LOUE
-          </strong>
-
-          <strong>
-            PARTENAIRES LOCAUX
-          </strong>
-
-          <strong>
-            BÉNÉVOLES
-          </strong>
-
+        <div>
+          <div class="section-index inline-index">
+            <span>05</span>
+            <p>PARTENAIRES</p>
+          </div>
+          <h2>Ils font partie<br><em>de l'aventure.</em></h2>
         </div>
-
+        <div class="partner-list">
+          <span class="color-mark">Partenaires locaux</span>
+          <span class="color-mark">Les Regnaux</span>
+          <span class="color-mark">Rennes-sur-Loue</span>
+          <span class="color-mark">Bénévoles</span>
+          <span class="color-mark">Soutiens techniques</span>
+        </div>
       </div>
-
     </section>
 
+    <!-- 06 CONTACT & INFOS PRATIQUES -->
+    <section id="contact" class="section contact-section section-snap">
+      <div class="container contact-grid">
+        <div class="contact-copy">
+          <div class="section-index inline-index">
+            <span>06</span>
+            <p>CONTACT & INFOS</p>
+          </div>
+          <h2>On se retrouve<br><em>à Rennes-sur-Loue.</em></h2>
+          <p class="body-copy">Une question, une proposition ou simplement envie de suivre l'aventure ?</p>
+          <a class="contact-email" href="mailto:contact@rennesenvoix.fr">contact@rennesenvoix.fr</a>
+          
+          <div class="socials">
+            <a href="#" class="text-link">Instagram ↗</a>
+            <a href="#" class="text-link">Facebook ↗</a>
+          </div>
+        </div>
+
+        <form class="contact-form" id="contact-form" action="#" method="post">
+          <p class="eyebrow">INFOS PRATIQUES & MESSAGE</p>
+          <label>
+            Votre nom
+            <input type="text" name="name" required placeholder="Ex. Camille Dupont">
+          </label>
+          <label>
+            Votre email
+            <input type="email" name="email" required placeholder="camille@exemple.fr">
+          </label>
+          <label>
+            Votre message
+            <textarea name="message" rows="4" required placeholder="Bonjour, je souhaite réserver / poser une question..."></textarea>
+          </label>
+          <button type="submit" class="btn btn-submit">Envoyer le message <span>→</span></button>
+          <div class="form-message" id="form-message" aria-live="polite"></div>
+        </form>
+      </div>
+    </section>
   </main>
 
-
-  <!-- =========================
-       FOOTER
-  ========================== -->
-
+  <!-- FOOTER -->
   <footer class="site-footer">
-
-    <div class="container footer-top">
-
-      <a href="#accueil" class="logo footer-logo">
-
-        <span>Rennes</span>
-        <strong>en Voix</strong>
-
-      </a>
-
-
-      <div class="footer-links">
-
-        <a href="#festival">
-          Le festival
-        </a>
-
-        <a href="#programme">
-          Programme
-        </a>
-
-        <a href="#galerie">
-          Galerie
-        </a>
-
-        <a href="#regnaux">
-          Les Regnaux
-        </a>
-
-        <a href="#contact">
-          Contact
-        </a>
-
+    <div class="container">
+      <div class="footer-top">
+        <div class="logo">
+          <span>RENNES</span>
+          <strong>EN VOIX</strong>
+        </div>
+        <div class="footer-links">
+          <a href="#programme">Programme</a>
+          <a href="#editions">Éditions</a>
+          <a href="#experience">L'expérience</a>
+          <a href="#partenaires">Partenaires</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <a href="#accueil" class="text-link back-top">Haut de page ↑</a>
       </div>
-
-
-      <a href="#accueil" class="back-top">
-        Retour en haut ↑
-      </a>
-
+      <div class="footer-bottom">
+        <span>© 2026 Rennes en Voix · Organisé par Les Regnaux</span>
+        <span>Festival a cappella à Rennes-sur-Loue</span>
+      </div>
     </div>
-
-
-    <div class="container footer-bottom">
-
-      <span>
-        © 2026 Rennes en Voix. Tous droits réservés.
-      </span>
-
-      <span>
-        Organisé par Les Regnaux · Comité des fêtes de Rennes-sur-Loue
-      </span>
-
-    </div>
-
   </footer>
 
-
   <script src="script.js"></script>
-
 </body>
 </html>

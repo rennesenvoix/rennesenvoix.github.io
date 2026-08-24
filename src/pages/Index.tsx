@@ -1,59 +1,42 @@
-import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { GalleryModal } from "@/components/GalleryModal";
-import { MapPin, CalendarDays, UtensilsCrossed, Mail, Ticket, Images } from "lucide-react";
+import { PastEditions } from "@/components/PastEditions";
+import { MapPin, CalendarDays, UtensilsCrossed, Mail, Ticket } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import brushHero from "@/assets/brush-hero.png";
+import brushHero1 from "@/assets/brush-hero1.png";
 
-const concerts = [
+const groups = [
   {
-    date: "Samedi",
-    time: "19h",
-    place: "Orangerie du château",
-    title: "Soirée d'ouverture",
-    description: "Polyphonies et chants du monde pour lancer le festival en beauté.",
-    color: "bg-festival-blue",
+    id: "groupe-1",
+    name: "Ensemble 1",
+    style: "Polyphonies du monde",
+    description: "Un répertoire de chants traditionnels revisités en harmonie a cappella.",
+    photo: "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=1200&auto=format&fit=crop",
+    alt: "Chanteurs réunis sur scène pendant un concert",
+    tabColor: "data-[state=active]:bg-festival-blue data-[state=active]:text-white",
   },
   {
-    date: "Samedi 15 août",
-    time: "20h",
-    place: "Orangerie du château",
-    title: "Concert de chorales amateures",
-    description: "Rencontre de groupes vocaux de la région, dans un esprit libre et non dirigé.",
-    color: "bg-festival-red",
+    id: "groupe-2",
+    name: "Ensemble 2",
+    style: "Voix contemporaines",
+    description: "Des voix qui se répondent dans un programme vivant, libre et généreux.",
+    photo: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=1200&auto=format&fit=crop",
+    alt: "Chanteuse interprétant un morceau devant un public",
+    tabColor: "data-[state=active]:bg-festival-red data-[state=active]:text-white",
   },
   {
-    date: "Samedi 15 août",
-    time: "22h",
-    place: "Parc du château",
-    title: "Veillée vocale",
-    description: "Chants partagés à la nuit tombée, ouverts à toutes et tous.",
-    color: "bg-festival-purple",
+    id: "groupe-3",
+    name: "Ensemble 3",
+    style: "Création vocale",
+    description: "Une proposition professionnelle pour clôturer le festival avec intensité.",
+    photo: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=1200&auto=format&fit=crop",
+    alt: "Groupe de musique se produisant en plein air",
+    tabColor: "data-[state=active]:bg-festival-purple data-[state=active]:text-white",
   },
-  {
-    date: "Dimanche 16 août",
-    time: "17h",
-    place: "Orangerie du château",
-    title: "Soirée vocale professionnelle",
-    description: "Un ensemble invité clôture l'édition 2026 avec un répertoire exigeant.",
-    color: "bg-festival-green",
-  },
-];
-
-const editionsPasses = [
-  { year: "2025", title: "Édition 2025", count: 12, color: "border-festival-blue" },
-  { year: "2024", title: "Édition 2024", count: 12, color: "border-festival-orange" },
 ];
 
 const Index = () => {
-  const [selectedYear, setSelectedYear] = useState<string | null>(null);
-  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
-
-  const openGallery = (year: string) => {
-    setSelectedYear(year);
-    setIsGalleryOpen(true);
-  };
-
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Header />
@@ -126,50 +109,46 @@ const Index = () => {
             </div>
           </div>
 
-          <ul className="mt-12 grid gap-6 sm:grid-cols-2">
-            {concerts.map((concert) => (
-              <li
-                key={concert.title}
-                className={`${concert.color} rounded-2xl p-7 text-white transition-transform duration-300 hover:-translate-y-1.5`}
-              >
-                <p className="text-xs font-semibold uppercase tracking-widest text-white/90">
-                  {concert.date} · {concert.time} · {concert.place}
-                </p>
-                <h3 className="mt-4 font-display text-2xl font-bold text-white">{concert.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-white/90">{concert.description}</p>
-              </li>
+          <Tabs defaultValue={groups[0].id} className="mt-12">
+            <TabsList className="grid h-auto w-full grid-cols-3 gap-1 rounded-xl bg-muted p-1">
+              {groups.map((group) => (
+                <TabsTrigger key={group.id} value={group.id} className={`min-h-12 px-2 text-xs sm:text-sm ${group.tabColor}`}>
+                  {group.name}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            {groups.map((group) => (
+              <TabsContent key={group.id} value={group.id} className="mt-6">
+                <article className="grid overflow-hidden rounded-2xl bg-festival-blue text-white md:grid-cols-2">
+                  <img src={group.photo} alt={group.alt} loading="lazy" className="h-64 w-full object-cover md:h-full" />
+                  <div className="flex flex-col justify-center p-7 md:p-10">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-white/80">Samedi 03 juillet 2027 · Orangerie du château</p>
+                    <h3 className="mt-4 font-display text-3xl font-bold">{group.name}</h3>
+                    <p className="mt-2 text-lg font-semibold text-white/90">{group.style}</p>
+                    <p className="mt-4 leading-relaxed text-white/85">{group.description}</p>
+                  </div>
+                </article>
+              </TabsContent>
             ))}
-          </ul>
+          </Tabs>
         </section>
 
         {/* ÉDITIONS PASSÉES / GALERIE PHOTO */}
-        <section id="editions" className="container-wide py-20 md:py-28">
-          <span className="mb-8 block h-2 w-24 rounded-full bg-festival-red" aria-hidden="true" />
-          <h2 className="text-headline">Éditions passées</h2>
-          <p className="mt-4 max-w-2xl text-base md:text-lg text-foreground/80">
-            Retrouvez les souvenirs et la galerie photo des éditions précédentes.
-          </p>
+        <section id="editions" className="relative overflow-hidden">
+          <img
+            src={brushHero1}
+            alt=""
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-15"
+          />
+          <div className="container-wide relative py-20 md:py-28">
+            <span className="mb-8 block h-2 w-24 rounded-full bg-festival-red" aria-hidden="true" />
+            <h2 className="text-headline">Éditions passées</h2>
+            <p className="mt-4 max-w-2xl text-base md:text-lg text-foreground/80">
+              Retrouvez les souvenirs et la galerie photo des éditions précédentes.
+            </p>
 
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {editionsPasses.map((item) => (
-              <div
-                key={item.year}
-                className={`group relative overflow-hidden rounded-2xl border-2 ${item.color} bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md`}
-              >
-                <h3 className="font-display text-3xl font-bold">{item.year}</h3>
-                <p className="mt-2 text-sm text-foreground/70">
-                  Revivez les moments forts du festival en photos.
-                </p>
-                <button
-                  onClick={() => openGallery(item.year)}
-                  type="button"
-                  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-festival-orange group-hover:underline"
-                >
-                  <Images size={18} />
-                  Voir les photos ↗
-                </button>
-              </div>
-            ))}
+            <PastEditions />
           </div>
         </section>
 
@@ -227,8 +206,8 @@ const Index = () => {
 
             <div className="overflow-hidden rounded-2xl border border-border">
               <iframe
-                title="Carte du château de Rennes-sur-Loue"
-                src="https://www.openstreetmap.org/export/embed.html?bbox=5.8%2C46.98%2C5.88%2C47.03&layer=mapnik"
+                title="Carte Google Maps de l'orangerie du château de Rennes-sur-Loue"
+                src="https://www.google.com/maps?q=47.013333%2C5.853583&z=17&output=embed"
                 loading="lazy"
                 className="h-72 w-full md:h-full"
               />
@@ -239,12 +218,6 @@ const Index = () => {
 
       <Footer />
 
-      {/* GALERIE MODALE */}
-      <GalleryModal
-        isOpen={isGalleryOpen}
-        onClose={() => setIsGalleryOpen(false)}
-        year={selectedYear}
-      />
     </div>
   );
 };

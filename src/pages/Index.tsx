@@ -1,8 +1,10 @@
+import { useEffect, useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { PastEditions } from "@/components/PastEditions";
 import { MapPin, CalendarDays, UtensilsCrossed, Mail, Ticket } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel";
 import groupeColore from "@/assets/groupe-coloré.png";
 import brushHero1 from "@/assets/brush-hero1.png";
 
@@ -36,7 +38,183 @@ const groups = [
   },
 ];
 
+const festivalImages = [
+  {
+    src: "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=1200&auto=format&fit=crop",
+    alt: "Ensemble vocal réuni sur scène",
+    caption: "Les voix réunies",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=1200&auto=format&fit=crop",
+    alt: "Artiste chantant devant le public",
+    caption: "Chanter ensemble",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=1200&auto=format&fit=crop",
+    alt: "Concert en plein air au festival",
+    caption: "La musique au grand air",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200&auto=format&fit=crop",
+    alt: "Public réuni devant une scène de festival",
+    caption: "Un public à l’unisson",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1501281668745-f7f66f4a8c66?w=1200&auto=format&fit=crop",
+    alt: "Micro sur scène pendant un concert",
+    caption: "Au cœur du concert",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1521337581100-8ca9a73a5f79?w=1200&auto=format&fit=crop",
+    alt: "Musiciens et chanteurs sur une scène",
+    caption: "Les rencontres musicales",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1531058020387-3be344556be6?w=1200&auto=format&fit=crop",
+    alt: "Spectateurs profitant d’un concert",
+    caption: "Partager le moment",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1200&auto=format&fit=crop",
+    alt: "Scène éclairée pendant une représentation",
+    caption: "La scène en lumière",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=1200&auto=format&fit=crop",
+    alt: "Artiste en concert devant une foule",
+    caption: "Vibrations collectives",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=1200&auto=format&fit=crop",
+    alt: "Concert en soirée devant le public",
+    caption: "Quand la nuit chante",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1200&auto=format&fit=crop",
+    alt: "Scène de concert vue depuis le public",
+    caption: "Au rythme des voix",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1200&auto=format&fit=crop",
+    alt: "Chanteur sur scène sous les projecteurs",
+    caption: "Une voix en lumière",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=1200&auto=format&fit=crop",
+    alt: "Public attentif pendant une représentation musicale",
+    caption: "L’écoute partagée",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1200&auto=format&fit=crop",
+    alt: "Foule réunie lors d’un événement musical",
+    caption: "Une énergie commune",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=1200&auto=format&fit=crop",
+    alt: "Artiste accompagné par des lumières de scène",
+    caption: "Le spectacle vivant",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=1200&auto=format&fit=crop",
+    alt: "Scène musicale dans une ambiance chaleureuse",
+    caption: "Des souvenirs en musique",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&auto=format&fit=crop",
+    alt: "Concert extérieur devant un public",
+    caption: "Le festival en plein air",
+  },
+];
+
+const firstGalleryImages = festivalImages.slice(0, 6);
+const secondGalleryImages = festivalImages.slice(6, 12);
+const thirdGalleryImages = festivalImages.slice(12);
+
+const GalleryCarousel = ({
+  images,
+  delay,
+  title,
+  reverse = false,
+  onImageClick,
+}: {
+  images: typeof festivalImages;
+  delay: number;
+  title: string;
+  reverse?: boolean;
+  onImageClick: (image: (typeof festivalImages)[number]) => void;
+}) => {
+  const [api, setApi] = useState<CarouselApi>();
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    if (!api || isPaused) return;
+
+    const interval = window.setInterval(() => {
+      if (reverse) {
+        api.scrollPrev();
+      } else {
+        api.scrollNext();
+      }
+    }, delay);
+    return () => window.clearInterval(interval);
+  }, [api, delay, isPaused, reverse]);
+
+  return (
+    <div className="mt-10">
+      <h3 className="mb-4 font-display text-xl font-bold md:text-2xl">{title}</h3>
+      <Carousel
+        opts={{ loop: true }}
+        setApi={setApi}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onFocus={() => setIsPaused(true)}
+        onBlur={() => setIsPaused(false)}
+      >
+        <CarouselContent>
+          {images.map((image) => (
+            <CarouselItem key={image.src} className="basis-1/2 md:basis-1/3 lg:basis-1/4">
+              <figure className="group relative overflow-hidden rounded-2xl bg-card">
+                <button type="button" onClick={() => onImageClick(image)} className="block w-full cursor-zoom-in">
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    loading="lazy"
+                    className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                </button>
+                <span className="absolute bottom-2 right-2 rounded bg-black/60 px-1.5 py-0.5 text-[8px] font-medium uppercase tracking-wider text-white">
+                  © Noé Michaud - Arche production
+                </span>
+              </figure>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious className="left-3 border-black/10 bg-white/90" />
+        <CarouselNext className="right-3 border-black/10 bg-white/90" />
+      </Carousel>
+    </div>
+  );
+};
+
 const Index = () => {
+  const [selectedImage, setSelectedImage] = useState<(typeof festivalImages)[number] | null>(null);
+
+  useEffect(() => {
+    if (!selectedImage) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSelectedImage(null);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [selectedImage]);
+
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Header />
@@ -141,6 +319,19 @@ const Index = () => {
           </div>
         </section>
 
+        {/* LE FESTIVAL EN IMAGE */}
+        <section id="galerie" className="container-wide py-20 md:py-28">
+          <span className="mb-8 block h-2 w-24 rounded-full bg-festival-orange" aria-hidden="true" />
+          <h2 className="text-headline">Le festival en image</h2>
+          <p className="mt-4 max-w-2xl text-base md:text-lg text-foreground/80">
+            Quelques instants de musique, de partage et de convivialité.
+          </p>
+
+          <GalleryCarousel images={firstGalleryImages} delay={7000} title="Les voix réunies" onImageClick={setSelectedImage} />
+          <GalleryCarousel images={secondGalleryImages} delay={8000} title="Les instants du festival" reverse onImageClick={setSelectedImage} />
+          <GalleryCarousel images={thirdGalleryImages} delay={9000} title="La musique au grand air" onImageClick={setSelectedImage} />
+        </section>
+
         {/* ÉDITIONS PASSÉES / GALERIE PHOTO */}
         <section id="editions" className="relative overflow-hidden">
           <img
@@ -223,6 +414,31 @@ const Index = () => {
           </div>
         </section>
       </main>
+
+      {selectedImage && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Photo agrandie"
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm"
+          onClick={() => setSelectedImage(null)}
+        >
+          <button
+            type="button"
+            aria-label="Fermer la photo agrandie"
+            className="absolute right-5 top-5 rounded-full bg-white/90 px-3 py-2 text-xl font-bold text-black"
+            onClick={() => setSelectedImage(null)}
+          >
+            ×
+          </button>
+          <img
+            src={selectedImage.src}
+            alt={selectedImage.alt}
+            className="max-h-[90vh] max-w-[95vw] object-contain"
+            onClick={(event) => event.stopPropagation()}
+          />
+        </div>
+      )}
 
       <Footer />
 

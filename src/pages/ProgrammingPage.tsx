@@ -21,6 +21,7 @@ const yearPrograms = [
   { year: "2024", label: "Programmation 2024", date: "Première édition", groups: pastGroups },
 ];
 
+// Carte réutilisée pour les artistes à venir et les artistes des éditions passées.
 const ArtistCard = ({ group, reverse = false }: { group: (typeof groups)[number]; reverse?: boolean }) => (
   <article className={`grid overflow-hidden rounded-2xl border border-border bg-card md:grid-cols-[1fr_1.35fr] ${reverse ? "md:[&>div]:order-2 md:[&>img]:order-1" : ""}`}>
     <div className="flex flex-col justify-center p-7 md:p-10">
@@ -28,8 +29,7 @@ const ArtistCard = ({ group, reverse = false }: { group: (typeof groups)[number]
       <p className="mt-2 text-lg font-semibold text-foreground/80">{group.style}</p>
       <p className="mt-4 leading-relaxed text-foreground/75">{group.bio}</p>
       <div className="mt-6 flex flex-wrap gap-5 text-sm font-semibold uppercase tracking-wider">
-        <a href="mailto:rennesenvoix@gmail.com?subject=Réservation" className="link-underline text-festival-orange">Réserver</a>
-        <a href="https://www.instagram.com" target="_blank" rel="noreferrer noopener" className="link-underline">Instagram</a>
+        <a href="https://www.instagram.com/rennesenvoix" target="_blank" rel="noreferrer noopener" className="link-underline">Instagram</a>
         <a href="https://www.youtube.com" target="_blank" rel="noreferrer noopener" className="link-underline">YouTube</a>
         <a href="https://example.com" target="_blank" rel="noreferrer noopener" className="link-underline">Site internet</a>
       </div>
@@ -42,13 +42,16 @@ const ProgrammingPage = () => (
   <div className="min-h-screen flex flex-col bg-background text-foreground">
     <Header />
     <main className="relative flex-1 overflow-hidden pt-16 md:pt-20">
-      <img src={brushHero1} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-15" />
+      <img src={brushHero1} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25" />
       <div className="container-wide relative py-20 md:py-28">
-        <span className="mb-8 block h-2 w-24 rounded-full bg-festival-blue" aria-hidden="true" />
-        <h1 className="text-headline">Programmation</h1>
+        {/* Une section indépendante par année, avec trois artistes. */}
         <div className="mt-14 space-y-20">
           {yearPrograms.map((program, yearIndex) => (
             <section key={program.year}>
+              <span
+                className={`mb-8 block h-2 w-24 rounded-full ${["bg-festival-orange", "bg-festival-blue", "bg-festival-purple", "bg-festival-red"][yearIndex]}`}
+                aria-hidden="true"
+              />
               <h2 className="font-display text-2xl font-bold md:text-3xl">{program.label}</h2>
               <p className="mt-3 text-foreground/75">
                 {program.date}{program.year === "2027" ? " à l'Orangerie du château de Rennes-sur-Loue." : "."}

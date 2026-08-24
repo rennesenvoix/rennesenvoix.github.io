@@ -5,19 +5,19 @@ const links = [
   { label: "Programmation", href: "/programmation" },
   { label: "Soutenir", href: "/soutien" },
   { label: "Galerie & vidéos", href: "/medias" },
-  { label: "Contact & infos", href: "/contact" },
+  { label: "Infos", href: "/contact" },
 ];
 
 export function Footer() {
   return (
+    // Regroupe l'identité du festival, les liens utiles et les réseaux sociaux.
     <footer className="border-t border-border">
       <div className="container-wide py-12 md:py-16">
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
           <div className="max-w-sm space-y-3">
             <p className="font-display text-2xl font-bold">Rennes en Voix</p>
             <p className="text-sm text-foreground/70 leading-relaxed">
-              Festival vocal a capella, organisé par le comité des fêtes de
-              Rennes-sur-Loue.
+              Festival vocal a cappella
             </p>
             <div className="flex h-1.5 w-32 overflow-hidden rounded-full">
               <span className="flex-1 bg-festival-blue" />
@@ -44,7 +44,7 @@ export function Footer() {
             <p className="text-label">Nous suivre</p>
             <div className="flex items-center gap-3">
               <a
-                href="https://www.instagram.com"
+                href="https://www.instagram.com/rennesenvoix"
                 target="_blank"
                 rel="noreferrer noopener"
                 aria-label="Instagram"

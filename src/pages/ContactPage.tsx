@@ -13,15 +13,16 @@ const ContactPage = () => {
           src={brushHero1}
           alt=""
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-10"
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25"
         />
         <div className="container-wide relative py-20 md:py-28">
           <span className="mb-8 block h-2 w-24 rounded-full bg-festival-red" aria-hidden="true" />
-          <h1 className="text-headline">Infos & contact</h1>
+          <h1 className="text-headline">Infos</h1>
           <p className="mt-4 max-w-2xl text-base md:text-lg text-foreground/80">
-            Une question sur le festival, la programmation ou la réservation ? Écrivez-nous.
+            Une question sur le festival ou la programmation ? Écrivez-nous.
           </p>
 
+          {/* Coordonnées, informations pratiques et localisation du festival. */}
           <div className="mt-12 grid gap-8 md:grid-cols-2">
             <div className="space-y-8">
               <div className="flex gap-4">
@@ -59,7 +60,7 @@ const ContactPage = () => {
                 </div>
               </div>
               <a
-                href="https://www.instagram.com"
+                href="https://www.instagram.com/rennesenvoix"
                 target="_blank"
                 rel="noreferrer noopener"
                 className="inline-block link-underline font-semibold text-festival-purple"

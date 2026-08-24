@@ -7,10 +7,10 @@ const navItems = [
   { label: "Programmation", href: "/programmation" },
   { label: "Soutenir", href: "/soutien" },
   { label: "Galerie & vidéos", href: "/medias" },
-  { label: "Contact & infos", href: "/contact" },
 ];
 
 export function Header() {
+  // Contrôle l'ouverture du menu mobile.
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -21,6 +21,7 @@ export function Header() {
             <img src={titleLogo} alt="Rennes en Voix" className="h-10 w-auto object-contain md:h-14" />
           </a>
 
+          {/* Navigation principale et accès rapide à la page Infos. */}
           <nav className="hidden md:flex items-center gap-8" aria-label="Navigation principale">
             {navItems.map((item) => (
               <a
@@ -32,10 +33,10 @@ export function Header() {
               </a>
             ))}
             <a
-              href="/programmation"
+              href="/contact"
               className="rounded-full bg-festival-purple px-5 py-2 text-xs font-semibold uppercase tracking-widest text-white transition-transform duration-300 hover:scale-105"
             >
-              Réserver
+              Infos
             </a>
           </nav>
 
@@ -50,6 +51,7 @@ export function Header() {
         </div>
       </div>
 
+      {/* Navigation compacte affichée sur les petits écrans. */}
       {isMenuOpen && (
         <nav className="md:hidden border-t border-border bg-background animate-fade-in" aria-label="Navigation mobile">
           <div className="container-wide py-6 flex flex-col gap-5">

@@ -3,10 +3,11 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import groupeColore from "@/assets/groupe-coloré.png";
 
-const festivalDate = new Date("2027-07-03T19:00:00+02:00");
-const partners = ["Comité des fêtes", "Rennes-sur-Loue", "Partenaire local", "Culture & patrimoine", "Soutien associatif", "Avec vous"];
+const festivalDate = new Date("2027-07-03T18:00:00+02:00");
+const partners = ["Communauté de Communes Loue-Lison", "Commune de Rennes-sur-Loue", "Au Golden Gourmand", "Intermarché Quingey", "Coop Bio Val de Loue", "Vous !", "et bien d'autres..."];
 
 const Index = () => {
+  // Actualise le temps restant jusqu'à la prochaine édition chaque seconde.
   const [remaining, setRemaining] = useState(() => Math.max(0, festivalDate.getTime() - Date.now()));
 
   useEffect(() => {
@@ -23,24 +24,31 @@ const Index = () => {
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Header />
       <main className="flex-1 pt-16 md:pt-20">
+        {/* Annonce de la prochaine édition et compte à rebours. */}
         <section className="relative overflow-hidden">
-          <img src={groupeColore} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-45" />
+          <img src={groupeColore} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-10" />
           <div className="container-wide relative py-20 md:py-28">
-            <p className="text-label">Prochaine édition</p>
+            {/*<p className="text-label">Prochaine édition</p> */}
             <h1 className="mt-5 text-display">Rennes en Voix</h1>
-            <p className="mt-6 max-w-2xl text-xl font-display font-semibold md:text-2xl">Le festival vocal a capella à Rennes-sur-Loue.</p>
-            <div className="mt-10 grid max-w-2xl grid-cols-4 gap-3 md:gap-5" aria-label="Compte à rebours avant le festival">
-              {[ [days, "jours"], [hours, "heures"], [minutes, "minutes"], [seconds, "secondes"] ].map(([value, label]) => (
-                <div key={label} className="rounded-xl bg-background/85 p-4 text-center backdrop-blur-sm md:p-6">
+            <p className="mt-6 max-w-2xl text-xl font-display font-semibold md:text-2xl">Prochaine édition dans : </p>
+            <div className="mt-5 grid max-w-2xl grid-cols-4 gap-3 md:gap-5" aria-label="Compte à rebours avant le festival">
+              {[
+                [days, "jours", "bg-festival-blue text-white"],
+                [hours, "heures", "bg-festival-orange text-black"],
+                [minutes, "minutes", "bg-festival-purple text-white"],
+                [seconds, "secondes", "bg-festival-green text-black"],
+              ].map(([value, label, color]) => (
+                <div key={label} className={`rounded-xl p-4 text-center backdrop-blur-sm md:p-6 ${color}`}>
                   <strong className="block font-display text-3xl md:text-5xl">{String(value).padStart(2, "0")}</strong>
-                  <span className="mt-1 block text-xs uppercase tracking-widest text-foreground/65">{label}</span>
+                  <span className="mt-1 block text-[9px] uppercase tracking-widest opacity-80">{label}</span>
                 </div>
               ))}
             </div>
-            <p className="mt-6 text-sm uppercase tracking-widest text-foreground/70">Samedi 03 juillet 2027 · Orangerie du château</p>
+            <p className="mt-10 text-xl uppercase tracking-widest text-foreground/70">Le Samedi 03 juillet 2027 · à l'Orangerie de Rennes sur Loue</p>
           </div>
         </section>
 
+        {/* Présentation de l'affiche et lien vers la programmation. */}
         <section className="container-wide py-20 md:py-28">
           <div className="grid items-center gap-12 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
             <div className="mx-auto w-full max-w-[420px] overflow-hidden rounded-sm border border-border bg-card shadow-xl">
@@ -55,6 +63,7 @@ const Index = () => {
           </div>
         </section>
 
+        {/* Mosaïque des partenaires du festival. */}
         <section className="border-y border-border bg-card/50 py-16 md:py-20">
           <div className="container-wide">
             <span className="mb-8 block h-2 w-24 rounded-full bg-festival-green" aria-hidden="true" />

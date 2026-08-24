@@ -13,6 +13,7 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
 const App = () => (
+  // Fournit les services communs et déclare les pages accessibles par URL.
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />

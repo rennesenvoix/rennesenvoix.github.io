@@ -6,11 +6,12 @@ const SupportPage = () => (
   <div className="min-h-screen flex flex-col bg-background text-foreground">
     <Header />
     <main className="relative flex-1 overflow-hidden pt-16 md:pt-20">
-      <img src={brushHero1} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-15" />
+      <img src={brushHero1} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25" />
       <div className="container-wide relative py-20 md:py-28">
         <span className="mb-8 block h-2 w-24 rounded-full bg-festival-orange" aria-hidden="true" />
         <h1 className="text-headline">Soutenir le festival</h1>
         <p className="mt-5 max-w-2xl text-lg leading-relaxed text-foreground/80">Votre soutien permet de faire vivre la création vocale, l'accueil des ensembles et les rencontres à Rennes-sur-Loue.</p>
+        {/* Deux formes de soutien proposées aux visiteurs. */}
         <div className="mt-12 grid gap-6 md:grid-cols-2">
           <article className="rounded-2xl border border-border bg-card p-7 md:p-10">
             <h2 className="font-display text-2xl font-bold">Mécénat</h2>

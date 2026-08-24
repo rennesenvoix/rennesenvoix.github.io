@@ -3,7 +3,7 @@ import { Footer } from "@/components/Footer";
 import { PastEditions } from "@/components/PastEditions";
 import { MapPin, CalendarDays, UtensilsCrossed, Mail, Ticket } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import brushHero from "@/assets/brush-hero.png";
+import groupeColore from "@/assets/groupe-coloré.png";
 import brushHero1 from "@/assets/brush-hero1.png";
 
 const groups = [
@@ -45,12 +45,12 @@ const Index = () => {
         {/* HERO */}
         <section id="accueil" className="relative overflow-hidden">
           <img
-            src={brushHero}
+            src={groupeColore}
             alt=""
             aria-hidden="true"
             width={1536}
             height={1024}
-            className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25"
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-10"
           />
           <div className="container-wide relative py-20 md:py-32">
             <div className="max-w-3xl animate-fade-in-up">
@@ -89,8 +89,15 @@ const Index = () => {
         </section>
 
         {/* PROGRAMMATION */}
-        <section id="programmation" className="container-wide py-20 md:py-28">
-          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <section id="programmation" className="relative overflow-hidden">
+          <img
+            src={brushHero1}
+            alt=""
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-15"
+          />
+          <div className="container-wide relative py-20 md:py-28">
+            <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div>
               <span className="mb-8 block h-2 w-24 rounded-full bg-festival-blue" aria-hidden="true" />
               <h2 className="text-headline">Programmation 2026</h2>
@@ -109,7 +116,7 @@ const Index = () => {
             </div>
           </div>
 
-          <Tabs defaultValue={groups[0].id} className="mt-12">
+            <Tabs defaultValue={groups[0].id} className="mt-12">
             <TabsList className="grid h-auto w-full grid-cols-3 gap-1 rounded-xl bg-muted p-1">
               {groups.map((group) => (
                 <TabsTrigger key={group.id} value={group.id} className={`min-h-12 px-2 text-xs sm:text-sm ${group.tabColor}`}>
@@ -130,7 +137,8 @@ const Index = () => {
                 </article>
               </TabsContent>
             ))}
-          </Tabs>
+            </Tabs>
+          </div>
         </section>
 
         {/* ÉDITIONS PASSÉES / GALERIE PHOTO */}

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import titleLogo from "@/assets/Titre ReV.png";
 
 const navItems = [
   { label: "Le Festival", href: "#festival" },
@@ -14,8 +15,8 @@ export function Header() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/85 backdrop-blur-md border-b border-border">
       <div className="container-wide">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <a href="#accueil" className="font-display text-base md:text-lg font-bold tracking-tight">
-            Rennes en Voix
+          <a href="#accueil" aria-label="Rennes en Voix, accueil">
+            <img src={titleLogo} alt="Rennes en Voix" className="h-10 w-auto object-contain md:h-14" />
           </a>
 
           <nav className="hidden md:flex items-center gap-8" aria-label="Navigation principale">

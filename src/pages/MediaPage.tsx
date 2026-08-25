@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import brushHero1 from "@/assets/brush-hero1.png";
+import { Footer } from "@/components/Footer";
+import { Header } from "@/components/Header";
 
-const photos = [
+const photoUrls = [
   "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=900&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=900&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=900&auto=format&fit=crop",
@@ -27,64 +27,153 @@ const photos = [
   "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=900&auto=format&fit=crop",
 ];
 
+const galleryYears = [
+  {
+    year: "2026",
+    description: "Retour en images sur la 3°édition du festival",
+    videoUrl: undefined,
+    photos: photoUrls.slice(0, 7),
+  },
+  {
+    year: "2025",
+    description: "Quelques instants capturés lors de la deuxième édition de Rennes en Voix",
+    videoUrl: "https://www.youtube.com/embed/8eUK53WOZR8",
+    photos: photoUrls.slice(7, 14),
+  },
+  {
+    year: "2024",
+    description: "Les premiers souvenirs du festival et de sa toute première édition",
+    videoUrl: undefined,
+    photos: photoUrls.slice(14),
+  },
+] as const;
+
+type SelectedPhoto = { yearIndex: number; photoIndex: number };
+
+const sectionColors = ["bg-festival-orange", "bg-festival-blue", "bg-festival-purple"] as const;
+const timelineYears = galleryYears.map((gallery, yearIndex) => ({ gallery, yearIndex })).reverse();
+
 const MediaPage = () => {
-  // Index de la photo ouverte dans la visionneuse plein écran.
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const showPrevious = () => setSelectedIndex((index) => index === null ? null : (index - 1 + photos.length) % photos.length);
-  const showNext = () => setSelectedIndex((index) => index === null ? null : (index + 1) % photos.length);
+  const [selectedYearIndex, setSelectedYearIndex] = useState(0);
+  const [selectedPhoto, setSelectedPhoto] = useState<SelectedPhoto | null>(null);
+  const selectedYear = galleryYears[selectedYearIndex];
+  const selectedGallery = selectedPhoto === null ? null : galleryYears[selectedPhoto.yearIndex];
+
+  const showPrevious = () => {
+    setSelectedPhoto((selection) => {
+      if (!selection) return null;
+
+      const photoCount = galleryYears[selection.yearIndex].photos.length;
+      return { ...selection, photoIndex: (selection.photoIndex - 1 + photoCount) % photoCount };
+    });
+  };
+
+  const showNext = () => {
+    setSelectedPhoto((selection) => {
+      if (!selection) return null;
+
+      const photoCount = galleryYears[selection.yearIndex].photos.length;
+      return { ...selection, photoIndex: (selection.photoIndex + 1) % photoCount };
+    });
+  };
 
   useEffect(() => {
-    if (selectedIndex === null) return;
+    if (!selectedPhoto) return;
+
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setSelectedIndex(null);
+      if (event.key === "Escape") setSelectedPhoto(null);
       if (event.key === "ArrowLeft") showPrevious();
       if (event.key === "ArrowRight") showNext();
     };
+
     window.addEventListener("keydown", handleKeyDown);
     document.body.style.overflow = "hidden";
+
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
     };
-  }, [selectedIndex]);
+  }, [selectedPhoto]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground">
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
       <Header />
       <main className="relative flex-1 overflow-hidden pt-16 md:pt-20">
         <img src={brushHero1} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25" />
         <div className="container-wide relative py-20 md:py-28">
           <span className="mb-8 block h-2 w-24 rounded-full bg-festival-orange" aria-hidden="true" />
           <h1 className="text-headline">Souvenez-vous</h1>
-          {/* Vidéo principale du festival. */}
-          <section className="mt-5">
-            <div className="mt-6 aspect-video overflow-hidden rounded-2xl border border-border bg-black">
-              <iframe className="h-full w-full" src="https://www.youtube.com/embed/8eUK53WOZR8" title="Vidéo Rennes en Voix" loading="lazy" allowFullScreen />
+          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-foreground/80">Retrouvez les moments forts de Rennes en Voix, édition après édition.</p>
+
+          <section className="mt-14" aria-labelledby={`gallery-${selectedYear.year}`}>
+            <nav className="mt-8 max-w-2xl" aria-label="Éditions de la galerie">
+              <ol className="flex items-center">
+                {timelineYears.map(({ gallery, yearIndex }, timelineIndex) => {
+                  const isActive = yearIndex === selectedYearIndex;
+
+                  return (
+                    <li key={gallery.year} className="flex min-w-0 flex-1 items-center last:flex-none">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedYearIndex(yearIndex);
+                          setSelectedPhoto(null);
+                        }}
+                        aria-current={isActive ? "true" : undefined}
+                        className={`flex min-w-20 flex-col rounded-xl border px-4 py-3 text-left transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-festival-orange focus-visible:ring-offset-4 sm:min-w-28 ${isActive ? "border-festival-purple bg-festival-purple text-white shadow-lg shadow-festival-purple/25" : "border-border bg-card text-foreground hover:border-festival-purple hover:text-festival-purple"}`}
+                      >
+                        <span className={`text-[10px] uppercase tracking-[0.2em] ${isActive ? "text-white/75" : "text-foreground/55"}`}>Édition</span>
+                        <span className="mt-1 font-display text-2xl font-bold">{gallery.year}</span>
+                      </button>
+                      {timelineIndex < timelineYears.length - 1 && (
+                        <span className="mx-2 h-px flex-1 bg-festival-blue sm:mx-4" aria-hidden="true" />
+                      )}
+                    </li>
+                  );
+                })}
+              </ol>
+            </nav>
+
+            <span className={`mt-12 block h-2 w-16 rounded-full ${sectionColors[selectedYearIndex]}`} aria-hidden="true" />
+            <div className="mt-6 flex flex-wrap items-baseline justify-between gap-3">
+              <h2 id={`gallery-${selectedYear.year}`} className="font-display text-3xl font-bold md:text-4xl">Édition {selectedYear.year}</h2>
+            </div>
+            <p className="mt-3 max-w-2xl text-foreground/75">{selectedYear.description}</p>
+
+            {selectedYear.videoUrl && (
+              <div className="mt-8 aspect-video overflow-hidden rounded-2xl border border-border bg-black">
+                <iframe className="h-full w-full" src={selectedYear.videoUrl} title={`Vidéo Rennes en Voix ${selectedYear.year}`} loading="lazy" allowFullScreen />
+              </div>
+            )}
+
+            <div className="mt-8 columns-2 gap-1 sm:columns-3 md:columns-4 lg:columns-5">
+              {selectedYear.photos.map((photo, photoIndex) => (
+                <button
+                  key={photo}
+                  type="button"
+                  onClick={() => setSelectedPhoto({ yearIndex: selectedYearIndex, photoIndex })}
+                  className="group relative mb-1 block w-full overflow-hidden bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-festival-orange"
+                  aria-label={`Ouvrir la photo ${photoIndex + 1} de l'édition ${selectedYear.year} en grand`}
+                >
+                  <img src={photo} alt={`Rennes en Voix ${selectedYear.year}, moment du festival ${photoIndex + 1}`} loading="lazy" className="h-auto w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <span className="absolute bottom-1.5 right-1.5 rounded bg-black/60 px-1 py-0.5 text-[8px] text-white">© Rennes en Voix</span>
+                </button>
+              ))}
             </div>
           </section>
-
-          {/* Mosaïque de vignettes ouvrant la visionneuse au clic. */}
-          <div className="mt-12 columns-2 gap-1 sm:columns-3 md:columns-4 lg:columns-5">
-            {photos.map((photo, index) => (
-              <button key={photo} type="button" onClick={() => setSelectedIndex(index)} className="group relative mb-1 block w-full overflow-hidden bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-festival-orange" aria-label={`Ouvrir la photo ${index + 1} en grand`}>
-                <img src={photo} alt={`Rennes en Voix, moment du festival ${index + 1}`} loading="lazy" className="h-auto w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                <span className="absolute bottom-1.5 right-1.5 rounded bg-black/60 px-1 py-0.5 text-[8px] text-white">© Rennes en voix</span>
-              </button>
-            ))}
-          </div>
-
         </div>
       </main>
-      {/* Visionneuse avec navigation circulaire entre les 20 photos. */}
-      {selectedIndex !== null && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90 p-4" role="dialog" aria-modal="true" aria-label="Galerie photo" onClick={() => setSelectedIndex(null)}>
-          <button type="button" onClick={() => setSelectedIndex(null)} aria-label="Fermer la galerie" className="absolute right-5 top-5 z-10 rounded-full bg-white/90 p-2 text-black"><X size={22} /></button>
+
+      {selectedPhoto && selectedGallery && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90 p-4" role="dialog" aria-modal="true" aria-label={`Galerie photo ${selectedGallery.year}`} onClick={() => setSelectedPhoto(null)}>
+          <button type="button" onClick={() => setSelectedPhoto(null)} aria-label="Fermer la galerie" className="absolute right-5 top-5 z-10 rounded-full bg-white/90 p-2 text-black"><X size={22} /></button>
           <button type="button" onClick={(event) => { event.stopPropagation(); showPrevious(); }} aria-label="Photo précédente" className="absolute left-3 z-10 rounded-full bg-white/90 p-2 text-black md:left-8"><ChevronLeft size={26} /></button>
-          <img src={photos[selectedIndex]} alt={`Rennes en Voix, photo ${selectedIndex + 1}`} className="max-h-[90vh] max-w-[90vw] object-contain" onClick={(event) => event.stopPropagation()} />
+          <img src={selectedGallery.photos[selectedPhoto.photoIndex]} alt={`Rennes en Voix ${selectedGallery.year}, photo ${selectedPhoto.photoIndex + 1}`} className="max-h-[90vh] max-w-[90vw] object-contain" onClick={(event) => event.stopPropagation()} />
           <button type="button" onClick={(event) => { event.stopPropagation(); showNext(); }} aria-label="Photo suivante" className="absolute right-3 z-10 rounded-full bg-white/90 p-2 text-black md:right-8"><ChevronRight size={26} /></button>
-          <span className="absolute bottom-5 rounded-full bg-black/70 px-3 py-1 text-xs text-white">{selectedIndex + 1} / {photos.length}</span>
+          <span className="absolute bottom-5 rounded-full bg-black/70 px-3 py-1 text-xs text-white">Édition {selectedGallery.year} · {selectedPhoto.photoIndex + 1} / {selectedGallery.photos.length}</span>
         </div>
       )}
+
       <Footer />
     </div>
   );

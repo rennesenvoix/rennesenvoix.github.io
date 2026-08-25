@@ -1,25 +1,30 @@
-import { useEffect, useState } from "react";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import groupeColore from "@/assets/groupe-coloré.png";
+import { Link } from "react-router-dom";
 
-const festivalDate = new Date("2027-07-03T18:00:00+02:00");
-const partners = ["Communauté de Communes Loue-Lison", "Commune de Rennes-sur-Loue", "Au Golden Gourmand", "Intermarché Quingey", "Coop Bio Val de Loue", "Vous !", "et bien d'autres..."];
+// Compte à rebours temporairement désactivé — à réactiver pour la prochaine édition.
+// import { useEffect, useState } from "react";
+// const festivalDate = new Date("2027-07-03T18:00:00+02:00");
+const partners = [
+  "Communauté de Communes Loue-Lison",
+  "Commune de Rennes-sur-Loue",
+  "Au Golden Gourmand",
+  "Intermarché Quingey",
+  "Coop Bio Val de Loue",
+  "Vous !",
+  "et bien d'autres...",
+];
+
+/* const countdownUnits = [
+  { label: "jours", className: "bg-festival-blue text-white" },
+  { label: "heures", className: "bg-festival-orange text-black" },
+  { label: "minutes", className: "bg-festival-purple text-white" },
+  { label: "secondes", className: "bg-festival-green text-black" },
+] as const;
+*/
 
 const Index = () => {
-  // Actualise le temps restant jusqu'à la prochaine édition chaque seconde.
-  const [remaining, setRemaining] = useState(() => Math.max(0, festivalDate.getTime() - Date.now()));
-
-  useEffect(() => {
-    const timer = window.setInterval(() => setRemaining(Math.max(0, festivalDate.getTime() - Date.now())), 1000);
-    return () => window.clearInterval(timer);
-  }, []);
-
-  const days = Math.floor(remaining / 86400000);
-  const hours = Math.floor((remaining / 3600000) % 24);
-  const minutes = Math.floor((remaining / 60000) % 60);
-  const seconds = Math.floor((remaining / 1000) % 60);
-
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Header />
@@ -28,22 +33,24 @@ const Index = () => {
         <section className="relative overflow-hidden">
           <img src={groupeColore} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-10" />
           <div className="container-wide relative py-20 md:py-28">
-            {/*<p className="text-label">Prochaine édition</p> */}
             <h1 className="mt-5 text-display">Rennes en Voix</h1>
-            <p className="mt-6 max-w-2xl text-xl font-display font-semibold md:text-2xl">Prochaine édition dans : </p>
-            <div className="mt-5 grid max-w-2xl grid-cols-4 gap-3 md:gap-5" aria-label="Compte à rebours avant le festival">
-              {[
-                [days, "jours", "bg-festival-blue text-white"],
-                [hours, "heures", "bg-festival-orange text-black"],
-                [minutes, "minutes", "bg-festival-purple text-white"],
-                [seconds, "secondes", "bg-festival-green text-black"],
-              ].map(([value, label, color]) => (
-                <div key={label} className={`rounded-xl p-4 text-center backdrop-blur-sm md:p-6 ${color}`}>
-                  <strong className="block font-display text-3xl md:text-5xl">{String(value).padStart(2, "0")}</strong>
-                  <span className="mt-1 block text-[9px] uppercase tracking-widest opacity-80">{label}</span>
-                </div>
-              ))}
-            </div>
+            {/*
+              Compte à rebours temporairement désactivé — à réactiver pour la prochaine édition.
+
+              <p className="mt-6 max-w-2xl font-display text-xl font-semibold md:text-2xl">Prochaine édition dans :</p>
+              <div className="mt-5 grid max-w-2xl grid-cols-4 gap-3 md:gap-5" aria-label="Compte à rebours avant le festival">
+                {[days, hours, minutes, seconds].map((value, index) => {
+                  const unit = countdownUnits[index];
+
+                  return (
+                    <div key={unit.label} className={`rounded-xl p-4 text-center backdrop-blur-sm md:p-6 ${unit.className}`}>
+                      <strong className="block font-display text-3xl md:text-5xl">{String(value).padStart(2, "0")}</strong>
+                      <span className="mt-1 block text-[9px] uppercase tracking-widest opacity-80">{unit.label}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            */}
             <p className="mt-10 text-xl uppercase tracking-widest text-foreground/70">Le Samedi 03 juillet 2027 · à l'Orangerie de Rennes sur Loue</p>
           </div>
         </section>
@@ -58,7 +65,7 @@ const Index = () => {
               <span className="mb-8 block h-2 w-24 rounded-full bg-festival-orange" aria-hidden="true" />
               <h2 className="text-headline">L’affiche 2027</h2>
               <p className="mt-5 max-w-xl text-lg leading-relaxed text-foreground/75">Un rendez-vous consacré aux ensembles polyphoniques, aux voix partagées et à la convivialité.</p>
-              <a href="/programmation" className="mt-8 inline-flex rounded-full bg-festival-purple px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white">Voir la programmation</a>
+              <Link to="/programmation" className="mt-8 inline-flex rounded-full bg-festival-purple px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white">Voir la programmation</Link>
             </div>
           </div>
         </section>

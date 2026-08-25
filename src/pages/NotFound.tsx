@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
 const setMeta = (selector: string, attr: string, value: string, content: string) => {
@@ -37,12 +37,12 @@ const NotFound = () => {
         <p className="mt-4 text-lg text-foreground/70">
           Cette page n'existe pas ou a été déplacée.
         </p>
-        <a
-          href="/"
+        <Link
+          to="/"
           className="mt-8 inline-flex items-center rounded-full bg-festival-orange px-7 py-3.5 text-sm font-semibold uppercase tracking-widest text-black transition-transform duration-300 hover:scale-105"
         >
           Retour à l'accueil
-        </a>
+        </Link>
       </div>
     </div>
   );

@@ -24,7 +24,7 @@ export function Footer() {
           </div>
 
           <div className="space-y-3">
-            <p className="text-label">Avec le soutien de</p>
+            <p className="text-label">Avec leur soutien</p>
             <div className="flex flex-wrap items-center gap-3">
               <div className="flex h-16 w-40 items-center justify-center overflow-hidden border border-border bg-white p-2">
                 <img src={financeur1} alt="Logo du financeur CCLL" className="h-full w-full object-contain" />

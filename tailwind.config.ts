@@ -20,9 +20,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['Montserrat', 'system-ui', 'sans-serif'],
+        display: ['League Spartan', 'system-ui', 'sans-serif'],
         serif: ['Playfair Display', 'Georgia', 'serif'],
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['League Spartan', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

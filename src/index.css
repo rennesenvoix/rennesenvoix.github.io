@@ -112,11 +112,11 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', sans-serif;
+    font-family: 'League Spartan', sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'League Spartan', sans-serif;
   }
 }
 
@@ -128,17 +128,17 @@
 
   .text-display {
     @apply text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tight;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'League Spartan', sans-serif;
   }
 
   .text-headline {
     @apply text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'League Spartan', sans-serif;
   }
 
   .text-label {
     @apply text-xs md:text-sm uppercase tracking-widest text-muted-foreground;
-    font-family: 'Inter', sans-serif;
+    font-family: 'League Spartan', sans-serif;
   }
 
   .hover-highlight {

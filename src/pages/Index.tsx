@@ -2,6 +2,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import groupeColore from "@/assets/groupe-coloré.png";
 import titleLogo from "@/assets/Titre ReV.png";
+import brushHero1 from "@/assets/brush-hero1.png";
 import { Link } from "react-router-dom";
 
 // Compte à rebours temporairement désactivé — à réactiver pour la prochaine édition.
@@ -16,6 +17,28 @@ const partners = [
   "Vous !",
   "et bien d'autres...",
 ];
+const partnerBrushes = [
+  { rotation: "-rotate-2", viewBox: "0 20 650 500" },
+  { rotation: "rotate-1", viewBox: "730 30 720 390" },
+  { rotation: "-rotate-1", viewBox: "500 290 650 470" },
+  { rotation: "rotate-2", viewBox: "0 570 850 430" },
+  { rotation: "-rotate-3", viewBox: "1020 390 500 620" },
+] as const;
+
+const WatercolorStroke = ({ rotation, viewBox }: { rotation: string; viewBox: string }) => (
+  <span
+    aria-hidden="true"
+    className={`pointer-events-none absolute h-20 w-[122%] overflow-hidden rounded-[48%_52%_45%_55%] ${rotation}`}
+    style={{
+      maskImage: "radial-gradient(ellipse at center, black 56%, transparent 100%)",
+      WebkitMaskImage: "radial-gradient(ellipse at center, black 56%, transparent 100%)",
+    }}
+  >
+    <svg viewBox={viewBox} preserveAspectRatio="none" className="h-full w-full scale-105 blur-[0.7px] mix-blend-multiply">
+      <image href={brushHero1} width="1536" height="1024" />
+    </svg>
+  </span>
+);
 
 /* const countdownUnits = [
   { label: "jours", className: "bg-festival-blue text-white" },
@@ -78,8 +101,17 @@ const Index = () => {
           <div className="container-wide">
             <span className="mb-8 block h-2 w-24 rounded-full bg-festival-green" aria-hidden="true" />
             <h2 className="text-headline">Nos partenaires</h2>
-            <div className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
-              {partners.map((partner, index) => <div key={partner} className={`flex min-h-28 items-center justify-center p-4 text-center font-display text-sm font-bold ${index % 2 ? "bg-festival-orange" : "bg-festival-blue"} ${index % 2 ? "text-black" : "text-white"}`}>{partner}</div>)}
+            <div className="mt-10 grid grid-cols-2 gap-x-8 gap-y-8 md:grid-cols-3 lg:grid-cols-6">
+              {partners.map((partner, index) => {
+                const brush = partnerBrushes[index % partnerBrushes.length];
+
+                return (
+                  <div key={partner} className="relative flex min-h-24 items-center justify-center px-3 text-center">
+                    <WatercolorStroke rotation={brush.rotation} viewBox={brush.viewBox} />
+                    <span className="relative font-display text-base font-bold leading-tight tracking-wide text-black sm:text-lg">{partner}</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>

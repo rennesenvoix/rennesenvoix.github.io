@@ -108,7 +108,7 @@ const Index = () => {
                 return (
                   <div key={partner} className="relative flex min-h-24 items-center justify-center px-3 text-center">
                     <WatercolorStroke rotation={brush.rotation} viewBox={brush.viewBox} />
-                    <span className="relative font-display text-base font-bold leading-tight tracking-wide text-black sm:text-lg">{partner}</span>
+                    <span className="relative font-display text-base font-bold leading-tight tracking-wide text-black sm:text-md">{partner}</span>
                   </div>
                 );
               })}

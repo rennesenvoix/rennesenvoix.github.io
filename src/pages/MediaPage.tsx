@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import brushHero1 from "@/assets/brush-hero1.png";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { useTimelineSections } from "@/hooks/use-timeline-sections";
 
 const photoUrls = [
   "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=900&auto=format&fit=crop",
@@ -51,12 +52,11 @@ const galleryYears = [
 type SelectedPhoto = { yearIndex: number; photoIndex: number };
 
 const sectionColors = ["bg-festival-orange", "bg-festival-blue", "bg-festival-purple"] as const;
-const timelineYears = galleryYears.map((gallery, yearIndex) => ({ gallery, yearIndex })).reverse();
+const timelineYears = galleryYears.map((gallery, yearIndex) => ({ gallery, yearIndex }));
 
 const MediaPage = () => {
-  const [selectedYearIndex, setSelectedYearIndex] = useState(0);
   const [selectedPhoto, setSelectedPhoto] = useState<SelectedPhoto | null>(null);
-  const selectedYear = galleryYears[selectedYearIndex];
+  const { activeIndex, scrollToSection, sectionRefs } = useTimelineSections(galleryYears.length);
   const selectedGallery = selectedPhoto === null ? null : galleryYears[selectedPhoto.yearIndex];
 
   const showPrevious = () => {
@@ -98,69 +98,79 @@ const MediaPage = () => {
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
       <Header />
-      <main className="relative flex-1 overflow-hidden pt-16 md:pt-20">
+      <main className="relative flex-1 pt-16 md:pt-20">
         <img src={brushHero1} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25" />
         <div className="container-wide relative py-20 md:py-28">
           <span className="mb-8 block h-2 w-24 rounded-full bg-festival-orange" aria-hidden="true" />
           <h1 className="text-headline">Souvenez-vous</h1>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-foreground/80">Retrouvez les moments forts de Rennes en Voix, édition après édition.</p>
 
-          <section className="mt-14" aria-labelledby={`gallery-${selectedYear.year}`}>
-            <nav className="mt-8 max-w-2xl" aria-label="Éditions de la galerie">
-              <ol className="flex items-center">
-                {timelineYears.map(({ gallery, yearIndex }, timelineIndex) => {
-                  const isActive = yearIndex === selectedYearIndex;
+          <div className="mt-14 grid gap-10 lg:grid-cols-[12rem_minmax(0,1fr)]">
+            <nav className="sticky top-20 z-20 self-start rounded-xl border border-border bg-background/95 p-4 shadow-sm backdrop-blur lg:top-28" aria-label="Éditions de la galerie">
+              <ol className="relative space-y-1">
+                <span className="absolute bottom-6 left-7 top-6 w-0.5 bg-festival-blue" aria-hidden="true" />
+                {timelineYears.map(({ gallery, yearIndex }) => {
+                  const isActive = yearIndex === activeIndex;
 
                   return (
-                    <li key={gallery.year} className="flex min-w-0 flex-1 items-center last:flex-none">
+                    <li key={gallery.year} className="relative">
                       <button
                         type="button"
-                        onClick={() => {
-                          setSelectedYearIndex(yearIndex);
-                          setSelectedPhoto(null);
-                        }}
+                        onClick={() => scrollToSection(yearIndex)}
                         aria-current={isActive ? "true" : undefined}
-                        className={`flex min-w-20 flex-col rounded-xl border px-4 py-3 text-left transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-festival-orange focus-visible:ring-offset-4 sm:min-w-28 ${isActive ? "border-festival-purple bg-festival-purple text-white shadow-lg shadow-festival-purple/25" : "border-border bg-card text-foreground hover:border-festival-purple hover:text-festival-purple"}`}
+                        className={`relative z-10 flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-festival-orange focus-visible:ring-offset-2 ${isActive ? "bg-festival-purple text-white shadow-md shadow-festival-purple/20" : "text-foreground hover:bg-card hover:text-festival-purple"}`}
                       >
-                        <span className={`text-[10px] uppercase tracking-[0.2em] ${isActive ? "text-white/75" : "text-foreground/55"}`}>Édition</span>
-                        <span className="mt-1 font-display text-2xl font-bold">{gallery.year}</span>
+                        <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-4 border-background ${isActive ? "bg-festival-orange" : "bg-festival-blue"}`} aria-hidden="true">
+                          <span className="h-2 w-2 rounded-full bg-white" />
+                        </span>
+                        <span>
+                          <span className={`block text-[10px] uppercase tracking-[0.18em] ${isActive ? "text-white/75" : "text-foreground/55"}`}>Édition</span>
+                          <span className="font-display text-xl font-bold">{gallery.year}</span>
+                        </span>
                       </button>
-                      {timelineIndex < timelineYears.length - 1 && (
-                        <span className="mx-2 h-px flex-1 bg-festival-blue sm:mx-4" aria-hidden="true" />
-                      )}
                     </li>
                   );
                 })}
               </ol>
             </nav>
 
-            <span className={`mt-12 block h-2 w-16 rounded-full ${sectionColors[selectedYearIndex]}`} aria-hidden="true" />
-            <div className="mt-6 flex flex-wrap items-baseline justify-between gap-3">
-              <h2 id={`gallery-${selectedYear.year}`} className="font-display text-3xl font-bold md:text-4xl">Édition {selectedYear.year}</h2>
-            </div>
-            <p className="mt-3 max-w-2xl text-foreground/75">{selectedYear.description}</p>
-
-            {selectedYear.videoUrl && (
-              <div className="mt-8 aspect-video overflow-hidden rounded-2xl border border-border bg-black">
-                <iframe className="h-full w-full" src={selectedYear.videoUrl} title={`Vidéo Rennes en Voix ${selectedYear.year}`} loading="lazy" allowFullScreen />
-              </div>
-            )}
-
-            <div className="mt-8 columns-2 gap-1 sm:columns-3 md:columns-4 lg:columns-5">
-              {selectedYear.photos.map((photo, photoIndex) => (
-                <button
-                  key={photo}
-                  type="button"
-                  onClick={() => setSelectedPhoto({ yearIndex: selectedYearIndex, photoIndex })}
-                  className="group relative mb-1 block w-full overflow-hidden bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-festival-orange"
-                  aria-label={`Ouvrir la photo ${photoIndex + 1} de l'édition ${selectedYear.year} en grand`}
+            <div className="space-y-20">
+              {galleryYears.map((gallery, yearIndex) => (
+                <section
+                  key={gallery.year}
+                  ref={(element) => { sectionRefs.current[yearIndex] = element; }}
+                  id={`gallery-${gallery.year}`}
+                  className="scroll-mt-28"
+                  aria-labelledby={`gallery-title-${gallery.year}`}
                 >
-                  <img src={photo} alt={`Rennes en Voix ${selectedYear.year}, moment du festival ${photoIndex + 1}`} loading="lazy" className="h-auto w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                  <span className="absolute bottom-1.5 right-1.5 rounded bg-black/60 px-1 py-0.5 text-[8px] text-white">© Rennes en Voix</span>
-                </button>
+                  <span className={`block h-2 w-16 rounded-full ${sectionColors[yearIndex]}`} aria-hidden="true" />
+                  <h2 id={`gallery-title-${gallery.year}`} className="mt-6 font-display text-3xl font-bold md:text-4xl">Édition {gallery.year}</h2>
+                  <p className="mt-3 max-w-2xl text-foreground/75">{gallery.description}</p>
+
+                  {gallery.videoUrl && (
+                    <div className="mt-8 aspect-video overflow-hidden rounded-2xl border border-border bg-black">
+                      <iframe className="h-full w-full" src={gallery.videoUrl} title={`Vidéo Rennes en Voix ${gallery.year}`} loading="lazy" allowFullScreen />
+                    </div>
+                  )}
+
+                  <div className="mt-8 columns-2 gap-1 sm:columns-3 md:columns-4">
+                    {gallery.photos.map((photo, photoIndex) => (
+                      <button
+                        key={photo}
+                        type="button"
+                        onClick={() => setSelectedPhoto({ yearIndex, photoIndex })}
+                        className="group relative mb-1 block w-full overflow-hidden bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-festival-orange"
+                        aria-label={`Ouvrir la photo ${photoIndex + 1} de l'édition ${gallery.year} en grand`}
+                      >
+                        <img src={photo} alt={`Rennes en Voix ${gallery.year}, moment du festival ${photoIndex + 1}`} loading="lazy" className="h-auto w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                        <span className="absolute bottom-1.5 right-1.5 rounded bg-black/60 px-1 py-0.5 text-[8px] text-white">© Rennes en Voix</span>
+                      </button>
+                    ))}
+                  </div>
+                </section>
               ))}
             </div>
-          </section>
+          </div>
         </div>
       </main>
 

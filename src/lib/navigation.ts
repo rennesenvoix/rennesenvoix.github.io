@@ -1,12 +1,10 @@
 export const navigationItems = [
-  { label: "Accueil", href: "/" },
-  { label: "Le festival", href: "/le-festival" },
-  { label: "Programmation", href: "/programmation" },
-  { label: "Soutenir", href: "/soutien" },
-  { label: "Galerie & vidéos", href: "/medias" },
+  { label: "Accueil", href: "/", isCallToAction: false },
+  { label: "Programmation", href: "/programmation", isCallToAction: false },
+  { label: "Le Festival", href: "/le-festival", isCallToAction: false },
+  { label: "Souvenez-vous", href: "/medias", isCallToAction: false },
+  { label: "Infos", href: "/contact", isCallToAction: false },
+  { label: "Soutenir le festival", href: "/soutien", isCallToAction: true },
 ] as const;
 
-export const footerNavigationItems = [
-  ...navigationItems,
-  { label: "Infos", href: "/contact" },
-] as const;
+export const footerNavigationItems = navigationItems;

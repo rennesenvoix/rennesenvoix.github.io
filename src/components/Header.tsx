@@ -16,27 +16,23 @@ export function Header() {
             <img src={titleLogo} alt="Rennes en Voix" className="h-10 w-auto object-contain md:h-14" />
           </Link>
 
-          {/* Navigation principale et accès rapide à la page Infos. */}
-          <nav className="hidden md:flex items-center gap-8" aria-label="Navigation principale">
+          {/* Navigation principale. */}
+          <nav className="hidden lg:flex items-center gap-5 xl:gap-8" aria-label="Navigation principale">
             {navigationItems.map((item) => (
               <Link
                 key={item.href}
                 to={item.href}
-                className="text-xs font-sans tracking-widest uppercase text-foreground/70 hover:text-foreground transition-colors"
+                className={item.isCallToAction
+                  ? "rounded-full bg-festival-purple px-5 py-2 text-xs font-semibold uppercase tracking-wider text-white transition-transform duration-300 hover:scale-105"
+                  : "text-xs font-sans tracking-widest uppercase text-foreground/70 hover:text-foreground transition-colors"}
               >
                 {item.label}
               </Link>
             ))}
-            <Link
-              to="/contact"
-              className="rounded-full bg-festival-purple px-5 py-2 text-xs font-semibold uppercase tracking-widest text-white transition-transform duration-300 hover:scale-105"
-            >
-              Infos
-            </Link>
           </nav>
 
           <button
-            className="md:hidden p-2 -mr-2 text-foreground"
+            className="lg:hidden p-2 -mr-2 text-foreground"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Ouvrir le menu"
             aria-expanded={isMenuOpen}
@@ -48,14 +44,16 @@ export function Header() {
 
       {/* Navigation compacte affichée sur les petits écrans. */}
       {isMenuOpen && (
-        <nav className="md:hidden border-t border-border bg-background animate-fade-in" aria-label="Navigation mobile">
+        <nav className="lg:hidden border-t border-border bg-background animate-fade-in" aria-label="Navigation mobile">
           <div className="container-wide py-6 flex flex-col gap-5">
             {navigationItems.map((item) => (
               <Link
                 key={item.href}
                 to={item.href}
                 onClick={() => setIsMenuOpen(false)}
-                className="text-2xl font-display font-semibold"
+                className={item.isCallToAction
+                  ? "mt-2 rounded-full bg-festival-purple px-5 py-3 text-center text-lg font-semibold uppercase tracking-wider text-white"
+                  : "text-2xl font-display font-semibold"}
               >
                 {item.label}
               </Link>

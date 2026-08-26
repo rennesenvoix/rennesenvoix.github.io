@@ -10,6 +10,7 @@ import SupportPage from "./pages/SupportPage";
 import MediaPage from "./pages/MediaPage";
 import NotFound from "./pages/NotFound";
 import FestivalPage from "./pages/FestivalPage";
+import AttendancePage from "./pages/AttendancePage";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/programmation" element={<ProgrammingPage />} />
           <Route path="/soutien" element={<SupportPage />} />
           <Route path="/medias" element={<MediaPage />} />
+          <Route path="/frequentation" element={<AttendancePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </HashRouter>

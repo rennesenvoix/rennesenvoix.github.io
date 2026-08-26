@@ -1,8 +1,8 @@
+import { useEffect, useRef } from "react";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import groupeColore from "@/assets/groupe-coloré.png";
 import titleLogo from "@/assets/Titre ReV.png";
-import brushHero1 from "@/assets/brush-hero1.png";
 import { Link } from "react-router-dom";
 
 // Compte à rebours temporairement désactivé — à réactiver pour la prochaine édition.
@@ -10,35 +10,193 @@ import { Link } from "react-router-dom";
 // const festivalDate = new Date("2027-07-03T18:00:00+02:00");
 const partners = [
   "Communauté de Communes Loue-Lison",
-  "Commune de Rennes-sur-Loue",
+  "Commune de\nRennes sur Loue",
   "Au Golden Gourmand",
-  "Intermarché Quingey",
+  "Intermarché\nQuingey",
   "Coop Bio Val de Loue",
   "Vous !",
   "et bien d'autres...",
+  "Les propriétaires des lieux",
+  "Aux Petits Pépins",
+  "Atomix",
+  "APE – Liesle et Quingey",
+  "La Bonne Cave",
+  "Boucherie\nFabien Humbert",
+  "Crédit Agricole\nQuingey",
+  "Fruitière du Val de Loue",
+  "GAEC des Prés de Rennes",
+  "Gamm Vert\nLiesle",
+  "Terre Comtoise",
+  "Saline royale\nd’Arc et Senans",
 ];
-const partnerBrushes = [
-  { rotation: "-rotate-2", viewBox: "0 20 650 500" },
-  { rotation: "rotate-1", viewBox: "730 30 720 390" },
-  { rotation: "-rotate-1", viewBox: "500 290 650 470" },
-  { rotation: "rotate-2", viewBox: "0 570 850 430" },
-  { rotation: "-rotate-3", viewBox: "1020 390 500 620" },
+const partnerTags = [
+  { color: "bg-festival-blue", text: "text-white", rotation: "-rotate-2" },
+  { color: "bg-festival-orange", text: "text-black", rotation: "rotate-1" },
+  { color: "bg-festival-purple", text: "text-white", rotation: "-rotate-1" },
+  { color: "bg-festival-green", text: "text-black", rotation: "rotate-2" },
+  { color: "bg-festival-red", text: "text-white", rotation: "-rotate-3" },
 ] as const;
 
-const WatercolorStroke = ({ rotation, viewBox }: { rotation: string; viewBox: string }) => (
-  <span
-    aria-hidden="true"
-    className={`pointer-events-none absolute h-20 w-[122%] overflow-hidden rounded-[48%_52%_45%_55%] ${rotation}`}
-    style={{
-      maskImage: "radial-gradient(ellipse at center, black 56%, transparent 100%)",
-      WebkitMaskImage: "radial-gradient(ellipse at center, black 56%, transparent 100%)",
-    }}
-  >
-    <svg viewBox={viewBox} preserveAspectRatio="none" className="h-full w-full scale-105 blur-[0.7px] mix-blend-multiply">
-      <image href={brushHero1} width="1536" height="1024" />
-    </svg>
+const FestivalTag = ({ color, rotation }: { color: string; rotation: string }) => (
+  <span aria-hidden="true" className={`pointer-events-none absolute h-16 w-[86%] rounded-lg border-2 border-black/80 shadow-md ${color} ${rotation}`}>
+    <span className="absolute -left-1.5 top-4 h-3 w-3 rounded-full bg-background" />
+    <span className="absolute -left-1.5 bottom-4 h-3 w-3 rounded-full bg-background" />
+    <span className="absolute left-5 top-2 bottom-2 border-l border-dashed border-black/35" />
+    <span className="absolute right-3 top-3 h-2 w-2 rounded-full border border-black/30" />
   </span>
 );
+
+type PartnerNode = {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  width: number;
+  height: number;
+  rotation: number;
+  scale: number;
+  targetScale: number;
+};
+
+const PartnerCloud = () => {
+  const cloudRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const nodesRef = useRef<PartnerNode[]>([]);
+
+  useEffect(() => {
+    const cloud = cloudRef.current;
+    if (!cloud) return;
+
+    let frameId = 0;
+
+    const initialize = () => {
+      const { width: cloudWidth, height: cloudHeight } = cloud.getBoundingClientRect();
+      const itemWidth = Math.min(window.innerWidth < 640 ? 150 : 190, cloudWidth * (window.innerWidth < 640 ? 0.46 : 0.2));
+      const itemHeight = 96;
+      const columns = Math.ceil(Math.sqrt(partners.length * (cloudWidth / cloudHeight)));
+
+      nodesRef.current = partners.map((_, index) => ({
+        x: Math.min(cloudWidth - itemWidth, 12 + (index % columns) * ((cloudWidth - itemWidth - 24) / Math.max(1, columns - 1))),
+        y: Math.min(cloudHeight - itemHeight, 12 + Math.floor(index / columns) * (itemHeight + 22)),
+        vx: ((index * 13) % 35 - 17) / 22,
+        vy: ((index * 19) % 31 - 15) / 24,
+        width: itemWidth,
+        height: itemHeight,
+        rotation: ((index * 7) % 9) - 4,
+        scale: 1,
+        targetScale: 1,
+      }));
+    };
+
+    const animate = () => {
+      const { width: cloudWidth, height: cloudHeight } = cloud.getBoundingClientRect();
+      const nodes = nodesRef.current;
+
+      nodes.forEach((node) => {
+        node.scale += (node.targetScale - node.scale) * 0.16;
+        node.x += node.vx;
+        node.y += node.vy;
+
+        const renderedWidth = node.width * node.scale;
+        const renderedHeight = node.height * node.scale;
+        if (node.x <= 0 || node.x + renderedWidth >= cloudWidth) {
+          node.vx *= -1;
+          node.x = Math.max(0, Math.min(node.x, cloudWidth - renderedWidth));
+        }
+        if (node.y <= 0 || node.y + renderedHeight >= cloudHeight) {
+          node.vy *= -1;
+          node.y = Math.max(0, Math.min(node.y, cloudHeight - renderedHeight));
+        }
+      });
+
+      for (let firstIndex = 0; firstIndex < nodes.length; firstIndex += 1) {
+        for (let secondIndex = firstIndex + 1; secondIndex < nodes.length; secondIndex += 1) {
+          const first = nodes[firstIndex];
+          const second = nodes[secondIndex];
+          const dx = second.x + second.width / 2 - (first.x + first.width / 2);
+          const dy = second.y + second.height / 2 - (first.y + first.height / 2);
+          const distance = Math.hypot(dx, dy) || 1;
+          const minimumDistance = (first.width * first.scale + second.width * second.scale) * 0.44;
+
+          if (distance < minimumDistance) {
+            const normalX = dx / distance;
+            const normalY = dy / distance;
+            const overlap = (minimumDistance - distance) / 2;
+            first.x -= normalX * overlap;
+            first.y -= normalY * overlap;
+            second.x += normalX * overlap;
+            second.y += normalY * overlap;
+            first.vx -= normalX * 0.08;
+            first.vy -= normalY * 0.08;
+            second.vx += normalX * 0.08;
+            second.vy += normalY * 0.08;
+          }
+        }
+      }
+
+      nodes.forEach((node, index) => {
+        const element = itemRefs.current[index];
+        if (!element) return;
+
+        element.style.transform = `translate3d(${node.x}px, ${node.y}px, 0) rotate(${node.rotation}deg) scale(${node.scale})`;
+        element.style.width = `${node.width}px`;
+        element.style.height = `${node.height}px`;
+      });
+
+      frameId = window.requestAnimationFrame(animate);
+    };
+
+    initialize();
+    animate();
+    window.addEventListener("resize", initialize);
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      window.removeEventListener("resize", initialize);
+    };
+  }, []);
+
+  const energizePartner = (activeIndex: number) => {
+    const activeNode = nodesRef.current[activeIndex];
+    if (!activeNode) return;
+
+    activeNode.targetScale = 1.16;
+    nodesRef.current.forEach((node, index) => {
+      if (index === activeIndex) return;
+
+      const dx = node.x + node.width / 2 - (activeNode.x + activeNode.width / 2);
+      const dy = node.y + node.height / 2 - (activeNode.y + activeNode.height / 2);
+      const distance = Math.hypot(dx, dy) || 1;
+      if (distance < 240) {
+        const strength = (240 - distance) / 240;
+        node.vx += (dx / distance) * strength * 3;
+        node.vy += (dy / distance) * strength * 3;
+      }
+    });
+  };
+
+  return (
+    <div ref={cloudRef} className="relative h-[520px] overflow-hidden rounded-2xl border border-border/60 bg-white/40 sm:h-[440px] lg:h-[390px]" role="list" aria-label="Partenaires du festival">
+      {partners.map((partner, index) => {
+        const tag = partnerTags[index % partnerTags.length];
+
+        return (
+          <div
+            key={partner}
+            ref={(element) => { itemRefs.current[index] = element; }}
+            role="listitem"
+            onMouseEnter={() => energizePartner(index)}
+            onMouseLeave={() => { if (nodesRef.current[index]) nodesRef.current[index].targetScale = 1; }}
+            className="absolute left-0 top-0 flex items-center justify-center px-3 text-center will-change-transform"
+          >
+            <FestivalTag color={tag.color} rotation={tag.rotation} />
+            <span className={`relative max-w-[86%] whitespace-pre-line break-words font-playful text-sm leading-[1.05] ${tag.text} sm:text-base`}>{partner}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
 
 /* const countdownUnits = [
   { label: "jours", className: "bg-festival-blue text-white" },
@@ -101,17 +259,8 @@ const Index = () => {
           <div className="container-wide">
             <span className="mb-8 block h-2 w-24 rounded-full bg-festival-green" aria-hidden="true" />
             <h2 className="text-headline">Nos partenaires</h2>
-            <div className="mt-10 grid grid-cols-2 gap-x-8 gap-y-8 md:grid-cols-3 lg:grid-cols-6">
-              {partners.map((partner, index) => {
-                const brush = partnerBrushes[index % partnerBrushes.length];
-
-                return (
-                  <div key={partner} className="relative flex min-h-24 items-center justify-center px-3 text-center">
-                    <WatercolorStroke rotation={brush.rotation} viewBox={brush.viewBox} />
-                    <span className="relative font-display text-base font-bold leading-tight tracking-wide text-black sm:text-md">{partner}</span>
-                  </div>
-                );
-              })}
+            <div className="mt-12">
+              <PartnerCloud />
             </div>
           </div>
         </section>

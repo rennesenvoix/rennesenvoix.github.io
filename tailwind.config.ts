@@ -21,6 +21,7 @@ export default {
     extend: {
       fontFamily: {
         display: ['League Spartan', 'system-ui', 'sans-serif'],
+        playful: ['Concert One', 'system-ui', 'sans-serif'],
         serif: ['Playfair Display', 'Georgia', 'serif'],
         sans: ['League Spartan', 'system-ui', 'sans-serif'],
       },

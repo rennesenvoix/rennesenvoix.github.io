@@ -192,6 +192,38 @@
     animation: marquee 30s linear infinite;
   }
 
+  .attendance-map-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .attendance-map-panel,
+  .attendance-map-legend {
+    width: 100%;
+  }
+
+  .attendance-map-graphic svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (min-width: 768px) {
+    .attendance-map-layout {
+      flex-direction: row;
+      align-items: flex-start;
+    }
+
+    .attendance-map-panel {
+      flex: 0 0 calc(75% - 0.75rem);
+    }
+
+    .attendance-map-legend {
+      flex: 0 0 calc(25% - 0.75rem);
+    }
+  }
+
   @keyframes fade-in {
     from {
       opacity: 0;

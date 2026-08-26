@@ -26,11 +26,11 @@ export function Footer() {
           <div className="space-y-3">
             <p className="text-label">Avec leur soutien</p>
             <div className="flex flex-wrap items-center gap-3">
-              <div className="flex h-16 w-40 items-center justify-center overflow-hidden border border-border bg-white p-2">
+              <div className="flex h-28 w-50 max-w-80 items-center justify-center overflow-hidden border border-border bg-white p-2">
                 <img src={financeur1} alt="Logo du financeur CCLL" className="h-full w-full object-contain" />
               </div>
-              <div className="flex h-16 w-40 items-center justify-center border border-border bg-white px-3 text-center font-display text-xs font-bold leading-tight text-[#262323]">
-                Commune de Rennes-sur-Loue
+              <div className="flex h-28 w-50 max-w-80 items-center justify-center border border-border bg-white px-5 text-center font-display text-xl font-bold leading-tight text-[#262323]">
+                Commune de <br /> Rennes sur Loue
               </div>
             </div>
           </div>

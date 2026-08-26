@@ -1,6 +1,7 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import groupeColore from "@/assets/groupe-coloré.png";
+import titleLogo from "@/assets/Titre ReV.png";
 import { Link } from "react-router-dom";
 
 // Compte à rebours temporairement désactivé — à réactiver pour la prochaine édition.
@@ -33,7 +34,9 @@ const Index = () => {
         <section className="relative overflow-hidden">
           <img src={groupeColore} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-10" />
           <div className="container-wide relative py-20 md:py-28">
-            <h1 className="mt-5 text-display">Rennes en Voix</h1>
+            <h1 className="mt-5 max-w-[600px]">
+              <img src={titleLogo} alt="Rennes en Voix" className="h-auto w-full" />
+            </h1>
             {/*
               Compte à rebours temporairement désactivé — à réactiver pour la prochaine édition.
 

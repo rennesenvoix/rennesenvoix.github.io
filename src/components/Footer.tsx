@@ -29,7 +29,7 @@ export function Footer() {
               <div className="flex h-28 w-50 max-w-80 items-center justify-center overflow-hidden border border-border bg-white p-2">
                 <img src={financeur1} alt="Logo du financeur CCLL" className="h-full w-full object-contain" />
               </div>
-              <div className="flex h-28 w-50 max-w-80 items-center justify-center border border-border bg-white px-5 text-center font-display text-xl font-bold leading-tight text-[#262323]">
+              <div className="flex h-28 w-50 max-w-80 items-center justify-center border border-border bg-white px-5 text-center font-display text-base font-bold leading-tight text-[#262323]">
                 Commune de <br /> Rennes sur Loue
               </div>
             </div>

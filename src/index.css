@@ -192,6 +192,62 @@
     animation: marquee 30s linear infinite;
   }
 
+  .partner-card {
+    opacity: 0;
+  }
+
+  .partner-card-visible {
+    animation: partner-card-in 0.8s cubic-bezier(0.2, 0.9, 0.25, 1.25) both;
+  }
+
+  .partner-name {
+    -webkit-text-stroke: 0.65px rgb(255 252 240 / 0.9);
+    paint-order: stroke fill;
+    text-shadow:
+      0 0 2px rgb(255 252 240 / 0.95),
+      0 1px 3px rgb(255 252 240 / 0.55);
+  }
+
+  .partner-emoji {
+    display: inline-block;
+    font-size: 1.35em;
+    line-height: 1;
+    -webkit-text-stroke: 0;
+    text-shadow: none;
+  }
+
+  .partner-brush {
+    filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.18));
+    mask-image: url("./assets/partenaires/brush-masks/brush-1.png");
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: 100% 100%;
+    -webkit-mask-image: url("./assets/partenaires/brush-masks/brush-1.png");
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+  }
+
+  .partner-brush-2 {
+    mask-image: url("./assets/partenaires/brush-masks/brush-2.png");
+    -webkit-mask-image: url("./assets/partenaires/brush-masks/brush-2.png");
+  }
+
+  .partner-brush-3 {
+    mask-image: url("./assets/partenaires/brush-masks/brush-3.png");
+    -webkit-mask-image: url("./assets/partenaires/brush-masks/brush-3.png");
+  }
+
+  .partner-brush-4 {
+    mask-image: url("./assets/partenaires/brush-masks/brush-4.png");
+    -webkit-mask-image: url("./assets/partenaires/brush-masks/brush-4.png");
+  }
+
+  .partner-brush-5 {
+    mask-image: url("./assets/partenaires/brush-masks/brush-5.png");
+    -webkit-mask-image: url("./assets/partenaires/brush-masks/brush-5.png");
+  }
+
   .attendance-map-layout {
     display: flex;
     flex-direction: column;
@@ -261,6 +317,30 @@
     }
     to {
       transform: translateX(-50%);
+    }
+  }
+
+  @keyframes partner-card-in {
+    0% {
+      opacity: 0;
+      transform: translateY(50px) rotate(-4deg) scale(0.82);
+    }
+    72% {
+      opacity: 1;
+      transform: translateY(-7px) rotate(1deg) scale(1.03);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .partner-card,
+    .partner-card-visible {
+      animation: none;
+      opacity: 1;
+      transform: none;
     }
   }
 }

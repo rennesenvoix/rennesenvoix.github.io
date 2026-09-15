@@ -1,25 +1,29 @@
+import { lazy, Suspense } from "react";
 import { HashRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
-import ContactPage from "./pages/ContactPage";
-import ProgrammingPage from "./pages/ProgrammingPage";
-import SupportPage from "./pages/SupportPage";
-import MediaPage from "./pages/MediaPage";
-import NotFound from "./pages/NotFound";
-import FestivalPage from "./pages/FestivalPage";
-import AttendancePage from "./pages/AttendancePage";
+
+const ContactPage = lazy(() => import("./pages/ContactPage"));
+const ProgrammingPage = lazy(() => import("./pages/ProgrammingPage"));
+const SupportPage = lazy(() => import("./pages/SupportPage"));
+const MediaPage = lazy(() => import("./pages/MediaPage"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const FestivalPage = lazy(() => import("./pages/FestivalPage"));
+const AttendancePage = lazy(() => import("./pages/AttendancePage"));
 
 const App = () => (
   <HashRouter>
-    <Routes>
-      <Route path="/" element={<Index />} />
-      <Route path="/le-festival" element={<FestivalPage />} />
-      <Route path="/contact" element={<ContactPage />} />
-      <Route path="/programmation" element={<ProgrammingPage />} />
-      <Route path="/soutien" element={<SupportPage />} />
-      <Route path="/medias" element={<MediaPage />} />
-      <Route path="/frequentation" element={<AttendancePage />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-background text-foreground">Chargement…</div>}>
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/le-festival" element={<FestivalPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/programmation" element={<ProgrammingPage />} />
+        <Route path="/soutien" element={<SupportPage />} />
+        <Route path="/medias" element={<MediaPage />} />
+        <Route path="/frequentation" element={<AttendancePage />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
   </HashRouter>
 );
 

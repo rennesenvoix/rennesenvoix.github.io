@@ -27,7 +27,7 @@ const FestivalPage = () => (
                 allowFullScreen
               />
             </div>
-            <p className="mx-auto mt-2 max-w-[260px] text-right text-xs text-foreground/55">Vidéo © Louise Guyon</p>
+            <p className="mx-auto mt-2 max-w-[260px] text-right text-xs text-foreground/70">Vidéo © Louise Guyon</p>
           </article>
 
           <article className="w-full rounded-2xl border border-festival-orange/30 bg-card p-2 shadow-sm md:w-auto">
@@ -42,7 +42,7 @@ const FestivalPage = () => (
                 allowFullScreen
               />
             </div>
-            <p className="mt-2 text-right text-xs text-foreground/55">Vidéo © Quentin Trigodet</p>
+            <p className="mt-2 text-right text-xs text-foreground/70">Vidéo © Quentin Trigodet</p>
           </article>
         </div>
       </div>

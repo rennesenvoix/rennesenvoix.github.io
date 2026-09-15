@@ -43,7 +43,7 @@ export function CopyButton({ value, label, successMessage }: CopyButtonProps) {
       <button
         type="button"
         onClick={handleCopy}
-        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border text-foreground/65 transition-colors hover:border-festival-purple hover:text-festival-purple"
+        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border text-foreground/75 transition-colors hover:border-festival-purple hover:text-festival-purple"
         aria-label={label}
         title={label}
       >

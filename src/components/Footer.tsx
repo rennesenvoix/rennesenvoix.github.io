@@ -9,7 +9,7 @@ export function Footer() {
     // Regroupe l'identité du festival, les liens utiles et les réseaux sociaux.
     <footer className="border-t border-border">
       <div className="container-wide py-12 md:py-16">
-        <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4 lg:items-start">
           <div className="max-w-sm space-y-3">
             <p className="font-display text-2xl font-bold">Rennes en Voix</p>
             <p className="text-sm text-foreground/70 leading-relaxed">
@@ -87,7 +87,7 @@ export function Footer() {
           </div>
         </div>
 
-        <p className="mt-12 text-xs text-foreground/60">
+        <p className="mt-12 text-xs text-foreground/70">
           © 2026 Rennes en Voix. Tous droits réservés.
         </p>
       </div>

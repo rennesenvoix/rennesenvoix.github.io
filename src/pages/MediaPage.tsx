@@ -50,6 +50,28 @@ const groups2026 = Object.entries(
 
 const photos2026 = groups2026.flatMap((group) => group.photos);
 
+const photoEntries2025 = Object.entries(
+  import.meta.glob<string>("/src/assets/2025/**/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", {
+    eager: true,
+    query: "?url",
+    import: "default",
+  }),
+)
+  .filter(([path]) => !path.split("/").pop()?.startsWith("._"))
+  .sort(([firstPath], [secondPath]) => firstPath.localeCompare(secondPath, "fr", { numeric: true }));
+
+const groups2025 = Object.entries(
+  photoEntries2025.reduce<Record<string, string[]>>((groups, [path, url]) => {
+    const groupName = path.match(/\/2025\/([^/]+)\//)?.[1] ?? "Autres photos";
+    groups[groupName] = [...(groups[groupName] ?? []), url];
+    return groups;
+  }, {}),
+)
+  .map(([name, photos]) => ({ name, photos: shuffle(photos) }))
+  .sort((firstGroup, secondGroup) => firstGroup.name.localeCompare(secondGroup.name, "fr"));
+
+const photos2025 = groups2025.flatMap((group) => group.photos);
+
 const getGroupId = (year: string, groupName: string) =>
   `gallery-${year}-${groupName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`;
 
@@ -83,25 +105,19 @@ const placeholderPhotoUrls = [
 const galleryYears = [
   {
     year: "2026",
-    description: "Retour en images sur la 3e édition du festival · Photos © Noé Michaud — Arche Production",
-    videoUrl: "https://www.youtube.com/embed/n21b2hTy0OQ",
-    videoFormat: "portrait",
+    description: "Photos © Noé Michaud — Arche Production",
     groups: groups2026,
     photos: photos2026,
   },
   {
     year: "2025",
-    description: "Quelques instants capturés lors de la deuxième édition de Rennes en Voix",
-    videoUrl: "https://www.youtube.com/embed/8eUK53WOZR8",
-    videoFormat: "landscape",
-    groups: [{ name: "Souvenirs de l'édition", photos: placeholderPhotoUrls.slice(7, 14) }],
-    photos: placeholderPhotoUrls.slice(7, 14),
+    description: "Nana Sila et Sikstêt en images.",
+    groups: groups2025,
+    photos: photos2025,
   },
   {
     year: "2024",
-    description: "Les premiers souvenirs du festival et de sa toute première édition",
-    videoUrl: undefined,
-    videoFormat: "landscape",
+    description: "Retour sur la première édition.",
     groups: [{ name: "Souvenirs de l'édition", photos: placeholderPhotoUrls.slice(14) }],
     photos: placeholderPhotoUrls.slice(14),
   },
@@ -166,7 +182,7 @@ const ScrollingGallery = ({ groupName, groupPhotos, year, yearIndex, yearPhotos,
 
   return (
     <div
-      className="gallery-scroll-viewport relative min-w-0 w-[calc(100%+1.5rem)] max-w-none space-y-1 md:w-full md:max-w-full"
+      className="gallery-scroll-viewport relative min-w-0 max-w-none space-y-1"
       onTouchStart={() => setIsTouching(true)}
       onTouchEnd={finishTouch}
       onTouchCancel={finishTouch}
@@ -232,6 +248,9 @@ const timelineYears = galleryYears.map((gallery, yearIndex) => ({ gallery, yearI
 
 const MediaPage = () => {
   const [selectedPhoto, setSelectedPhoto] = useState<SelectedPhoto | null>(null);
+  const [activeGroupId, setActiveGroupId] = useState(getGroupId(galleryYears[0].year, galleryYears[0].groups[0].name));
+  const [imageScale, setImageScale] = useState(1);
+  const touchGestureRef = useRef<{ startX: number; startY: number; startDistance: number; startScale: number; pinching: boolean } | null>(null);
   const { activeIndex, scrollToSection, sectionRefs } = useTimelineSections(galleryYears.length);
   const selectedGallery = selectedPhoto === null ? null : galleryYears[selectedPhoto.yearIndex];
 
@@ -271,18 +290,80 @@ const MediaPage = () => {
     };
   }, [selectedPhoto]);
 
+  useEffect(() => {
+    const groupElements = galleryYears.flatMap((gallery) => gallery.groups.map((group) => document.getElementById(getGroupId(gallery.year, group.name)))).filter(Boolean) as HTMLElement[];
+    const observer = new IntersectionObserver((entries) => {
+      const visibleEntry = entries.find((entry) => entry.isIntersecting);
+      if (visibleEntry) setActiveGroupId(visibleEntry.target.id);
+    }, { rootMargin: "-25% 0px -60% 0px", threshold: 0 });
+
+    groupElements.forEach((element) => observer.observe(element));
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    setImageScale(1);
+  }, [selectedPhoto?.photoIndex, selectedPhoto?.yearIndex]);
+
+  const handleGroupNavigation = (year: string, groupName: string) => {
+    setActiveGroupId(getGroupId(year, groupName));
+    scrollToGroup(year, groupName);
+  };
+
+  const handlePhotoTouchStart = (event: React.TouchEvent<HTMLImageElement>) => {
+    event.stopPropagation();
+    const firstTouch = event.touches[0];
+    if (!firstTouch) return;
+
+    if (event.touches.length === 2) {
+      const secondTouch = event.touches[1];
+      touchGestureRef.current = {
+        startX: firstTouch.clientX,
+        startY: firstTouch.clientY,
+        startDistance: Math.hypot(secondTouch.clientX - firstTouch.clientX, secondTouch.clientY - firstTouch.clientY),
+        startScale: imageScale,
+        pinching: true,
+      };
+      return;
+    }
+
+    touchGestureRef.current = { startX: firstTouch.clientX, startY: firstTouch.clientY, startDistance: 0, startScale: imageScale, pinching: false };
+  };
+
+  const handlePhotoTouchMove = (event: React.TouchEvent<HTMLImageElement>) => {
+    const gesture = touchGestureRef.current;
+    if (!gesture?.pinching || event.touches.length !== 2) return;
+    event.preventDefault();
+    const [firstTouch, secondTouch] = [event.touches[0], event.touches[1]];
+    const distance = Math.hypot(secondTouch.clientX - firstTouch.clientX, secondTouch.clientY - firstTouch.clientY);
+    setImageScale(Math.min(4, Math.max(1, gesture.startScale * (distance / gesture.startDistance))));
+  };
+
+  const handlePhotoTouchEnd = (event: React.TouchEvent<HTMLImageElement>) => {
+    event.stopPropagation();
+    const gesture = touchGestureRef.current;
+    touchGestureRef.current = null;
+    if (!gesture || gesture.pinching || imageScale > 1 || !event.changedTouches[0]) return;
+
+    const horizontalMovement = event.changedTouches[0].clientX - gesture.startX;
+    const verticalMovement = event.changedTouches[0].clientY - gesture.startY;
+    if (Math.abs(horizontalMovement) < 50 || Math.abs(horizontalMovement) <= Math.abs(verticalMovement)) return;
+    if (horizontalMovement < 0) showNext();
+    else showPrevious();
+  };
+
   return (
     <div className="flex min-h-screen max-w-full flex-col overflow-x-clip bg-background text-foreground">
       <Header />
       <main className="relative min-w-0 max-w-full flex-1 overflow-x-clip pt-16 md:pt-20">
         <img src={brushHero1} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25" />
-        <div className="container-wide relative py-12 md:py-28">
-          <span className="mb-8 block h-2 w-24 rounded-full bg-festival-orange" aria-hidden="true" />
+        <div className="container-wide relative pb-12 pt-6 md:pb-28 md:pt-10">
+          <span className="mb-4 block h-2 w-24 rounded-full bg-festival-orange" aria-hidden="true" />
           <h1 className="text-headline">Souvenez-vous</h1>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-foreground/80">Retrouvez les moments forts de Rennes en Voix, édition après édition.</p>
 
           <div className="mt-10 grid min-w-0 max-w-full gap-8 md:mt-14 lg:grid-cols-[12rem_minmax(0,1fr)] lg:gap-10">
-            <nav className="sticky top-16 z-20 -mx-6 self-start border-y border-border bg-background/95 px-6 py-2 shadow-sm backdrop-blur lg:top-28 lg:mx-0 lg:rounded-xl lg:border lg:p-4" aria-label="Éditions de la galerie">
+            <nav className="sticky top-16 z-20 -mx-6 self-start border-y border-border bg-background/95 px-6 py-2 shadow-sm backdrop-blur lg:top-28 lg:mx-0 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto lg:rounded-xl lg:border lg:p-4" aria-label="Éditions de la galerie">
               <ol className="relative flex lg:hidden">
                 <span className="absolute left-[16.666%] right-[16.666%] top-[15px] h-0.5 bg-festival-blue" aria-hidden="true" />
                 {timelineYears.map(({ gallery, yearIndex }) => {
@@ -335,10 +416,11 @@ const MediaPage = () => {
                           <li key={group.name}>
                             <button
                               type="button"
-                              onClick={() => scrollToGroup(gallery.year, group.name)}
-                              className="relative w-full py-1.5 text-left text-sm leading-tight text-foreground/65 transition-colors hover:text-festival-purple focus-visible:outline-none focus-visible:text-festival-purple"
+                              onClick={() => handleGroupNavigation(gallery.year, group.name)}
+                              aria-current={activeGroupId === getGroupId(gallery.year, group.name) ? "location" : undefined}
+                              className={`relative w-full py-1.5 text-left text-sm leading-tight transition-colors hover:text-festival-purple focus-visible:outline-none focus-visible:text-festival-purple ${activeGroupId === getGroupId(gallery.year, group.name) ? "font-bold text-festival-purple" : "text-foreground/75"}`}
                             >
-                              <span className="absolute -left-[1.18rem] top-3 h-2 w-2 rounded-full bg-festival-orange" aria-hidden="true" />
+                              <span className={`absolute -left-[1.18rem] top-3 rounded-full bg-festival-orange ${activeGroupId === getGroupId(gallery.year, group.name) ? "h-3 w-3 -translate-x-0.5 -translate-y-0.5 ring-2 ring-background" : "h-2 w-2"}`} aria-hidden="true" />
                               {group.name}
                             </button>
                           </li>
@@ -354,8 +436,9 @@ const MediaPage = () => {
                   <button
                     key={group.name}
                     type="button"
-                    onClick={() => scrollToGroup(galleryYears[activeIndex].year, group.name)}
-                    className="shrink-0 rounded-full border border-festival-purple/30 bg-white px-3 py-1.5 text-xs font-semibold text-festival-purple"
+                    onClick={() => handleGroupNavigation(galleryYears[activeIndex].year, group.name)}
+                    aria-current={activeGroupId === getGroupId(galleryYears[activeIndex].year, group.name) ? "location" : undefined}
+                    className={`shrink-0 rounded-full border border-festival-purple px-3 py-1.5 text-xs font-semibold ${activeGroupId === getGroupId(galleryYears[activeIndex].year, group.name) ? "bg-festival-purple text-white" : "bg-white text-festival-purple"}`}
                   >
                     {group.name}
                   </button>
@@ -376,18 +459,12 @@ const MediaPage = () => {
                   <h2 id={`gallery-title-${gallery.year}`} className="mt-6 font-display text-3xl font-bold md:text-4xl">Édition {gallery.year}</h2>
                   <p className="mt-3 max-w-2xl text-foreground/75">{gallery.description}</p>
 
-                  {gallery.videoUrl && (
-                    <div className={`mx-auto mt-8 overflow-hidden rounded-2xl border border-border bg-black ${gallery.videoFormat === "portrait" ? "aspect-[9/16] w-48 sm:w-56" : "aspect-video w-full max-w-lg"}`}>
-                      <iframe className="h-full w-full" src={gallery.videoUrl} title={`Vidéo Rennes en Voix ${gallery.year}`} loading="lazy" allowFullScreen />
-                    </div>
-                  )}
-
                   <div className="mt-8 min-w-0 max-w-full space-y-10 md:mt-10 md:space-y-14">
                     {gallery.groups.map((group) => (
                       <section
                         key={group.name}
                         id={getGroupId(gallery.year, group.name)}
-                        className="min-w-0 max-w-full scroll-mt-28 overflow-visible md:overflow-hidden"
+                        className="min-w-0 max-w-full scroll-mt-28 overflow-visible"
                         aria-labelledby={`${getGroupId(gallery.year, group.name)}-title`}
                       >
                         <div className="mb-3 border-b border-border pb-2 md:mb-5 md:pb-3">
@@ -418,9 +495,17 @@ const MediaPage = () => {
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90 px-2 py-16 md:p-4" role="dialog" aria-modal="true" aria-label={`Galerie photo ${selectedGallery.year}`} onClick={() => setSelectedPhoto(null)}>
           <button type="button" onClick={() => setSelectedPhoto(null)} aria-label="Fermer la galerie" className="absolute right-3 top-3 z-10 rounded-full bg-white/90 p-2 text-black md:right-5 md:top-5"><X size={22} /></button>
           <button type="button" onClick={(event) => { event.stopPropagation(); showPrevious(); }} aria-label="Photo précédente" className="absolute bottom-4 left-[calc(50%_-_4rem)] z-10 rounded-full bg-white/90 p-2 text-black md:bottom-auto md:left-8"><ChevronLeft size={26} /></button>
-          <img src={selectedGallery.photos[selectedPhoto.photoIndex]} alt={`Rennes en Voix ${selectedGallery.year}, photo ${selectedPhoto.photoIndex + 1}`} className="max-h-full max-w-full object-contain md:max-h-[90vh] md:max-w-[90vw]" onClick={(event) => event.stopPropagation()} />
+          <img
+            src={selectedGallery.photos[selectedPhoto.photoIndex]}
+            alt={`Rennes en Voix ${selectedGallery.year}, photo ${selectedPhoto.photoIndex + 1}`}
+            className="max-h-full max-w-full touch-none object-contain transition-transform duration-150 md:max-h-[90vh] md:max-w-[90vw]"
+            style={{ transform: `scale(${imageScale})` }}
+            onClick={(event) => event.stopPropagation()}
+            onTouchStart={handlePhotoTouchStart}
+            onTouchMove={handlePhotoTouchMove}
+            onTouchEnd={handlePhotoTouchEnd}
+          />
           <button type="button" onClick={(event) => { event.stopPropagation(); showNext(); }} aria-label="Photo suivante" className="absolute bottom-4 right-[calc(50%_-_4rem)] z-10 rounded-full bg-white/90 p-2 text-black md:bottom-auto md:right-8"><ChevronRight size={26} /></button>
-          <span className="absolute bottom-5 rounded-full bg-black/70 px-3 py-1 text-xs text-white">Édition {selectedGallery.year} · {selectedPhoto.photoIndex + 1} / {selectedGallery.photos.length}</span>
         </div>
       )}
 

@@ -187,8 +187,8 @@
   }
 
   .gallery-scroll-viewport {
-    width: 100%;
-    max-width: 100%;
+    width: calc(100% + 1.5rem);
+    max-width: none;
     overflow: hidden;
   }
 
@@ -247,6 +247,10 @@
   }
 
   @media (min-width: 768px) {
+    .gallery-scroll-viewport {
+      width: calc(100% + 3rem);
+    }
+
     .attendance-map-layout {
       flex-direction: row;
       align-items: stretch;
@@ -271,6 +275,18 @@
     .attendance-map-graphic svg {
       height: 100%;
       width: 100%;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .gallery-scroll-viewport {
+      width: calc(100% + 5rem);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .gallery-scroll-viewport {
+      width: calc(100% + 8rem);
     }
   }
 

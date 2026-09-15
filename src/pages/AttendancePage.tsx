@@ -65,8 +65,8 @@ const AttendancePage = () => {
             </aside>
           </div>
 
-          <div className="mt-5 border-t border-border pt-4 text-center text-xs text-foreground/50">
-            <p className="font-semibold text-foreground/65">Sources de données</p>
+          <div className="mt-5 border-t border-border pt-4 text-center text-xs text-foreground/70">
+            <p className="font-semibold text-foreground/75">Sources de données</p>
             <p className="mt-1">
               Codes postaux : <a className="underline underline-offset-2 hover:text-foreground" href="https://www.data.gouv.fr/datasets/codes-postaux-de-france-metropolitaine" target="_blank" rel="noreferrer">fond de carte ouvert</a>
               <span className="mx-2" aria-hidden="true">·</span>

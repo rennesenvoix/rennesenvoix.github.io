@@ -6,9 +6,6 @@ import { Volume2, VolumeX } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-// Compte à rebours temporairement désactivé — à réactiver pour la prochaine édition.
-// import { useEffect, useState } from "react";
-// const festivalDate = new Date("2027-07-03T18:00:00+02:00");
 const partnerLogoModules = import.meta.glob<string>("/src/assets/partenaires/Logos/*.{png,jpg,jpeg,webp,svg}", {
   eager: true,
   import: "default",
@@ -75,14 +72,6 @@ const PartnerLogos = () => {
   );
 };
 
-/* const countdownUnits = [
-  { label: "jours", className: "bg-festival-blue text-white" },
-  { label: "heures", className: "bg-festival-orange text-black" },
-  { label: "minutes", className: "bg-festival-purple text-white" },
-  { label: "secondes", className: "bg-festival-green text-black" },
-] as const;
-*/
-
 const Index = () => {
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const videoIframeRef = useRef<HTMLIFrameElement>(null);
@@ -122,32 +111,15 @@ const Index = () => {
           <img src={groupeColore} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-10" />
           <div className="container-wide relative w-full pb-8 pt-4 md:py-10">
             <div className="grid items-center gap-5 md:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)] md:gap-8 lg:gap-12">
-              <h1 className="w-full max-w-[540px]">
+              <h1 className="w-full max-w-[460px] md:max-w-[540px]">
                 <img src={titleLogo} alt="Rennes en Voix" className="h-auto w-full" />
               </h1>
-            {/*
-              Compte à rebours temporairement désactivé — à réactiver pour la prochaine édition.
-
-              <p className="mt-6 max-w-2xl font-display text-xl font-semibold md:text-2xl">Prochaine édition dans :</p>
-              <div className="mt-5 grid max-w-2xl grid-cols-4 gap-3 md:gap-5" aria-label="Compte à rebours avant le festival">
-                {[days, hours, minutes, seconds].map((value, index) => {
-                  const unit = countdownUnits[index];
-
-                  return (
-                    <div key={unit.label} className={`rounded-xl p-4 text-center backdrop-blur-sm md:p-6 ${unit.className}`}>
-                      <strong className="block font-display text-3xl md:text-5xl">{String(value).padStart(2, "0")}</strong>
-                      <span className="mt-1 block text-[9px] uppercase tracking-widest opacity-80">{unit.label}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            */}
               <div>
                 <div className="border-l-4 border-festival-orange pl-5 md:pl-7">
                   <p className="font-display text-4xl font-extrabold uppercase leading-[0.95] tracking-tight text-festival-purple sm:text-5xl md:text-5xl lg:text-6xl">
                     Samedi 3 juillet 2027
                   </p>
-                  <p className="mt-3 text-base font-medium text-foreground/65 md:text-xl">
+                  <p className="mt-3 text-base font-medium text-foreground/75 md:text-xl">
                     L’Orangerie · Rennes-sur-Loue
                   </p>
                 </div>
@@ -178,7 +150,7 @@ const Index = () => {
                 </div>
               </div>
               <div className="relative flex w-11 shrink-0 items-center justify-center py-1">
-                <p className="absolute left-0 top-1 -translate-x-3 whitespace-nowrap text-xs text-foreground/55 [writing-mode:vertical-rl]">Vidéo © Louise Guyon</p>
+                <p className="absolute left-0 top-1 -translate-x-3 whitespace-nowrap text-xs text-foreground/70 [writing-mode:vertical-rl]">Vidéo © Louise Guyon</p>
                 <button
                   type="button"
                   onClick={toggleVideoSound}
@@ -193,12 +165,17 @@ const Index = () => {
             </div>
             <div className="px-3 py-5 md:px-0 md:py-4 md:pr-5">
               <h2 className="font-display text-3xl font-bold leading-tight md:text-4xl">Un festival vocal à Rennes-sur-Loue</h2>
-              <p className="mt-4 max-w-2xl text-lg leading-relaxed text-foreground/75">
+              <p className="mt-4 max-w-2xl text-lg leading-relaxed text-foreground/80">
                 Des groupes vocaux aux univers variés se retrouvent à l’Orangerie pour une soirée concert dans un cadre atypique et une ambiance sans prétention !
               </p>
-              <Link to="/le-festival" className="mt-5 inline-flex rounded-full border-2 border-festival-purple px-6 py-2.5 text-sm font-bold uppercase tracking-wider text-festival-purple transition-colors hover:bg-festival-purple hover:text-white">
-                Découvrir le festival
-              </Link>
+              <div className="mt-5 flex flex-wrap items-center gap-5">
+                <Link to="/le-festival" className="inline-flex rounded-full border-2 border-festival-purple px-6 py-2.5 text-sm font-bold uppercase tracking-wider text-festival-purple transition-colors hover:bg-festival-purple hover:text-white">
+                  Découvrir le festival
+                </Link>
+                <Link to="/medias" className="text-sm font-semibold text-festival-purple underline decoration-festival-purple/40 underline-offset-4 transition-colors hover:decoration-festival-purple">
+                  Retour en images →
+                </Link>
+              </div>
             </div>
           </div>
         </section>

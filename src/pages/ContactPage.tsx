@@ -19,7 +19,7 @@ const ContactPage = () => {
           <span className="mb-8 block h-2 w-24 rounded-full bg-festival-red" aria-hidden="true" />
           <h1 className="text-headline">Infos</h1>
           <p className="mt-4 max-w-2xl text-base md:text-lg text-foreground/80">
-            Une question sur le festival ou la programmation ? Écrivez-nous.
+            Une question sur le festival ou la programmation ? Écrivez-nous !
           </p>
 
           {/* Coordonnées, informations pratiques et localisation du festival. */}

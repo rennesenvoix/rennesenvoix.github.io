@@ -15,7 +15,7 @@ const postcodeVisits = new Map([
   ["39240", 1], ["39800", 1],
 ].map(([postcode, visitors]) => [postcode, Math.round(visitors * attendanceScale)]));
 const maxPostcodeVisitors = Math.max(...postcodeVisits.values());
-const mappedDepartmentPrefixes = new Set(["21", "25", "39", "70", "90"]);
+const mappedDepartmentPrefixes = new Set(["25", "39", "70", "90"]);
 // Le fichier postal comporte un léger écart de référence par rapport aux
 // contours administratifs Lambert-93. La correction est appliquée aux
 // coordonnées source, avant le calcul de l'emprise de la carte.
@@ -102,7 +102,6 @@ const coordinate = ([x, y]) => [
 ];
 const [rennesLoueX, rennesLoueY] = coordinate(toLambert93([5.8609, 47.0168]));
 const cityMarkers = [
-  ["Dijon", 5.0415, 47.322],
   ["Besançon", 6.025, 47.2378],
   ["Lons-le-Saunier", 5.5557, 46.6757],
   ["Vesoul", 6.1636, 47.6236],
@@ -128,5 +127,5 @@ const entries = polygons.map(({ postcode, rings }) => {
 
 const overlayPath = (rings) => rings.map(boundaryPathFor).join("");
 const blackCityMarkers = cityMarkers.map(({ name, position: [x, y] }) => `<g class="map-marker" aria-label="${name}"><title>${name}</title><circle class="map-marker-outer city-marker-outer" cx="${x}" cy="${y}" r="5" fill="#111111" stroke="white" stroke-width="2"/><circle class="map-marker-center city-marker-center" cx="${x}" cy="${y}" r="1.2" fill="white"/></g>`).join("");
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="title description"><title id="title">Franche-Comté et Côte-d’Or par code postal</title><desc id="description">Carte de la Franche-Comté et de la Côte-d’Or découpée par code postal. Les zones colorées correspondent aux codes postaux représentés. Les contours renforcés indiquent les départements et la Communauté de communes Loue-Lison.</desc><g class="postcode-lines" stroke="#000000" stroke-opacity="0.5" stroke-width="0.55" stroke-linejoin="round">${entries}</g><path class="department-border" d="${overlayPath(departmentRings)}" fill="none" stroke="#111111" stroke-opacity="0.9" stroke-width="2.4" stroke-linejoin="round"/><path class="loue-lison-border" d="${overlayPath(loueLisonRings)}" fill="none" stroke="hsl(145 63% 35%)" stroke-width="6" stroke-linejoin="round"/><g class="map-marker" aria-label="Rennes-sur-Loue"><title>Rennes-sur-Loue</title><circle class="map-marker-outer rennes-marker-outer" cx="${rennesLoueX}" cy="${rennesLoueY}" r="8" fill="hsl(6 78% 57%)" stroke="white" stroke-width="3"/><circle class="map-marker-center rennes-marker-center" cx="${rennesLoueX}" cy="${rennesLoueY}" r="2" fill="white"/></g>${blackCityMarkers}</svg>`;
+const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="title description"><title id="title">Franche-Comté par code postal</title><desc id="description">Carte de la Franche-Comté découpée par code postal. Les zones colorées correspondent aux codes postaux représentés. Les contours renforcés indiquent les départements et la Communauté de communes Loue-Lison.</desc><g class="postcode-lines" stroke="#000000" stroke-opacity="0.5" stroke-width="0.55" stroke-linejoin="round">${entries}</g><path class="department-border" d="${overlayPath(departmentRings)}" fill="none" stroke="#111111" stroke-opacity="0.9" stroke-width="2.4" stroke-linejoin="round"/><path class="loue-lison-border" d="${overlayPath(loueLisonRings)}" fill="none" stroke="hsl(145 63% 35%)" stroke-width="6" stroke-linejoin="round"/><g class="map-marker" aria-label="Rennes-sur-Loue"><title>Rennes-sur-Loue</title><circle class="map-marker-outer rennes-marker-outer" cx="${rennesLoueX}" cy="${rennesLoueY}" r="8" fill="hsl(6 78% 57%)" stroke="white" stroke-width="3"/><circle class="map-marker-center rennes-marker-center" cx="${rennesLoueX}" cy="${rennesLoueY}" r="2" fill="white"/></g>${blackCityMarkers}</svg>`;
 fs.writeFileSync("src/assets/bourgogne-franche-comte-postcodes.svg", svg);

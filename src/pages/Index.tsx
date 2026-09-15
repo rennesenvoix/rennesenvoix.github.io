@@ -23,10 +23,6 @@ const partners = [
   "🛒 Intermarché\nQuingey",
   "🎒 APE – Liesle et Quingey",
   "🐄 GAEC des\nPrés de Rennes",
-  "🏦 Crédit Agricole\nQuingey",
-  "🥩 Boucherie\nFabien Humbert",
-  "🍺 La Bonne Cave",
-  "🛠️ Atomix",
   "🙌 Vous !",
   "✨ Et bien d’autres…",
 ];

@@ -6,8 +6,3 @@ export const navigationItems = [
   { label: "Infos", href: "/contact", isCallToAction: false },
   { label: "Soutenir le festival", href: "/soutien", isCallToAction: true },
 ] as const;
-
-export const footerNavigationItems = [
-  ...navigationItems,
-  { label: "Fréquentation", href: "/frequentation", isCallToAction: false },
-] as const;

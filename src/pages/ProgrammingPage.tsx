@@ -3,25 +3,7 @@ import { Header } from "@/components/Header";
 import { useTimelineSections } from "@/hooks/use-timeline-sections";
 import brushHero1 from "@/assets/brush-hero1.png";
 import { Sparkles } from "lucide-react";
-
-const groups = [
-  { name: "Ensemble 1", style: "Polyphonies du monde", bio: "Un répertoire de chants traditionnels revisités en harmonie a cappella.", photo: "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=1200&auto=format&fit=crop" },
-  { name: "Ensemble 2", style: "Voix contemporaines", bio: "Des voix qui se répondent dans un programme vivant, libre et généreux.", photo: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=1200&auto=format&fit=crop" },
-  { name: "Ensemble 3", style: "Création vocale", bio: "Une proposition professionnelle pour clôturer le festival avec intensité.", photo: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=1200&auto=format&fit=crop" },
-];
-
-const pastGroups = [
-  { name: "Artiste invité 1", style: "Ensemble vocal", bio: "Biographie de l'ensemble invité lors d'une précédente édition de Rennes en Voix.", photo: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200&auto=format&fit=crop" },
-  { name: "Artiste invité 2", style: "Polyphonies a cappella", bio: "Biographie de l'ensemble invité lors d'une précédente édition de Rennes en Voix.", photo: "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=1200&auto=format&fit=crop" },
-  { name: "Artiste invité 3", style: "Création vocale", bio: "Biographie de l'ensemble invité lors d'une précédente édition de Rennes en Voix.", photo: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1200&auto=format&fit=crop" },
-];
-
-const yearPrograms = [
-  { year: "2027", label: "À venir", date: "Samedi 03 juillet 2027", groups },
-  { year: "2026", label: "Programmation 2026", date: "Édition 2026", groups: pastGroups },
-  { year: "2025", label: "Programmation 2025", date: "Édition 2025", groups: pastGroups },
-  { year: "2024", label: "Programmation 2024", date: "Première édition", groups: pastGroups },
-];
+import { type ProgramArtist, yearPrograms } from "@/data/programming";
 
 const cardAccents = [
   { border: "border-festival-orange", surface: "bg-festival-orange", text: "text-festival-orange" },
@@ -32,11 +14,15 @@ const timelinePrograms = yearPrograms.map((program, yearIndex) => ({ program, ye
 const programColors = ["bg-festival-orange", "bg-festival-blue", "bg-festival-purple", "bg-festival-red"] as const;
 
 // Carte verticale réutilisée pour les artistes à venir et les artistes des éditions passées.
-const ArtistCard = ({ group, accent }: { group: (typeof groups)[number]; accent: (typeof cardAccents)[number] }) => (
+const ArtistCard = ({ group, accent }: { group: ProgramArtist; accent: (typeof cardAccents)[number] }) => (
   <article className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border-2 bg-card shadow-lg transition-transform duration-300 hover:-translate-y-1 ${accent.border}`}>
     <span className={`absolute -right-5 -top-5 h-16 w-16 rotate-45 ${accent.surface}`} aria-hidden="true" />
     <div className="relative aspect-[4/3] overflow-hidden border-b-2 border-inherit">
-      <img src={group.photo} alt={`Photo de ${group.name}`} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+      {group.photo ? (
+        <img src={group.photo} alt={`Photo de ${group.name}`} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+      ) : (
+        <div className="flex h-full items-center justify-center bg-muted px-6 text-center text-sm font-semibold text-muted-foreground">Photo à ajouter</div>
+      )}
       <span className={`absolute bottom-3 left-3 flex h-9 w-9 items-center justify-center rounded-full bg-background/95 ${accent.text}`} aria-hidden="true">
         <Sparkles size={18} />
       </span>
@@ -44,12 +30,15 @@ const ArtistCard = ({ group, accent }: { group: (typeof groups)[number]; accent:
     <div className="relative flex flex-1 flex-col p-6">
       <p className={`text-xs font-bold uppercase tracking-[0.18em] ${accent.text}`}>{group.style}</p>
       <h3 className="mt-3 font-display text-2xl font-bold">{group.name}</h3>
+      <p className="mt-2 text-sm font-semibold text-foreground/60">{group.time}</p>
       <p className="mt-4 leading-relaxed text-foreground/75">{group.bio}</p>
-      <div className="mt-6 flex flex-wrap gap-x-4 gap-y-2 text-xs font-semibold uppercase tracking-wider">
-        <a href="https://www.instagram.com/rennesenvoix" target="_blank" rel="noreferrer noopener" className="link-underline">Instagram</a>
-        <a href="https://www.youtube.com" target="_blank" rel="noreferrer noopener" className="link-underline">YouTube</a>
-        <a href="https://example.com" target="_blank" rel="noreferrer noopener" className="link-underline">Site internet</a>
-      </div>
+      {(group.instagram || group.youtube || group.website) && (
+        <div className="mt-6 flex flex-wrap gap-x-4 gap-y-2 text-xs font-semibold uppercase tracking-wider">
+          {group.instagram && <a href={group.instagram} target="_blank" rel="noreferrer noopener" className="link-underline">Instagram</a>}
+          {group.youtube && <a href={group.youtube} target="_blank" rel="noreferrer noopener" className="link-underline">YouTube</a>}
+          {group.website && <a href={group.website} target="_blank" rel="noreferrer noopener" className="link-underline">Site internet</a>}
+        </div>
+      )}
     </div>
   </article>
 );
@@ -108,7 +97,7 @@ const ProgrammingPage = () => {
                   <span className={`block h-2 w-16 rounded-full ${programColors[yearIndex]}`} aria-hidden="true" />
                   <h2 id={`program-title-${program.year}`} className="mt-6 font-display text-2xl font-bold md:text-3xl">{program.label}</h2>
                   <p className="mt-3 text-foreground/75">
-                    {program.date}{program.year === "2027" ? " à l'Orangerie du château de Rennes-sur-Loue." : "."}
+                    {program.date} · {program.location}
                   </p>
                   <div className="mt-8 grid gap-6 md:grid-cols-3">
                     {program.groups.map((group, index) => (

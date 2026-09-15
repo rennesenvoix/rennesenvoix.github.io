@@ -13,6 +13,24 @@ const partnerLogoModules = import.meta.glob<string>("/src/assets/partenaires/Log
   query: "?url",
 });
 
+const normalizeLogoName = (name: string) => name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+const partnerLogoOrder = [
+  "commune de rennes sur loue",
+  "arche prod",
+  "chateau",
+  "au golden gourmand",
+  "gammvert",
+  "saline royale",
+  "intermarche",
+  "qingey liesle ape",
+  "mcf",
+  "gaec",
+  "aux ptits pepins",
+  "communaute loue lison",
+  "val de loue",
+  "coquy orange",
+] as const;
+
 const partnerLogos = Object.entries(partnerLogoModules).map(([path, src]) => ({
   src,
   name: path
@@ -21,13 +39,16 @@ const partnerLogos = Object.entries(partnerLogoModules).map(([path, src]) => ({
     ?.replace(/\.[^.]+$/, "")
     .replace(/^A(?=Comm)/, "")
     .replace(/[_-]+/g, " ") ?? "Partenaire",
-}));
+})).sort((first, second) => (
+  partnerLogoOrder.indexOf(normalizeLogoName(first.name) as typeof partnerLogoOrder[number])
+  - partnerLogoOrder.indexOf(normalizeLogoName(second.name) as typeof partnerLogoOrder[number])
+));
 
 const LogoGroup = ({ logos, duplicate = false }: { logos: typeof partnerLogos; duplicate?: boolean }) => (
   <div className="partner-logo-group" aria-hidden={duplicate || undefined}>
     {logos.map((logo) => (
       <div key={`${duplicate ? "duplicate-" : ""}${logo.src}`} className="partner-logo-item">
-        <img src={logo.src} alt={duplicate ? "" : `Logo de ${logo.name}`} loading="lazy" />
+        <img src={logo.src} alt={duplicate ? "" : `Logo de ${logo.name}`} loading="eager" decoding="async" />
       </div>
     ))}
   </div>

@@ -1,7 +1,7 @@
 import { Instagram, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
-import financeur1 from "@/assets/partenaires/financeur1 - ccll.jpg";
-import { footerNavigationItems } from "@/lib/navigation";
+import financeur1 from "@/assets/partenaires/Logos/Communaute-Loue-Lison.jpg";
+import { navigationItems } from "@/lib/navigation";
 
 export function Footer() {
   return (
@@ -37,7 +37,7 @@ export function Footer() {
 
           <nav aria-label="Liens de bas de page">
             <ul className="space-y-2 text-sm">
-              {footerNavigationItems.map((link) => (
+              {navigationItems.map((link) => (
                 <li key={link.label}>
                   <Link to={link.href} className="link-underline text-foreground/80 hover:text-foreground transition-colors">
                     {link.label}

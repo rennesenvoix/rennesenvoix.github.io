@@ -1,5 +1,6 @@
-import { Instagram, Mail } from "lucide-react";
+import { Instagram, Mail, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
+import { CopyButton } from "@/components/CopyButton";
 import financeur1 from "@/assets/partenaires/Logos/Communaute-Loue-Lison.jpg";
 import { navigationItems } from "@/lib/navigation";
 
@@ -49,27 +50,40 @@ export function Footer() {
 
           <div className="space-y-4">
             <p className="text-label">Nous suivre</p>
-            <div className="flex items-center gap-3">
-              <a
-                href="https://www.instagram.com/rennesenvoix"
-                target="_blank"
-                rel="noreferrer noopener"
-                aria-label="Instagram"
-                className="rounded-full border border-border p-2.5 text-foreground transition-all duration-300 hover:scale-110 hover:border-festival-red hover:text-festival-red"
-              >
-                <Instagram size={18} />
-              </a>
-              <a
-                href="mailto:rennesenvoix@gmail.com"
-                aria-label="Envoyer un email"
-                className="rounded-full border border-border p-2.5 text-foreground transition-all duration-300 hover:scale-110 hover:border-festival-purple hover:text-festival-purple"
-              >
-                <Mail size={18} />
-              </a>
+            <div className="space-y-2.5">
+              <div className="flex items-center gap-3">
+                <a
+                  href="https://www.instagram.com/rennesenvoix"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label="Instagram de Rennes en Voix"
+                  className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border text-foreground transition-all duration-300 hover:scale-105 hover:border-festival-red hover:text-festival-red"
+                >
+                  <Instagram size={18} />
+                </a>
+                <a
+                  href="https://www.youtube.com/@rennesenvoix"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label="YouTube de Rennes en Voix"
+                  className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border text-foreground transition-all duration-300 hover:scale-105 hover:border-festival-red hover:text-festival-red"
+                >
+                  <Youtube size={18} />
+                </a>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border text-festival-red" aria-hidden="true">
+                  <Mail size={18} />
+                </span>
+                <span className="text-sm text-foreground/80">rennesenvoix@gmail.com</span>
+                <CopyButton
+                  value="rennesenvoix@gmail.com"
+                  label="Copier l’adresse e-mail"
+                  successMessage="Adresse e-mail copiée !"
+                />
+              </div>
             </div>
-            <a href="mailto:rennesenvoix@gmail.com" className="block text-sm text-foreground/80 hover:text-foreground">
-              rennesenvoix@gmail.com
-            </a>
           </div>
         </div>
 

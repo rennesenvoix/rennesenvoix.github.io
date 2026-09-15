@@ -23,7 +23,7 @@ export function Header() {
                 key={item.href}
                 to={item.href}
                 className={item.isCallToAction
-                  ? "rounded-full bg-festival-purple px-5 py-2 text-xs font-semibold uppercase tracking-wider text-white transition-transform duration-300 hover:scale-105"
+                  ? "rounded-full border-2 border-festival-purple px-5 py-2 text-xs font-semibold uppercase tracking-wider text-festival-purple transition-colors duration-300 hover:bg-festival-purple hover:text-white"
                   : "text-xs font-sans tracking-widest uppercase text-foreground/70 hover:text-foreground transition-colors"}
               >
                 {item.label}
@@ -52,7 +52,7 @@ export function Header() {
                 to={item.href}
                 onClick={() => setIsMenuOpen(false)}
                 className={item.isCallToAction
-                  ? "mt-2 rounded-full bg-festival-purple px-5 py-3 text-center text-lg font-semibold uppercase tracking-wider text-white"
+                  ? "mt-2 rounded-full border-2 border-festival-purple px-5 py-3 text-center text-lg font-semibold uppercase tracking-wider text-festival-purple transition-colors hover:bg-festival-purple hover:text-white"
                   : "text-2xl font-display font-semibold"}
               >
                 {item.label}

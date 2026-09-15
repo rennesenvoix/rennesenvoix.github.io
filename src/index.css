@@ -131,6 +131,11 @@
     @apply scale-x-100;
   }
 
+  .artist-illumination {
+    @apply pointer-events-none absolute inset-3 border border-current;
+    box-shadow: inset 0 0 0 3px rgb(255 255 255 / 45%);
+  }
+
 }
 
 @layer utilities {

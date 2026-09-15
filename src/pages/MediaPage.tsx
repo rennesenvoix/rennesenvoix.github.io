@@ -166,7 +166,7 @@ const ScrollingGallery = ({ groupName, groupPhotos, year, yearIndex, yearPhotos,
 
   return (
     <div
-      className="gallery-scroll-viewport relative min-w-0 max-w-full space-y-1"
+      className="gallery-scroll-viewport relative min-w-0 w-[calc(100%+1.5rem)] max-w-none space-y-1 md:w-full md:max-w-full"
       onTouchStart={() => setIsTouching(true)}
       onTouchEnd={finishTouch}
       onTouchCancel={finishTouch}
@@ -281,11 +281,35 @@ const MediaPage = () => {
           <h1 className="text-headline">Souvenez-vous</h1>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-foreground/80">Retrouvez les moments forts de Rennes en Voix, édition après édition.</p>
 
-          <div className="mt-10 grid min-w-0 max-w-full gap-8 md:mt-14 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-10">
-            <nav className="sticky top-16 z-20 -mx-6 self-start border-y border-border bg-background/95 px-4 py-2 shadow-sm backdrop-blur lg:top-28 lg:mx-0 lg:rounded-xl lg:border lg:p-4" aria-label="Éditions de la galerie">
-              <ol className="relative flex items-center justify-between lg:block lg:space-y-1">
-                <span className="absolute left-4 right-4 top-1.5 h-px bg-festival-blue lg:hidden" aria-hidden="true" />
-                <span className="absolute bottom-6 left-7 top-6 hidden w-0.5 bg-festival-blue lg:block" aria-hidden="true" />
+          <div className="mt-10 grid min-w-0 max-w-full gap-8 md:mt-14 lg:grid-cols-[12rem_minmax(0,1fr)] lg:gap-10">
+            <nav className="sticky top-16 z-20 -mx-6 self-start border-y border-border bg-background/95 px-6 py-2 shadow-sm backdrop-blur lg:top-28 lg:mx-0 lg:rounded-xl lg:border lg:p-4" aria-label="Éditions de la galerie">
+              <ol className="relative flex lg:hidden">
+                <span className="absolute left-[16.666%] right-[16.666%] top-[15px] h-0.5 bg-festival-blue" aria-hidden="true" />
+                {timelineYears.map(({ gallery, yearIndex }) => {
+                  const isActive = yearIndex === activeIndex;
+
+                  return (
+                    <li key={gallery.year} className="relative z-10 flex flex-1 justify-center">
+                      <button
+                        type="button"
+                        onClick={() => scrollToSection(yearIndex)}
+                        aria-current={isActive ? "true" : undefined}
+                        className="flex flex-col items-center gap-2 text-center text-festival-purple focus:outline-none focus-visible:ring-2 focus-visible:ring-festival-orange focus-visible:ring-offset-2"
+                      >
+                        <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-4 border-background ${isActive ? "bg-festival-orange" : "bg-festival-blue"}`} aria-hidden="true">
+                          <span className="h-2 w-2 rounded-full bg-white" />
+                        </span>
+                        <span className={`rounded-lg border border-festival-purple px-3 py-1.5 font-display text-sm font-bold ${isActive ? "bg-festival-purple text-white shadow-md shadow-festival-purple/20" : "bg-background text-festival-purple"}`}>
+                          {gallery.year}
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ol>
+
+              <ol className="relative hidden space-y-1 lg:block">
+                <span className="absolute bottom-6 left-7 top-6 w-0.5 bg-festival-blue" aria-hidden="true" />
                 {timelineYears.map(({ gallery, yearIndex }) => {
                   const isActive = yearIndex === activeIndex;
 
@@ -295,14 +319,14 @@ const MediaPage = () => {
                         type="button"
                         onClick={() => scrollToSection(yearIndex)}
                         aria-current={isActive ? "true" : undefined}
-                        className={`relative z-10 flex flex-col items-center gap-1 px-2 py-1 text-center transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-festival-orange focus-visible:ring-offset-2 lg:w-full lg:flex-row lg:gap-3 lg:rounded-lg lg:px-3 lg:py-3 lg:text-left ${isActive ? "text-festival-purple lg:bg-festival-purple lg:text-white lg:shadow-md lg:shadow-festival-purple/20" : "text-foreground/75 hover:text-festival-purple lg:hover:bg-card"}`}
+                        className={`relative z-10 flex w-full items-center gap-3 rounded-lg border border-festival-purple px-3 py-3 text-left transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-festival-orange focus-visible:ring-offset-2 ${isActive ? "bg-festival-purple text-white shadow-md shadow-festival-purple/20" : "bg-transparent text-festival-purple hover:bg-festival-purple/10"}`}
                       >
-                        <span className={`flex h-3 w-3 shrink-0 items-center justify-center rounded-full border-2 border-background lg:h-8 lg:w-8 lg:border-4 ${isActive ? "bg-festival-orange" : "bg-festival-blue"}`} aria-hidden="true">
-                          <span className="hidden h-2 w-2 rounded-full bg-white lg:block" />
+                        <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-4 border-background ${isActive ? "bg-festival-orange" : "bg-festival-blue"}`} aria-hidden="true">
+                          <span className="h-2 w-2 rounded-full bg-white" />
                         </span>
                         <span>
-                          <span className={`hidden text-[10px] uppercase tracking-[0.18em] lg:block ${isActive ? "text-white/75" : "text-foreground/55"}`}>Édition</span>
-                          <span className="font-display text-sm font-bold lg:text-xl">{gallery.year}</span>
+                          <span className={`block text-[10px] uppercase tracking-[0.18em] ${isActive ? "text-white/75" : "text-festival-purple/65"}`}>Édition</span>
+                          <span className="font-display text-xl font-bold">{gallery.year}</span>
                         </span>
                       </button>
 
@@ -363,7 +387,7 @@ const MediaPage = () => {
                       <section
                         key={group.name}
                         id={getGroupId(gallery.year, group.name)}
-                        className="min-w-0 max-w-full scroll-mt-28 overflow-hidden"
+                        className="min-w-0 max-w-full scroll-mt-28 overflow-visible md:overflow-hidden"
                         aria-labelledby={`${getGroupId(gallery.year, group.name)}-title`}
                       >
                         <div className="mb-3 border-b border-border pb-2 md:mb-5 md:pb-3">

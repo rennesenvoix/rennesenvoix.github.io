@@ -1,4 +1,3 @@
-import { useEffect, useRef } from "react";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import groupeColore from "@/assets/groupe-coloré.png";
@@ -8,85 +7,47 @@ import { Link } from "react-router-dom";
 // Compte à rebours temporairement désactivé — à réactiver pour la prochaine édition.
 // import { useEffect, useState } from "react";
 // const festivalDate = new Date("2027-07-03T18:00:00+02:00");
-const partners = [
-  "🔑 Les propriétaires\nde l'Orangerie",
-  "🏘️ ComCom\nLoue-Lison",
-  "🏡 Commune de\nRennes sur Loue",
-  "🏛️ Saline royale\nd’Arc et Senans",
-  "🎬 Noé Michaud\nArche Production",
-  "🍽️ Au Golden Gourmand",
-  "🍦 Aux Petits Pépins",
-  "🌱 Gamm Vert Liesle",
-  "🚜 Terre Comtoise",
-  "🧀 Fruitière Bio\nVal de Loue",
-  "🪚 MCF",
-  "🛒 Intermarché\nQuingey",
-  "🎒 APE – Liesle et Quingey",
-  "🐄 GAEC des\nPrés de Rennes",
-  "🙌 Vous !",
-  "✨ Et bien d’autres…",
-];
-const partnerColors = [
-  "bg-festival-blue",
-  "bg-festival-orange",
-  "bg-festival-purple",
-  "bg-festival-green",
-  "bg-festival-red",
-] as const;
-const partnerColorOrder = [2, 0, 4, 1, 3, 1, 4, 0, 3, 2, 4, 2, 1, 0, 3, 0, 3, 2, 4, 1] as const;
-const partnerRotations = ["-rotate-2", "rotate-1", "-rotate-1", "rotate-2", "-rotate-3"] as const;
-const partnerBrushes = ["partner-brush-1", "partner-brush-2", "partner-brush-3", "partner-brush-4", "partner-brush-5"] as const;
+const partnerLogoModules = import.meta.glob<string>("/src/assets/partenaires/Logos/*.{png,jpg,jpeg,webp,svg}", {
+  eager: true,
+  import: "default",
+  query: "?url",
+});
 
-const FestivalBrush = ({ color, rotation, variant }: { color: string; rotation: string; variant: number }) => (
-  <span aria-hidden="true" className={`partner-brush ${partnerBrushes[variant - 1]} pointer-events-none absolute h-28 w-[104%] max-w-[340px] sm:h-36 sm:w-[116%] sm:max-w-none ${color} ${rotation}`} />
+const partnerLogos = Object.entries(partnerLogoModules).map(([path, src]) => ({
+  src,
+  name: path
+    .split("/")
+    .pop()
+    ?.replace(/\.[^.]+$/, "")
+    .replace(/^A(?=Comm)/, "")
+    .replace(/[_-]+/g, " ") ?? "Partenaire",
+}));
+
+const LogoGroup = ({ logos, duplicate = false }: { logos: typeof partnerLogos; duplicate?: boolean }) => (
+  <div className="partner-logo-group" aria-hidden={duplicate || undefined}>
+    {logos.map((logo) => (
+      <div key={`${duplicate ? "duplicate-" : ""}${logo.src}`} className="partner-logo-item">
+        <img src={logo.src} alt={duplicate ? "" : `Logo de ${logo.name}`} loading="lazy" />
+      </div>
+    ))}
+  </div>
 );
 
-const PartnerCloud = () => {
-  const cloudRef = useRef<HTMLDivElement>(null);
+const PartnerLogoRow = ({ logos, reverse = false }: { logos: typeof partnerLogos; reverse?: boolean }) => (
+  <div className="partner-logo-viewport">
+    <div className={`partner-logo-track ${reverse ? "partner-logo-track-reverse" : ""}`}>
+      <LogoGroup logos={logos} />
+      <LogoGroup logos={logos} duplicate />
+    </div>
+  </div>
+);
 
-  useEffect(() => {
-    const cloud = cloudRef.current;
-    if (!cloud) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          entry.target.classList.toggle("partner-card-visible", entry.isIntersecting);
-        });
-      },
-      { threshold: 0.25, rootMargin: "0px 0px -4%" },
-    );
-
-    const cards = cloud.querySelectorAll(".partner-card");
-    cards.forEach((card) => observer.observe(card));
-    return () => observer.disconnect();
-  }, []);
-
+const PartnerLogos = () => {
+  const middle = Math.ceil(partnerLogos.length / 2);
   return (
-    <div ref={cloudRef} className="grid grid-cols-1 justify-items-center gap-y-0 sm:grid-cols-2 sm:gap-x-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" role="list" aria-label="Partenaires du festival">
-      {partners.map((partner, index) => {
-        const color = partnerColors[partnerColorOrder[index % partnerColorOrder.length]];
-        const rotation = partnerRotations[(index * 3 + 1) % partnerRotations.length];
-        const brushVariant = ((index * 2 + Math.floor(index / partnerColors.length)) % 5) + 1;
-        const separatorIndex = partner.indexOf(" ");
-        const emoji = partner.slice(0, separatorIndex);
-        const partnerName = partner.slice(separatorIndex + 1);
-
-        return (
-          <div
-            key={partner}
-            role="listitem"
-            className="partner-card relative flex h-24 w-full items-center justify-center px-3 text-center sm:h-32"
-            style={{ animationDelay: `${(index % 3) * 65}ms` }}
-          >
-            <FestivalBrush color={color} rotation={rotation} variant={brushVariant} />
-            <span className="partner-name relative z-10 max-w-[78%] whitespace-pre-line break-words font-sans text-base font-bold leading-[1.15] text-black sm:max-w-[74%] lg:max-w-[95%]">
-              <span aria-hidden="true" className="partner-emoji">{emoji}</span>{" "}
-              <span>{partnerName}</span>
-            </span>
-          </div>
-        );
-      })}
+    <div className="space-y-4" aria-label="Logos des partenaires du festival">
+      <PartnerLogoRow logos={partnerLogos.slice(0, middle)} />
+      <PartnerLogoRow logos={partnerLogos.slice(middle)} reverse />
     </div>
   );
 };
@@ -147,13 +108,13 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Mosaïque des partenaires du festival. */}
+        {/* Défilement des logos des partenaires du festival. */}
         <section className="border-y border-border bg-card/50 py-16 md:py-20">
           <div className="container-wide">
             <span className="mb-8 block h-2 w-24 rounded-full bg-festival-green" aria-hidden="true" />
             <h2 className="text-headline">Nos partenaires</h2>
             <div className="mt-12">
-              <PartnerCloud />
+              <PartnerLogos />
             </div>
           </div>
         </section>

@@ -3,6 +3,8 @@ export type ProgramArtist = {
   style: string;
   bio: string;
   photo: string;
+  photoFit?: "cover" | "contain";
+  comingSoon?: boolean;
   time: string;
   instagram: string;
   youtube: string;
@@ -25,24 +27,37 @@ export const yearPrograms: YearProgram[] = [
     location: "Orangerie du château de Rennes-sur-Loue",
     groups: [
       {
-        name: "Nom du groupe",
-        style: "Style musical",
-        bio: "Présentation du groupe",
-        photo: "Adresse ou import de la photo",
-        time: "Horaire",
-        instagram: "Lien Instagram",
-        youtube: "Lien YouTube",
-        website: "Site internet",
+        name: "À venir",
+        style: "Le suspense continue",
+        bio: "Patience, ça arrive !",
+        photo: "",
+        comingSoon: true,
+        time: "",
+        instagram: "",
+        youtube: "",
+        website: "",
       },
       {
-        name: "Nom du groupe",
-        style: "Style musical",
-        bio: "Présentation du groupe",
-        photo: "Adresse ou import de la photo",
-        time: "Horaire",
-        instagram: "Lien Instagram",
-        youtube: "Lien YouTube",
-        website: "Site internet",
+        name: "À venir",
+        style: "Encore un peu de patience",
+        bio: "Suspense, suspense…",
+        photo: "",
+        comingSoon: true,
+        time: "",
+        instagram: "",
+        youtube: "",
+        website: "",
+      },
+      {
+        name: "À venir",
+        style: "Secret bien gardé",
+        bio: "Motus et bouche cousue !",
+        photo: "",
+        comingSoon: true,
+        time: "",
+        instagram: "",
+        youtube: "",
+        website: "",
       },
     ],
   },
@@ -94,7 +109,7 @@ export const yearPrograms: YearProgram[] = [
         name: "L'Atelier",
         style: "Ensemble vocal — pop, rock, jazz et soul",
         bio: "L’Atelier est l’ancien nom du groupe vocal devenu Over the Pop, un ensemble bisontin consacré aux arrangements vocaux contemporains et au chant collectif.",
-        photo: "Adresse ou import de la photo",
+        photo: atelier2025Photo,
         time: "Horaire",
         instagram: "Lien Instagram",
         youtube: "Lien YouTube",
@@ -104,7 +119,8 @@ export const yearPrograms: YearProgram[] = [
         name: "Nana Sila",
         style: "Trio vocal féminin — polyphonies des Balkans",
         bio: "Trois voix réunies autour des cultures vocales populaires des Balkans, accompagnées de violon, de percussions et de flûte, entre puissance, poésie et fantaisie.",
-        photo: "Adresse ou import de la photo",
+        photo: nanaSilaPhoto,
+        photoFit: "contain",
         time: "Horaire",
         instagram: "Lien Instagram",
         youtube: "Lien YouTube",
@@ -113,8 +129,8 @@ export const yearPrograms: YearProgram[] = [
       {
         name: "Sikstêt",
         style: "Style musical",
-        bio: "Présentation du groupe",
-        photo: "Adresse ou import de la photo",
+        bio: "Né en 2025, SIKSTÊT réunit six voix franc-comtoises autour d’un répertoire polyphonique aux époques, langues et rythmes variés, de Thomas Tallis à Duke Ellington.",
+        photo: sikstetPhoto,
         time: "Horaire",
         instagram: "Lien Instagram",
         youtube: "Lien YouTube",
@@ -131,8 +147,8 @@ export const yearPrograms: YearProgram[] = [
       {
         name: "L'Atelier",
         style: "Ensemble vocal — pop, rock, jazz et soul",
-        bio: "L’Atelier est l’ancien nom du groupe vocal devenu Over the Pop, un ensemble bisontin consacré aux arrangements vocaux contemporains et au chant collectif.",
-        photo: "Adresse ou import de la photo",
+        bio: "­Cet ensemble vocal éclectique interprète des morceaux pop, rock, jazz, soul & gospel dans une version a cappella originale et subtile.",
+        photo: atelier2024Photo,
         time: "Horaire",
         instagram: "Lien Instagram",
         youtube: "Lien YouTube",
@@ -141,8 +157,8 @@ export const yearPrograms: YearProgram[] = [
       {
         name: "Vocalypso",
         style: "Jazz vocal, swing et musiques latines",
-        bio: "Vocalypso est un groupe vocal de la région de Besançon qui interprète des standards de jazz et de swing ainsi qu’un répertoire aux influences latines.",
-        photo: "Adresse ou import de la photo",
+        bio: "Un ensemble vocal d'une quinzaine de chanteurs au répertoire jazz, accompagné d'un pianiste.",
+        photo: vocalypsoPhoto,
         time: "Horaire",
         instagram: "Lien Instagram",
         youtube: "Lien YouTube",
@@ -151,6 +167,11 @@ export const yearPrograms: YearProgram[] = [
     ],
   },
 ];
-import overThePopPhoto from "@/assets/2026/Over the Pop/A_Over The Pop (c) Noé Michaud Arche Production.jpg";
-import aBoccaChiusaPhoto from "@/assets/2026/A Bocca Chiusa/A_A Bocca Chiusa (c) Noé Michaud Arche Production.jpg";
-import twoByTwoVoixPhoto from "@/assets/2026/2x2 Voix/A_2x2 Voix (c) Noé Michaud Arche Production.jpg";
+import twoByTwoVoixPhoto from "@/assets/Prog/2026 2x2 voix.jpg";
+import aBoccaChiusaPhoto from "@/assets/Prog/2026 A bocca chiusa.JPG";
+import overThePopPhoto from "@/assets/Prog/2026over the pop.JPG";
+import atelier2025Photo from "@/assets/Prog/2025 L'Atelier.JPG";
+import nanaSilaPhoto from "@/assets/Prog/2025 Nana Sila.png";
+import sikstetPhoto from "@/assets/Prog/2025 SIKSTÊT.jpg";
+import atelier2024Photo from "@/assets/Prog/2024 Atelier.png";
+import vocalypsoPhoto from "@/assets/Prog/2024 Vocalypso.jpg";

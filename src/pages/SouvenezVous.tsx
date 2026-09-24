@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import brushHero1 from "@/assets/brush-hero1.png";
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
-import { useTimelineSections } from "@/hooks/use-timeline-sections";
+import { PiedDePage } from "@/components/PiedDePage";
+import { Entete } from "@/components/Entete";
+import { useSectionsChronologiques } from "@/hooks/use-sections-chronologiques";
 
 const shuffle = <Item,>(items: Item[]) => {
   const shuffledItems = [...items];
@@ -105,19 +105,25 @@ const placeholderPhotoUrls = [
 const galleryYears = [
   {
     year: "2026",
-    description: "Photos © Noé Michaud — Arche Production",
+    description: "Photos ©",
+    credit: {
+      label: "Noé Michaud — Arche Production",
+      url: "https://www.archeproduction.com/",
+    },
     groups: groups2026,
     photos: photos2026,
   },
   {
     year: "2025",
     description: "Nana Sila et Sikstêt en images.",
+    credit: null,
     groups: groups2025,
     photos: photos2025,
   },
   {
     year: "2024",
     description: "Retour sur la première édition.",
+    credit: null,
     groups: [{ name: "Souvenirs de l'édition", photos: placeholderPhotoUrls.slice(14) }],
     photos: placeholderPhotoUrls.slice(14),
   },
@@ -246,12 +252,12 @@ const ScrollingGallery = ({ groupName, groupPhotos, year, yearIndex, yearPhotos,
 const sectionColors = ["bg-festival-orange", "bg-festival-blue", "bg-festival-purple"] as const;
 const timelineYears = galleryYears.map((gallery, yearIndex) => ({ gallery, yearIndex }));
 
-const MediaPage = () => {
+const SouvenezVous = () => {
   const [selectedPhoto, setSelectedPhoto] = useState<SelectedPhoto | null>(null);
   const [activeGroupId, setActiveGroupId] = useState(getGroupId(galleryYears[0].year, galleryYears[0].groups[0].name));
   const [imageScale, setImageScale] = useState(1);
   const touchGestureRef = useRef<{ startX: number; startY: number; startDistance: number; startScale: number; pinching: boolean } | null>(null);
-  const { activeIndex, scrollToSection, sectionRefs } = useTimelineSections(galleryYears.length);
+  const { activeIndex, scrollToSection, sectionRefs } = useSectionsChronologiques(galleryYears.length);
   const selectedGallery = selectedPhoto === null ? null : galleryYears[selectedPhoto.yearIndex];
 
   const showPrevious = () => {
@@ -354,7 +360,7 @@ const MediaPage = () => {
 
   return (
     <div className="flex min-h-screen max-w-full flex-col overflow-x-clip bg-background text-foreground">
-      <Header />
+      <Entete />
       <main className="relative min-w-0 max-w-full flex-1 overflow-x-clip pt-16 md:pt-20">
         <img src={brushHero1} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25" />
         <div className="container-wide relative pb-12 pt-6 md:pb-28 md:pt-10">
@@ -452,12 +458,17 @@ const MediaPage = () => {
                   key={gallery.year}
                   ref={(element) => { sectionRefs.current[yearIndex] = element; }}
                   id={`gallery-${gallery.year}`}
-                  className="min-w-0 max-w-full scroll-mt-28"
+                  className="page-snap-section min-w-0 max-w-full scroll-mt-28"
                   aria-labelledby={`gallery-title-${gallery.year}`}
                 >
                   <span className={`block h-2 w-16 rounded-full ${sectionColors[yearIndex]}`} aria-hidden="true" />
                   <h2 id={`gallery-title-${gallery.year}`} className="mt-6 font-display text-3xl font-bold md:text-4xl">Édition {gallery.year}</h2>
-                  <p className="mt-3 max-w-2xl text-foreground/75">{gallery.description}</p>
+                  <p className="mt-3 max-w-2xl text-foreground/75">
+                    {gallery.description}
+                    {gallery.credit && (
+                      <>{" "}<a href={gallery.credit.url} target="_blank" rel="noreferrer noopener" className="font-semibold text-festival-purple underline decoration-festival-purple/40 underline-offset-4 transition-colors hover:decoration-festival-purple">{gallery.credit.label}</a></>
+                    )}
+                  </p>
 
                   <div className="mt-8 min-w-0 max-w-full space-y-10 md:mt-10 md:space-y-14">
                     {gallery.groups.map((group) => (
@@ -509,9 +520,9 @@ const MediaPage = () => {
         </div>
       )}
 
-      <Footer />
+      <PiedDePage />
     </div>
   );
 };
 
-export default MediaPage;
+export default SouvenezVous;

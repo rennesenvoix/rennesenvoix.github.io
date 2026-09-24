@@ -1,9 +1,9 @@
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
+import { PiedDePage } from "@/components/PiedDePage";
+import { Entete } from "@/components/Entete";
 
-const FestivalPage = () => (
+const Festival = () => (
   <div className="flex min-h-screen flex-col bg-background text-foreground">
-    <Header />
+    <Entete />
     <main className="flex-1 px-6 pb-10 pt-20 text-center md:pb-10 md:pt-20 lg:text-left">
       <div className="container-wide lg:grid lg:grid-cols-[minmax(220px,0.32fr)_minmax(0,0.68fr)] lg:items-center lg:gap-8">
         <div>
@@ -47,8 +47,8 @@ const FestivalPage = () => (
         </div>
       </div>
     </main>
-    <Footer />
+    <PiedDePage />
   </div>
 );
 
-export default FestivalPage;
+export default Festival;

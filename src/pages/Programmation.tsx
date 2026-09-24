@@ -1,9 +1,9 @@
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
-import { useTimelineSections } from "@/hooks/use-timeline-sections";
+import { PiedDePage } from "@/components/PiedDePage";
+import { Entete } from "@/components/Entete";
+import { useSectionsChronologiques } from "@/hooks/use-sections-chronologiques";
 import brushHero1 from "@/assets/brush-hero1.png";
 import { Globe2, Instagram, Youtube } from "lucide-react";
-import { type ProgramArtist, yearPrograms } from "@/data/programming";
+import { type ProgramArtist, yearPrograms } from "@/data/programmation";
 
 const cardAccents = [
   { border: "border-festival-orange", surface: "bg-festival-orange", text: "text-festival-orange" },
@@ -24,8 +24,19 @@ const ArtistCard = ({ group, accent }: { group: ProgramArtist; accent: (typeof c
     <article className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border-2 bg-card shadow-lg transition-transform duration-300 hover:-translate-y-1 ${accent.border}`}>
       <span className={`absolute -right-5 -top-5 h-16 w-16 rotate-45 ${accent.surface}`} aria-hidden="true" />
       <div className="relative aspect-[4/3] overflow-hidden border-b-2 border-inherit">
-        {isValidPhoto(group.photo) ? (
-          <img src={group.photo} alt={`Photo de ${group.name}`} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        {group.comingSoon ? (
+          <div className={`relative flex h-full items-center justify-center overflow-hidden bg-current/10 ${accent.text}`} aria-label="Artiste mystère">
+            <span className="absolute -left-10 top-5 h-28 w-44 -rotate-12 rounded-[50%] bg-current/10" aria-hidden="true" />
+            <span className="absolute -right-8 bottom-2 h-24 w-40 rotate-12 rounded-[50%] bg-current/15" aria-hidden="true" />
+            <span className="relative -rotate-6 font-display text-8xl font-black leading-none drop-shadow-[4px_4px_0_rgba(255,255,255,0.9)] md:text-9xl" aria-hidden="true">?</span>
+          </div>
+        ) : isValidPhoto(group.photo) ? (
+          <img
+            src={group.photo}
+            alt={`Photo de ${group.name}`}
+            loading="lazy"
+            className={`h-full w-full transition-transform duration-500 group-hover:scale-105 ${group.photoFit === "contain" ? "bg-white object-contain p-3 sm:p-4" : "object-cover"}`}
+          />
         ) : (
           <div className="flex h-full items-center justify-center bg-muted px-6 text-center text-sm font-semibold text-muted-foreground">Photo à ajouter</div>
         )}
@@ -51,12 +62,12 @@ const ArtistCard = ({ group, accent }: { group: ProgramArtist; accent: (typeof c
   );
 };
 
-const ProgrammingPage = () => {
-  const { activeIndex, scrollToSection, sectionRefs } = useTimelineSections(yearPrograms.length);
+const Programmation = () => {
+  const { activeIndex, scrollToSection, sectionRefs } = useSectionsChronologiques(yearPrograms.length);
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      <Header />
+      <Entete />
       <main className="relative flex-1 pt-16 md:pt-20">
         <img src={brushHero1} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25" />
         <div className="container-wide relative py-8 md:py-14">
@@ -120,11 +131,11 @@ const ProgrammingPage = () => {
                   key={program.year}
                   ref={(element) => { sectionRefs.current[yearIndex] = element; }}
                   id={`program-${program.year}`}
-                  className="scroll-mt-28"
+                  className="page-snap-section scroll-mt-20 md:scroll-mt-24 lg:scroll-mt-0"
                   aria-labelledby={`program-title-${program.year}`}
                 >
                   <span className={`block h-2 w-16 rounded-full ${programColors[yearIndex]}`} aria-hidden="true" />
-                  <h2 id={`program-title-${program.year}`} className="mt-6 font-display text-2xl font-bold md:text-3xl">{program.label}</h2>
+                  <h2 id={`program-title-${program.year}`} className="mt-2 font-display text-2xl font-bold md:text-3xl">{program.label}</h2>
                   <p className="mt-3 text-foreground/75">
                     {program.date} · {program.location}
                   </p>
@@ -139,9 +150,9 @@ const ProgrammingPage = () => {
           </div>
         </div>
       </main>
-      <Footer />
+      <PiedDePage />
     </div>
   );
 };
 
-export default ProgrammingPage;
+export default Programmation;

@@ -23,7 +23,7 @@ const copyWithFallback = async (value: string) => {
   textArea.remove();
 };
 
-export function CopyButton({ value, label, successMessage }: CopyButtonProps) {
+export function BoutonCopier({ value, label, successMessage }: CopyButtonProps) {
   const [isCopied, setIsCopied] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
 

@@ -1,13 +1,13 @@
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
-import { CopyButton } from "@/components/CopyButton";
+import { PiedDePage } from "@/components/PiedDePage";
+import { Entete } from "@/components/Entete";
+import { BoutonCopier } from "@/components/BoutonCopier";
 import { Car, CircleHelp, MapPin } from "lucide-react";
 import brushHero1 from "@/assets/brush-hero1.png";
 
-const ContactPage = () => {
+const InformationsPratiques = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      <Header />
+      <Entete />
 
       <main className="relative flex-1 overflow-hidden pt-16 md:pt-20">
         <img
@@ -89,7 +89,7 @@ const ContactPage = () => {
                   </div>
                   <div className="mt-4 flex items-start gap-2">
                     <p className="text-foreground/80">10 rue du Pont<br />25440 Rennes-sur-Loue</p>
-                    <CopyButton value="10 rue du Pont, 25440 Rennes-sur-Loue" label="Copier l’adresse du festival" successMessage="Adresse du festival copiée !" />
+                    <BoutonCopier value="10 rue du Pont, 25440 Rennes-sur-Loue" label="Copier l’adresse du festival" successMessage="Adresse du festival copiée !" />
                   </div>
                 </section>
               </div>
@@ -98,9 +98,9 @@ const ContactPage = () => {
         </div>
       </main>
 
-      <Footer />
+      <PiedDePage />
     </div>
   );
 };
 
-export default ContactPage;
+export default InformationsPratiques;

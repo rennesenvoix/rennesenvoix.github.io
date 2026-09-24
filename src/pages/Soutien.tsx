@@ -1,11 +1,11 @@
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
+import { PiedDePage } from "@/components/PiedDePage";
+import { Entete } from "@/components/Entete";
 import brushHero1 from "@/assets/brush-hero1.png";
 import { Link } from "react-router-dom";
 
-const SupportPage = () => (
+const Soutien = () => (
   <div className="min-h-screen flex flex-col bg-background text-foreground">
-    <Header />
+    <Entete />
     <main className="relative flex-1 overflow-hidden pt-16 md:pt-20">
       <img src={brushHero1} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25" />
       <div className="container-wide relative flex min-h-[60vh] items-center justify-center py-20 text-center md:py-28">
@@ -22,8 +22,8 @@ const SupportPage = () => (
         </div>
       </div>
     </main>
-    <Footer />
+    <PiedDePage />
   </div>
 );
 
-export default SupportPage;
+export default Soutien;

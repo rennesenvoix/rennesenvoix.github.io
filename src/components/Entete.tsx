@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import titleLogo from "@/assets/Titre ReV.png";
 import { navigationItems } from "@/lib/navigation";
 
-export function Header() {
+export function Entete() {
   // Contrôle l'ouverture du menu mobile.
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { pathname } = useLocation();

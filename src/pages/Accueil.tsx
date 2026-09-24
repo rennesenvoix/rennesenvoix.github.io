@@ -1,7 +1,8 @@
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
+import { PiedDePage } from "@/components/PiedDePage";
+import { Entete } from "@/components/Entete";
 import groupeColore from "@/assets/groupe-coloré.png";
 import titleLogo from "@/assets/Titre ReV.png";
+import festivalVenue from "@/assets/2026/Le Festival/B_L'Orangerie (c) Noé Michaud Arche Production.jpg";
 import { Volume2, VolumeX } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
@@ -21,7 +22,7 @@ const partnerLogoOrder = [
   "gammvert",
   "saline royale",
   "intermarche",
-  "qingey liesle ape",
+  "quingey liesle ape",
   "mcf",
   "gaec",
   "aux ptits pepins",
@@ -72,7 +73,7 @@ const PartnerLogos = () => {
   );
 };
 
-const Index = () => {
+const Accueil = () => {
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const videoIframeRef = useRef<HTMLIFrameElement>(null);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
@@ -104,10 +105,10 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      <Header />
+      <Entete />
       <main className="flex-1 pt-16 md:pt-20">
         {/* Informations essentielles de la prochaine édition. */}
-        <section className="relative flex items-start overflow-hidden">
+        <section className="home-snap-section relative overflow-hidden">
           <img src={groupeColore} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-10" />
           <div className="container-wide relative w-full pb-8 pt-4 md:py-10">
             <div className="grid items-center gap-5 md:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)] md:gap-8 lg:gap-12">
@@ -132,7 +133,7 @@ const Index = () => {
         </section>
 
         {/* Présentation courte du festival. */}
-        <section className="container-wide py-8 md:py-12">
+        <section className="home-snap-section container-wide py-8 md:py-12">
           <div className="overflow-hidden rounded-3xl border border-festival-blue/40 bg-festival-blue/10 p-4 md:grid md:grid-cols-[0.75fr_1.25fr] md:items-center md:gap-6 md:p-5 lg:gap-8">
             <div className="mx-auto flex w-full max-w-[352px] items-stretch gap-3">
               <div className="min-w-0 flex-1">
@@ -163,25 +164,28 @@ const Index = () => {
                 </button>
               </div>
             </div>
-            <div className="px-3 py-5 md:px-0 md:py-4 md:pr-5">
-              <h2 className="font-display text-3xl font-bold leading-tight md:text-4xl">Un festival vocal à Rennes-sur-Loue</h2>
-              <p className="mt-4 max-w-2xl text-lg leading-relaxed text-foreground/80">
-                Des groupes vocaux aux univers variés se retrouvent à l’Orangerie pour une soirée concert dans un cadre atypique et une ambiance sans prétention !
-              </p>
-              <div className="mt-5 flex flex-wrap items-center gap-5">
-                <Link to="/le-festival" className="inline-flex rounded-full border-2 border-festival-purple px-6 py-2.5 text-sm font-bold uppercase tracking-wider text-festival-purple transition-colors hover:bg-festival-purple hover:text-white">
-                  Découvrir le festival
-                </Link>
-                <Link to="/medias" className="text-sm font-semibold text-festival-purple underline decoration-festival-purple/40 underline-offset-4 transition-colors hover:decoration-festival-purple">
-                  Retour en images →
-                </Link>
+            <div className="flex h-full flex-col gap-5 px-3 py-5 md:px-0 md:py-4 md:pr-5">
+              <div>
+                <h2 className="font-display text-3xl font-bold leading-tight md:text-4xl">Un festival vocal à Rennes-sur-Loue</h2>
+                <p className="mt-4 max-w-2xl text-lg leading-relaxed text-foreground/80">
+                  Des groupes vocaux aux univers variés se retrouvent à l’Orangerie pour une soirée concert dans un cadre atypique et une ambiance sans prétention !
+                </p>
+                <div className="mt-5 flex flex-wrap items-center gap-5">
+                  <Link to="/le-festival" className="inline-flex rounded-full border-2 border-festival-purple px-6 py-2.5 text-sm font-bold uppercase tracking-wider text-festival-purple transition-colors hover:bg-festival-purple hover:text-white">
+                    Découvrir le festival
+                  </Link>
+                  <Link to="/medias" className="text-sm font-semibold text-festival-purple underline decoration-festival-purple/40 underline-offset-4 transition-colors hover:decoration-festival-purple">
+                    Retour en images →
+                  </Link>
+                </div>
               </div>
+              <img src={festivalVenue} alt="L’Orangerie illuminée pendant le festival" loading="lazy" className="mt-auto aspect-[9/4] w-full rounded-2xl object-cover object-top shadow-md" />
             </div>
           </div>
         </section>
 
         {/* Défilement des logos des partenaires du festival. */}
-        <section className="border-y border-border bg-card/50 py-10 md:py-14">
+        <section className="home-snap-section border-y border-border bg-card/50 py-10 md:py-14">
           <div className="container-wide">
             <span className="mb-5 block h-2 w-24 rounded-full bg-festival-green" aria-hidden="true" />
             <h2 className="text-headline">Nos partenaires</h2>
@@ -196,9 +200,9 @@ const Index = () => {
           </div>
         </section>
       </main>
-      <Footer />
+      <PiedDePage />
     </div>
   );
 };
 
-export default Index;
+export default Accueil;

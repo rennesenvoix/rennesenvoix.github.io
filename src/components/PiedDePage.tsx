@@ -1,10 +1,10 @@
 import { Instagram, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
-import { CopyButton } from "@/components/CopyButton";
+import { BoutonCopier } from "@/components/BoutonCopier";
 import financeur1 from "@/assets/partenaires/Logos/Communaute-Loue-Lison.jpg";
 import { navigationItems } from "@/lib/navigation";
 
-export function Footer() {
+export function PiedDePage() {
   return (
     // Regroupe l'identité du festival, les liens utiles et les réseaux sociaux.
     <footer className="border-t border-border">
@@ -77,7 +77,7 @@ export function Footer() {
               <p className="text-label">Nous contacter</p>
               <div className="flex items-center gap-2.5">
                 <span className="whitespace-nowrap text-sm text-foreground/80">rennesenvoix@gmail.com</span>
-                <CopyButton
+                <BoutonCopier
                   value="rennesenvoix@gmail.com"
                   label="Copier l’adresse e-mail"
                   successMessage="Adresse e-mail copiée !"

@@ -11,7 +11,7 @@ const setMeta = (selector: string, attr: string, value: string, content: string)
   el.setAttribute("content", content);
 };
 
-const NotFound = () => {
+const PageIntrouvable = () => {
   const location = useLocation();
 
   useEffect(() => {
@@ -48,4 +48,4 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export default PageIntrouvable;

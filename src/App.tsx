@@ -1,27 +1,39 @@
-import { lazy, Suspense } from "react";
-import { HashRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
+import { lazy, Suspense, useEffect } from "react";
+import { HashRouter, Routes, Route, useLocation } from "react-router-dom";
+import Accueil from "./pages/Accueil";
 
-const ContactPage = lazy(() => import("./pages/ContactPage"));
-const ProgrammingPage = lazy(() => import("./pages/ProgrammingPage"));
-const SupportPage = lazy(() => import("./pages/SupportPage"));
-const MediaPage = lazy(() => import("./pages/MediaPage"));
-const NotFound = lazy(() => import("./pages/NotFound"));
-const FestivalPage = lazy(() => import("./pages/FestivalPage"));
-const AttendancePage = lazy(() => import("./pages/AttendancePage"));
+const InformationsPratiques = lazy(() => import("./pages/InformationsPratiques"));
+const Programmation = lazy(() => import("./pages/Programmation"));
+const Soutien = lazy(() => import("./pages/Soutien"));
+const SouvenezVous = lazy(() => import("./pages/SouvenezVous"));
+const PageIntrouvable = lazy(() => import("./pages/PageIntrouvable"));
+const Festival = lazy(() => import("./pages/Festival"));
+const Frequentation = lazy(() => import("./pages/Frequentation"));
+
+const PageScrollSnap = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    document.documentElement.classList.add("page-scroll-snap");
+    return () => document.documentElement.classList.remove("page-scroll-snap");
+  }, [pathname]);
+
+  return null;
+};
 
 const App = () => (
   <HashRouter>
+    <PageScrollSnap />
     <Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-background text-foreground">Chargement…</div>}>
       <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/le-festival" element={<FestivalPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/programmation" element={<ProgrammingPage />} />
-        <Route path="/soutien" element={<SupportPage />} />
-        <Route path="/medias" element={<MediaPage />} />
-        <Route path="/frequentation" element={<AttendancePage />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="/" element={<Accueil />} />
+        <Route path="/le-festival" element={<Festival />} />
+        <Route path="/contact" element={<InformationsPratiques />} />
+        <Route path="/programmation" element={<Programmation />} />
+        <Route path="/soutien" element={<Soutien />} />
+        <Route path="/medias" element={<SouvenezVous />} />
+        <Route path="/frequentation" element={<Frequentation />} />
+        <Route path="*" element={<PageIntrouvable />} />
       </Routes>
     </Suspense>
   </HashRouter>

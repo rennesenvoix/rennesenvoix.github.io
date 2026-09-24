@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-export function useTimelineSections(sectionCount: number) {
+export function useSectionsChronologiques(sectionCount: number) {
   const [activeIndex, setActiveIndex] = useState(0);
   const sectionRefs = useRef<Array<HTMLElement | null>>([]);
 

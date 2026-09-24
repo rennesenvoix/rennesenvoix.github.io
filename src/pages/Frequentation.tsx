@@ -1,7 +1,7 @@
 import brushHero1 from "@/assets/brush-hero1.png";
 import bfcPostcodeMap from "@/assets/bourgogne-franche-comte-postcodes.svg?raw";
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
+import { PiedDePage } from "@/components/PiedDePage";
+import { Entete } from "@/components/Entete";
 
 const departmentAttendance = [
   ["Doubs", 181],
@@ -12,10 +12,10 @@ const otherDepartmentsTotal = 53;
 const totalVisitors = 300;
 const percent = (visitors: number) => new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 0 }).format((visitors / totalVisitors) * 100);
 
-const AttendancePage = () => {
+const Frequentation = () => {
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
-    <Header />
+    <Entete />
     <main className="relative flex-1 overflow-hidden pt-16 md:pt-20">
       <img src={brushHero1} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-15" />
       <div className="container-wide relative py-20 md:py-28">
@@ -78,9 +78,9 @@ const AttendancePage = () => {
         </section>
       </div>
     </main>
-    <Footer />
+    <PiedDePage />
     </div>
   );
 };
 
-export default AttendancePage;
+export default Frequentation;

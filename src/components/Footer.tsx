@@ -1,4 +1,4 @@
-import { Instagram, Mail, Youtube } from "lucide-react";
+import { Instagram, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
 import { CopyButton } from "@/components/CopyButton";
 import financeur1 from "@/assets/partenaires/Logos/Communaute-Loue-Lison.jpg";
@@ -48,10 +48,10 @@ export function Footer() {
             </ul>
           </nav>
 
-          <div className="space-y-4">
-            <p className="text-label">Nous suivre</p>
-            <div className="space-y-2.5">
-              <div className="flex items-center gap-3">
+          <div className="space-y-5">
+            <div className="space-y-3">
+              <p className="text-label">Nous suivre</p>
+              <div className="flex items-center gap-2.5">
                 <a
                   href="https://www.instagram.com/rennesenvoix"
                   target="_blank"
@@ -71,12 +71,12 @@ export function Footer() {
                   <Youtube size={18} />
                 </a>
               </div>
+            </div>
 
-              <div className="flex items-center gap-3">
-                <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border text-festival-red" aria-hidden="true">
-                  <Mail size={18} />
-                </span>
-                <span className="text-sm text-foreground/80">rennesenvoix@gmail.com</span>
+            <div className="space-y-3">
+              <p className="text-label">Nous contacter</p>
+              <div className="flex items-center gap-2.5">
+                <span className="whitespace-nowrap text-sm text-foreground/80">rennesenvoix@gmail.com</span>
                 <CopyButton
                   value="rennesenvoix@gmail.com"
                   label="Copier l’adresse e-mail"

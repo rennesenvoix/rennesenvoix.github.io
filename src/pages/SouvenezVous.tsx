@@ -16,39 +16,64 @@ const shuffle = <Item,>(items: Item[]) => {
   return shuffledItems;
 };
 
+// Sélection des 31 photos de l’édition 2026.
 const photoEntries2026 = Object.entries(
-  import.meta.glob<string>("/src/assets/2026/**/*.{jpg,jpeg,png,webp}", {
+  import.meta.glob<string>([
+    "/src/assets/2026/2x2 Voix/2026_07_RennesEnVoix_R5C14324.jpg",
+    "/src/assets/2026/2x2 Voix/2026_07_RennesEnVoix_R5C14333.jpg",
+    "/src/assets/2026/2x2 Voix/2026_07_RennesEnVoix_R5C27375.jpg",
+    "/src/assets/2026/2x2 Voix/2026_07_RennesEnVoix_R5C27449.jpg",
+    "/src/assets/2026/2x2 Voix/B_2x2 Voix (c) Noé Michaud Arche Production.jpg",
+    "/src/assets/2026/A Bocca Chiusa/2026_07_RennesEnVoix_R5C14665.jpg",
+    "/src/assets/2026/A Bocca Chiusa/2026_07_RennesEnVoix_R5C14738.jpg",
+    "/src/assets/2026/A Bocca Chiusa/2026_07_RennesEnVoix_R5C28378.jpg",
+    "/src/assets/2026/A Bocca Chiusa/2026_07_RennesEnVoix_R5C28966.jpg",
+    "/src/assets/2026/A Bocca Chiusa/2026_07_RennesEnVoix_R5C29088.jpg",
+    "/src/assets/2026/Le Festival/2026_07_RennesEnVoix_R5C27076.jpg",
+    "/src/assets/2026/Le Festival/2026_07_RennesEnVoix_R5C27190.jpg",
+    "/src/assets/2026/Le Festival/2026_07_RennesEnVoix_R5C27290.jpg",
+    "/src/assets/2026/Nos Bénévoles/2026_07_RennesEnVoix_R5C14302.jpg",
+    "/src/assets/2026/Nos Bénévoles/2026_07_RennesEnVoix_R5C26783.jpg",
+    "/src/assets/2026/Nos Bénévoles/2026_07_RennesEnVoix_R5C26810.jpg",
+    "/src/assets/2026/Nos Bénévoles/2026_07_RennesEnVoix_R5C26837.jpg",
+    "/src/assets/2026/Nos Bénévoles/2026_07_RennesEnVoix_R5C26850.jpg",
+    "/src/assets/2026/Nos Bénévoles/2026_07_RennesEnVoix_R5C26950.jpg",
+    "/src/assets/2026/Nos Bénévoles/2026_07_RennesEnVoix_R5C27041.jpg",
+    "/src/assets/2026/Nos Bénévoles/2026_07_RennesEnVoix_R5C27052.jpg",
+    "/src/assets/2026/Nos Bénévoles/2026_07_RennesEnVoix_R5C27115.jpg",
+    "/src/assets/2026/Nos Bénévoles/2026_07_RennesEnVoix_R5C27147.jpg",
+    "/src/assets/2026/Nos Bénévoles/2026_07_RennesEnVoix_R5C27323.jpg",
+    "/src/assets/2026/Nos Bénévoles/2026_07_RennesEnVoix_R5C27714.jpg",
+    "/src/assets/2026/Nos Bénévoles/2026_07_RennesEnVoix_R5C27746.jpg",
+    "/src/assets/2026/Nos Bénévoles/2026_07_RennesEnVoix_R5C27815.jpg",
+    "/src/assets/2026/Over the Pop/2026_07_RennesEnVoix_R5C16574.jpg",
+    "/src/assets/2026/Over the Pop/2026_07_RennesEnVoix_R5C16643.jpg",
+    "/src/assets/2026/Over the Pop/2026_07_RennesEnVoix_R5C29321.jpg",
+    "/src/assets/2026/Over the Pop/2026_07_RennesEnVoix_R5C29359.jpg",
+  ], {
     eager: true,
     query: "?url",
     import: "default",
   }),
-)
-  .filter(([path]) => !path.split("/").pop()?.startsWith("._"))
-  .sort(([firstPath], [secondPath]) => firstPath.localeCompare(secondPath, "fr", { numeric: true }));
+);
 
-const groupOrder2026 = ["Le festival", "Nos bénévoles", "Over the Pop", "A Bocca Chiusa", "2x2 Voix"];
-const normalizeGroupName = (name: string) => name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-
-const groups2026 = Object.entries(
-  photoEntries2026.reduce<Record<string, string[]>>((groups, [path, url]) => {
-    const groupName = path.match(/\/2026\/([^/]+)\//)?.[1] ?? "Autres photos";
-    groups[groupName] = [...(groups[groupName] ?? []), url];
-    return groups;
-  }, {}),
-)
-  .map(([folderName, photos]) => ({
-    name: groupOrder2026.find((groupName) => normalizeGroupName(groupName) === normalizeGroupName(folderName)) ?? folderName,
-    photos: shuffle(photos),
-  }))
-  .sort((firstGroup, secondGroup) => {
-    const firstIndex = groupOrder2026.indexOf(firstGroup.name);
-    const secondIndex = groupOrder2026.indexOf(secondGroup.name);
-    if (firstIndex === -1) return 1;
-    if (secondIndex === -1) return -1;
-    return firstIndex - secondIndex;
-  });
-
-const photos2026 = groups2026.flatMap((group) => group.photos);
+// Alterner les trois groupes, y compris à la jonction de la boucle (5, 5 et 4 photos).
+const bandNames2026 = ["2x2 Voix", "A Bocca Chiusa", "Over the Pop"];
+const bandPhotoPools2026 = shuffle(bandNames2026.map((name) =>
+  shuffle(photoEntries2026.filter(([path]) => path.includes(`/2026/${name}/`)).map(([, url]) => url)),
+)).sort((first, second) => second.length - first.length);
+const bandPhotos2026 = Array.from({ length: Math.max(...bandPhotoPools2026.map((pool) => pool.length)) },
+  (_, index) => bandPhotoPools2026.flatMap((pool) => pool[index] ? [pool[index]] : []),
+).flat();
+const otherPhotos2026 = shuffle(photoEntries2026
+  .filter(([path]) => !bandNames2026.some((name) => path.includes(`/2026/${name}/`)))
+  .map(([, url]) => url));
+const photoRows2026 = [
+  otherPhotos2026.filter((_, index) => index % 2 === 0),
+  bandPhotos2026,
+  otherPhotos2026.filter((_, index) => index % 2 === 1),
+];
+const photos2026 = photoRows2026.flat();
 
 const photoEntries2025 = Object.entries(
   import.meta.glob<string>("/src/assets/2025/**/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", {
@@ -105,18 +130,21 @@ const placeholderPhotoUrls = [
 const galleryYears = [
   {
     year: "2026",
-    description: "Photos ©",
+    description: "Photos",
     credit: {
-      label: "Noé Michaud — Arche Production",
+      label: "© Noé Michaud — Arche Production",
       url: "https://www.archeproduction.com/",
     },
-    groups: groups2026,
+    groups: [{ name: "2026", photos: photos2026 }],
     photos: photos2026,
   },
   {
     year: "2025",
-    description: "Nana Sila et Sikstêt en images.",
-    credit: null,
+    description: "Photos",
+    credit: {
+      label: "© Quentin Trigodet",
+      url: "https://www.instagram.com/quentin_trigodet/",
+    },
     groups: groups2025,
     photos: photos2025,
   },
@@ -146,7 +174,9 @@ const ScrollingGallery = ({ groupName, groupPhotos, year, yearIndex, yearPhotos,
   const [isTouching, setIsTouching] = useState(false);
   const rowRefs = useRef<Array<HTMLDivElement | null>>([]);
   const rowOffsets = useRef<number[]>([0, 0, 0]);
-  const rows = [0, 1, 2].map((rowIndex) => groupPhotos.filter((_, photoIndex) => photoIndex % 3 === rowIndex));
+  const rows = year === "2026"
+    ? photoRows2026
+    : [0, 1, 2].map((rowIndex) => groupPhotos.filter((_, photoIndex) => photoIndex % 3 === rowIndex));
 
   const finishTouch = () => {
     rowRefs.current.forEach((row, rowIndex) => {
@@ -417,7 +447,7 @@ const SouvenezVous = () => {
                         </span>
                       </button>
 
-                      <ul className="relative z-10 ml-11 hidden border-l border-festival-blue/40 pb-2 pl-4 lg:block">
+                      {gallery.year !== "2026" && <ul className="relative z-10 ml-11 hidden border-l border-festival-blue/40 pb-2 pl-4 lg:block">
                         {gallery.groups.map((group) => (
                           <li key={group.name}>
                             <button
@@ -431,13 +461,13 @@ const SouvenezVous = () => {
                             </button>
                           </li>
                         ))}
-                      </ul>
+                      </ul>}
                     </li>
                   );
                 })}
               </ol>
 
-              <div className="mt-2 flex gap-2 overflow-x-auto pb-1 lg:hidden" aria-label={`Groupes de l'édition ${galleryYears[activeIndex].year}`}>
+              {galleryYears[activeIndex].year !== "2026" && <div className="mt-2 flex gap-2 overflow-x-auto pb-1 lg:hidden" aria-label={`Groupes de l'édition ${galleryYears[activeIndex].year}`}>
                 {galleryYears[activeIndex].groups.map((group) => (
                   <button
                     key={group.name}
@@ -449,7 +479,7 @@ const SouvenezVous = () => {
                     {group.name}
                   </button>
                 ))}
-              </div>
+              </div>}
             </nav>
 
             <div className="min-w-0 max-w-full space-y-14 md:space-y-20">
@@ -478,7 +508,7 @@ const SouvenezVous = () => {
                         className="min-w-0 max-w-full scroll-mt-28 overflow-visible"
                         aria-labelledby={`${getGroupId(gallery.year, group.name)}-title`}
                       >
-                        <div className="mb-3 border-b border-border pb-2 md:mb-5 md:pb-3">
+                        <div className={gallery.year === "2026" ? "sr-only" : "mb-3 border-b border-border pb-2 md:mb-5 md:pb-3"}>
                           <h3 id={`${getGroupId(gallery.year, group.name)}-title`} className="font-display text-xl font-bold md:text-3xl">
                             {group.name}
                           </h3>

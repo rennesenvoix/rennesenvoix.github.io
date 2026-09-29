@@ -18,7 +18,7 @@ const InformationsPratiques = () => {
         />
         <div className="container-wide relative py-10 md:py-8">
           <span className="mb-4 block h-2 w-24 rounded-full bg-festival-red" aria-hidden="true" />
-          <h1 className="text-headline">Infos</h1>
+          <h1 className="text-headline">Infos Pratiques</h1>
 
           {/* Informations pratiques et localisation du festival. */}
           <div className="mt-6 space-y-6">

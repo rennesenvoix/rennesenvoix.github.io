@@ -168,7 +168,7 @@ const Accueil = () => {
               <div>
                 <h2 className="font-display text-3xl font-bold leading-tight md:text-4xl">Un festival vocal à Rennes-sur-Loue</h2>
                 <p className="mt-4 max-w-2xl text-lg leading-relaxed text-foreground/80">
-                  Des groupes vocaux aux univers variés se retrouvent à l’Orangerie pour une soirée concert dans un cadre atypique et une ambiance sans prétention !
+                  Des groupes vocaux aux univers variés se retrouvent à l’Orangerie le temps d’une soirée concert dans un cadre atypique et une ambiance conviviale, sans prétention !
                 </p>
                 <div className="mt-5 flex flex-wrap items-center gap-5">
                   <Link to="/le-festival" className="inline-flex rounded-full border-2 border-festival-purple px-6 py-2.5 text-sm font-bold uppercase tracking-wider text-festival-purple transition-colors hover:bg-festival-purple hover:text-white">

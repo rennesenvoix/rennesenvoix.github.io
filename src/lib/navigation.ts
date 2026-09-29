@@ -3,6 +3,6 @@ export const navigationItems = [
   { label: "Programmation", href: "/programmation", isCallToAction: false },
   { label: "Le Festival", href: "/le-festival", isCallToAction: false },
   { label: "Souvenez-vous", href: "/medias", isCallToAction: false },
-  { label: "Infos", href: "/contact", isCallToAction: false },
+  { label: "Infos Pratiques", href: "/contact", isCallToAction: false },
   { label: "Soutenir le festival", href: "/soutien", isCallToAction: true },
 ] as const;

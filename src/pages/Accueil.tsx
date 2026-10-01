@@ -1,9 +1,10 @@
+import { BonhommeDecoratif } from "@/components/BonhommeDecoratif";
 import { PiedDePage } from "@/components/PiedDePage";
 import { Entete } from "@/components/Entete";
 import groupeColore from "@/assets/groupe-coloré.png";
 import titleLogo from "@/assets/Titre ReV.png";
 import festivalVenue from "@/assets/2026/Le Festival/B_L'Orangerie (c) Noé Michaud Arche Production.jpg";
-import { Volume2, VolumeX } from "lucide-react";
+import { Volume2, VolumeX, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -78,6 +79,20 @@ const Accueil = () => {
   const videoIframeRef = useRef<HTMLIFrameElement>(null);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const [isVideoMuted, setIsVideoMuted] = useState(true);
+  const photoDialogRef = useRef<HTMLDialogElement>(null);
+  const [isPhotoOpen, setIsPhotoOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isPhotoOpen) return;
+    const dialog = photoDialogRef.current;
+    const previousOverflow = document.body.style.overflow;
+    dialog?.showModal();
+    document.body.style.overflow = "hidden";
+    return () => {
+      dialog?.close();
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isPhotoOpen]);
 
   useEffect(() => {
     const videoContainer = videoContainerRef.current;
@@ -179,7 +194,19 @@ const Accueil = () => {
                   </Link>
                 </div>
               </div>
-              <img src={festivalVenue} alt="L’Orangerie illuminée pendant le festival" loading="lazy" className="mt-auto aspect-[9/4] w-full rounded-2xl object-cover object-top shadow-md" />
+              <figure className="mt-auto flex items-start gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsPhotoOpen(true)}
+                  aria-label="Afficher la photo de l’Orangerie en grand"
+                  className="min-w-0 flex-1 cursor-zoom-in rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-festival-purple focus-visible:ring-offset-2"
+                >
+                  <img src={festivalVenue} alt="L’Orangerie illuminée pendant le festival" loading="lazy" className="aspect-[9/4] w-full rounded-2xl object-cover object-top shadow-md" />
+                </button>
+                <figcaption className="shrink-0 text-xs text-foreground/70 [writing-mode:vertical-rl]">
+                  Photo © Noé Michaud — Arche Production
+                </figcaption>
+              </figure>
             </div>
           </div>
         </section>
@@ -188,7 +215,10 @@ const Accueil = () => {
         <section className="home-snap-section border-y border-border bg-card/50 py-10 md:py-14">
           <div className="container-wide">
             <span className="mb-5 block h-2 w-24 rounded-full bg-festival-green" aria-hidden="true" />
-            <h2 className="text-headline">Nos partenaires</h2>
+            <div className="flex items-center justify-between gap-6">
+              <h2 className="text-headline">Nos partenaires</h2>
+              <BonhommeDecoratif emplacement={0} miroir tousEcrans />
+            </div>
             <div className="mt-8">
               <PartnerLogos />
             </div>
@@ -199,8 +229,32 @@ const Accueil = () => {
             </div>
           </div>
         </section>
+
       </main>
       <PiedDePage />
+      <dialog
+        ref={photoDialogRef}
+        aria-label="Photo de l’Orangerie en grand"
+        onClose={() => setIsPhotoOpen(false)}
+        onClick={(event) => { if (event.target === event.currentTarget) setIsPhotoOpen(false); }}
+        className="fixed inset-0 m-auto max-h-[100dvh] max-w-[100vw] overflow-auto border-0 bg-transparent p-4 text-white backdrop:bg-black/90 sm:p-8"
+      >
+        {isPhotoOpen && (
+          <div className="relative">
+            <button
+              type="button"
+              autoFocus
+              onClick={() => setIsPhotoOpen(false)}
+              aria-label="Fermer la photo"
+              className="absolute right-2 top-2 flex h-11 w-11 items-center justify-center rounded-full bg-black/70 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+            >
+              <X size={24} />
+            </button>
+            <img src={festivalVenue} alt="L’Orangerie illuminée pendant le festival, vue complète" className="mx-auto max-h-[80dvh] max-w-full object-contain" />
+            <p className="mt-3 text-center text-xs text-white/80">Photo © Noé Michaud — Arche Production</p>
+          </div>
+        )}
+      </dialog>
     </div>
   );
 };

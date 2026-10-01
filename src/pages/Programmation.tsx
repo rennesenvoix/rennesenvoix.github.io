@@ -1,3 +1,4 @@
+import { BonhommeDecoratif } from "@/components/BonhommeDecoratif";
 import { PiedDePage } from "@/components/PiedDePage";
 import { Entete } from "@/components/Entete";
 import { useSectionsChronologiques } from "@/hooks/use-sections-chronologiques";
@@ -134,11 +135,16 @@ const Programmation = () => {
                   className="page-snap-section scroll-mt-20 md:scroll-mt-24 lg:scroll-mt-0"
                   aria-labelledby={`program-title-${program.year}`}
                 >
+                  <div className="flex items-center justify-between gap-6">
+                    <div>
                   <span className={`block h-2 w-16 rounded-full ${programColors[yearIndex]}`} aria-hidden="true" />
                   <h2 id={`program-title-${program.year}`} className="mt-2 font-display text-2xl font-bold md:text-3xl">{program.label}</h2>
                   <p className="mt-3 text-foreground/75">
                     {program.date} · {program.location}
                   </p>
+                    </div>
+                    <BonhommeDecoratif emplacement={5 + yearIndex} miroir={yearIndex % 2 === 0} petit />
+                  </div>
                   <div className="mt-8 grid gap-6 md:grid-cols-3">
                     {program.groups.map((group, index) => (
                       <ArtistCard key={`${program.year}-${group.name}-${index}`} group={group} accent={cardAccents[index % cardAccents.length]} />
@@ -149,6 +155,7 @@ const Programmation = () => {
             </div>
           </div>
         </div>
+
       </main>
       <PiedDePage />
     </div>

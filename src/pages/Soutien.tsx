@@ -1,3 +1,4 @@
+import { BonhommeDecoratif } from "@/components/BonhommeDecoratif";
 import { PiedDePage } from "@/components/PiedDePage";
 import { Entete } from "@/components/Entete";
 import brushHero1 from "@/assets/brush-hero1.png";
@@ -19,9 +20,13 @@ const Soutien = () => (
           <Link to="/contact" className="mt-8 inline-flex rounded-full bg-festival-purple px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition-transform duration-300 hover:scale-105">
             Nous contacter
           </Link>
+          <div className="hidden lg:mt-6 lg:flex justify-center">
+            <BonhommeDecoratif emplacement={4} />
+          </div>
         </div>
       </div>
-    </main>
+
+      </main>
     <PiedDePage />
   </div>
 );

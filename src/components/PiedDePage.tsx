@@ -1,16 +1,29 @@
+import { BonhommeDecoratif } from "@/components/BonhommeDecoratif";
 import { Instagram, Youtube } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { BoutonCopier } from "@/components/BoutonCopier";
 import financeur1 from "@/assets/partenaires/Logos/Communaute-Loue-Lison.jpg";
 import { navigationItems } from "@/lib/navigation";
 
+const personnageParPage: Record<string, number> = {
+  "/contact": 1,
+  "/frequentation": 0,
+  "/le-festival": 2,
+  "/soutien": 4,
+  "/programmation": 5,
+  "/medias": 3,
+};
+
 export function PiedDePage() {
+  const { pathname } = useLocation();
+  const personnage = personnageParPage[pathname];
   return (
     // Regroupe l'identité du festival, les liens utiles et les réseaux sociaux.
     <footer className="border-t border-border">
       <div className="container-wide py-12 md:py-16">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4 lg:items-start">
-          <div className="max-w-sm space-y-3">
+          <div className="flex max-w-sm items-center justify-between gap-4">
+            <div className="min-w-0 space-y-3">
             <p className="font-display text-2xl font-bold">Rennes en Voix</p>
             <p className="text-sm text-foreground/70 leading-relaxed">
               Festival vocal a cappella
@@ -22,6 +35,10 @@ export function PiedDePage() {
               <span className="flex-1 bg-festival-green" />
               <span className="flex-1 bg-festival-red" />
             </div>
+            </div>
+            {personnage !== undefined && (
+              <BonhommeDecoratif emplacement={personnage} mobile miroir={personnage % 2 === 0} />
+            )}
           </div>
 
           <div className="space-y-3">
@@ -89,6 +106,17 @@ export function PiedDePage() {
 
         <p className="mt-12 text-xs text-foreground/70">
           © 2026 Rennes en Voix. Tous droits réservés.
+        </p>
+        <p className="mt-2 text-xs text-foreground/70">
+          Identité visuelle : ©{" "}
+          <a
+            href="https://www.instagram.com/la_mu.__/#"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="underline underline-offset-4 transition-colors hover:text-foreground"
+          >
+            La MU
+          </a>
         </p>
       </div>
     </footer>

@@ -1,3 +1,4 @@
+import { BonhommeDecoratif } from "@/components/BonhommeDecoratif";
 import brushHero1 from "@/assets/brush-hero1.png";
 import bfcPostcodeMap from "@/assets/bourgogne-franche-comte-postcodes.svg?raw";
 import { PiedDePage } from "@/components/PiedDePage";
@@ -20,7 +21,10 @@ const Frequentation = () => {
       <img src={brushHero1} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-15" />
       <div className="container-wide relative py-20 md:py-28">
         <span className="mb-8 block h-2 w-24 rounded-full bg-festival-blue" aria-hidden="true" />
-        <h1 className="text-headline">D’où viennent nos festivaliers ?</h1>
+        <div className="flex items-center justify-between gap-6">
+              <h1 className="text-headline">D’où viennent nos festivaliers ?</h1>
+              <BonhommeDecoratif emplacement={2} miroir />
+            </div>
         <p className="mt-5 max-w-3xl text-lg leading-relaxed text-foreground/80">
           Cette carte de Franche-Comté met en lumière les codes postaux représentés parmi l’ensemble des {totalVisitors} visiteurs recensés.
         </p>
@@ -77,7 +81,8 @@ const Frequentation = () => {
           </div>
         </section>
       </div>
-    </main>
+
+      </main>
     <PiedDePage />
     </div>
   );

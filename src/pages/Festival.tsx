@@ -1,3 +1,4 @@
+import { BonhommeDecoratif } from "@/components/BonhommeDecoratif";
 import { PiedDePage } from "@/components/PiedDePage";
 import { Entete } from "@/components/Entete";
 
@@ -12,6 +13,9 @@ const Festival = () => (
           <p className="mx-auto mt-2 max-w-2xl text-lg leading-relaxed text-foreground/70 lg:mx-0">
             La page est encore en construction. En attendant, replongez dans l’ambiance des deux dernières éditions.
           </p>
+          <div className="hidden lg:mt-6 lg:flex justify-start">
+            <BonhommeDecoratif emplacement={3} />
+          </div>
         </div>
 
         <div className="mt-4 flex flex-col items-center gap-4 md:flex-row md:items-center md:justify-center md:gap-5 lg:mt-0">
@@ -46,7 +50,8 @@ const Festival = () => (
           </article>
         </div>
       </div>
-    </main>
+
+      </main>
     <PiedDePage />
   </div>
 );

@@ -1,3 +1,4 @@
+import { BonhommeDecoratif } from "@/components/BonhommeDecoratif";
 import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import brushHero1 from "@/assets/brush-hero1.png";
@@ -480,6 +481,9 @@ const SouvenezVous = () => {
                   </button>
                 ))}
               </div>}
+              <div className="hidden lg:mt-6 lg:flex lg:justify-center">
+                <BonhommeDecoratif emplacement={9} miroir petit />
+              </div>
             </nav>
 
             <div className="min-w-0 max-w-full space-y-14 md:space-y-20">
@@ -530,6 +534,7 @@ const SouvenezVous = () => {
             </div>
           </div>
         </div>
+
       </main>
 
       {selectedPhoto && selectedGallery && (

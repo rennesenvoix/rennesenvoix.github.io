@@ -255,24 +255,24 @@ const ScrollingGallery = ({ groupName, groupPhotos, year, yearIndex, yearPhotos,
       ))}
 
       <div
-        className="group absolute inset-y-0 left-0 z-10 hidden w-[18%] items-center justify-start bg-gradient-to-r from-black/10 to-transparent pl-3 opacity-0 transition-opacity hover:opacity-100 md:flex"
+        className="group absolute inset-y-0 left-0 z-10 hidden w-[18%] items-center justify-start bg-gradient-to-r from-black/10 to-transparent pl-3 opacity-50 transition-opacity hover:opacity-100 md:flex"
         onMouseEnter={() => { setDirection(-1); setIsFast(true); }}
         onMouseLeave={() => setIsFast(false)}
         aria-hidden="true"
       >
         <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-black shadow-lg">
-          <ChevronRight size={25} />
+          <ChevronLeft size={25} />
         </span>
       </div>
 
       <div
-        className="group absolute inset-y-0 right-0 z-10 hidden w-[18%] items-center justify-end bg-gradient-to-l from-black/10 to-transparent pr-3 opacity-0 transition-opacity hover:opacity-100 md:flex"
+        className="group absolute inset-y-0 right-0 z-10 hidden w-[18%] items-center justify-end bg-gradient-to-l from-black/10 to-transparent pr-3 opacity-50 transition-opacity hover:opacity-100 md:flex"
         onMouseEnter={() => { setDirection(1); setIsFast(true); }}
         onMouseLeave={() => setIsFast(false)}
         aria-hidden="true"
       >
         <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-black shadow-lg">
-          <ChevronLeft size={25} />
+          <ChevronRight size={25} />
         </span>
       </div>
     </div>

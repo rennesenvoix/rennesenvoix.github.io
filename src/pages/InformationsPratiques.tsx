@@ -65,7 +65,7 @@ const InformationsPratiques = () => {
               <div className="order-2 min-h-72 overflow-hidden rounded-2xl border border-border bg-background shadow-sm lg:order-1 lg:min-h-0">
                 <iframe
                   title="Carte Google Maps de Rennes en Voix"
-                  src="https://www.google.com/maps?q=47.013333%2C5.853583&z=17&output=embed"
+                  src="https://www.google.com/maps?q=47.013408%2C5.853570&z=17&output=embed"
                   loading="lazy"
                   className="h-full min-h-72 w-full"
                 />

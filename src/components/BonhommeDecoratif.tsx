@@ -17,10 +17,11 @@ export function BonhommeDecoratif({ emplacement, miroir = false, petit = false, 
   tousEcrans?: boolean;
 }) {
   return (
-    <picture
+    <span
       aria-hidden="true"
-      className={`pointer-events-none shrink-0 select-none ${tousEcrans ? "block w-[72px] lg:w-28 xl:w-32" : mobile ? "block w-20 lg:hidden" : `hidden lg:block ${petit ? "w-20" : "w-28 xl:w-32"}`} ${miroir ? "-scale-x-100" : ""}`}
+      className={`pointer-events-none shrink-0 select-none ${tousEcrans ? "block w-[72px] lg:w-28 xl:w-32" : mobile ? "block w-20 lg:hidden" : `hidden lg:block ${petit ? "w-20" : "w-28 xl:w-32"}`}`}
     >
+      <picture className="block">
       <source media={tousEcrans ? undefined : mobile ? "(max-width: 1023px)" : "(min-width: 1024px)"} srcSet={personnages[emplacement % personnages.length]} />
       <img
         src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
@@ -30,8 +31,9 @@ export function BonhommeDecoratif({ emplacement, miroir = false, petit = false, 
         loading="lazy"
         decoding="async"
         draggable={false}
-        className="h-auto w-full object-contain"
+        className={`h-auto w-full object-contain ${miroir ? "-scale-x-100" : ""}`}
       />
-    </picture>
+      </picture>
+    </span>
   );
 }

@@ -2,6 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
+@media (max-width: 1023px) {
+  .program-card-stack-upcoming > .program-card-tilt:not(:first-child) {
+    display: none;
+  }
+
+  .program-card-stack.program-card-stack-upcoming {
+    padding-bottom: 0;
+  }
+}
+
+/* La pile suit le défilement de la page et se termine à la fin de chaque année. */
+@media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
+  .program-card-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 22svh;
+    padding-bottom: 12svh;
+    isolation: isolate;
+  }
+
+  .program-card-stack > .program-card-tilt {
+    position: sticky;
+    top: min(11rem, calc(100svh - var(--card-height, 600px) - 1rem));
+    height: auto;
+    scroll-margin-top: 11rem;
+  }
+
+  .program-card-stack > .program-card-tilt:focus-within {
+    z-index: 2;
+  }
+}
+
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .program-card-relief {
+    transform: perspective(850px) rotateX(var(--card-x, 0deg)) rotateY(var(--card-y, 0deg));
+    transition: transform 180ms ease-out, box-shadow 180ms ease-out;
+  }
+
+  .program-card-tilt:hover {
+    z-index: 1;
+  }
+
+  .program-card-tilt:hover .program-card-relief {
+    box-shadow: 0 20px 32px -12px rgb(0 0 0 / 0.3);
+  }
+}
+
 @layer base {
   :root {
     /* Light theme */

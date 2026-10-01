@@ -1,3 +1,4 @@
+import { useEffect, useRef, type PointerEvent } from "react";
 import { BonhommeDecoratif } from "@/components/BonhommeDecoratif";
 import { PiedDePage } from "@/components/PiedDePage";
 import { Entete } from "@/components/Entete";
@@ -19,10 +20,38 @@ const isValidPhoto = (photo: string) => photo.startsWith("/") || isValidLink(pho
 const linkPillClass = "flex h-7 w-7 items-center justify-center rounded-full border border-current transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-festival-orange";
 const disabledLinkPillClass = `${linkPillClass} cursor-default opacity-30 hover:scale-100`;
 
+const resetCardTilt = (event: PointerEvent<HTMLDivElement>) => {
+  event.currentTarget.style.setProperty("--card-x", "0deg");
+  event.currentTarget.style.setProperty("--card-y", "0deg");
+};
+
+const tiltCard = (event: PointerEvent<HTMLDivElement>) => {
+  if (event.pointerType !== "mouse" || !window.matchMedia("(min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)").matches) return;
+  const bounds = event.currentTarget.getBoundingClientRect();
+  const x = Math.max(-1, Math.min(1, (event.clientX - bounds.left) / bounds.width * 2 - 1));
+  const y = Math.max(-1, Math.min(1, (event.clientY - bounds.top) / bounds.height * 2 - 1));
+  event.currentTarget.style.setProperty("--card-x", `${-y * 6}deg`);
+  event.currentTarget.style.setProperty("--card-y", `${x * 6}deg`);
+};
+
 // Carte verticale réutilisée pour les artistes à venir et les artistes des éditions passées.
 const ArtistCard = ({ group, accent }: { group: ProgramArtist; accent: (typeof cardAccents)[number] }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const card = cardRef.current;
+    if (!card) return;
+    // Les cartes hautes doivent pouvoir être lues entièrement avant de rester en place.
+    const measure = () => card.style.setProperty("--card-height", `${card.offsetHeight}px`);
+    const observer = new ResizeObserver(measure);
+    observer.observe(card);
+    measure();
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <article className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border-2 bg-card shadow-lg transition-transform duration-300 hover:-translate-y-1 ${accent.border}`}>
+    <div ref={cardRef} className="program-card-tilt relative h-full min-w-0" onPointerMove={tiltCard} onPointerLeave={resetCardTilt} onPointerCancel={resetCardTilt}>
+    <article className={`program-card-relief group relative flex h-full flex-col overflow-hidden rounded-2xl border-2 bg-card shadow-lg ${accent.border}`}>
       <span className={`absolute -right-5 -top-5 h-16 w-16 rotate-45 ${accent.surface}`} aria-hidden="true" />
       <div className="relative aspect-[4/3] overflow-hidden border-b-2 border-inherit">
         {group.comingSoon ? (
@@ -60,6 +89,7 @@ const ArtistCard = ({ group, accent }: { group: ProgramArtist; accent: (typeof c
         </div>
       </div>
     </article>
+    </div>
   );
 };
 
@@ -145,7 +175,7 @@ const Programmation = () => {
                     </div>
                     <BonhommeDecoratif emplacement={5 + yearIndex} miroir={yearIndex % 2 === 0} petit />
                   </div>
-                  <div className="mt-8 grid gap-6 md:grid-cols-3">
+                  <div className={`program-card-stack mt-8 grid gap-6 lg:grid-cols-3 ${program.year === "2027" ? "program-card-stack-upcoming" : ""}`}>
                     {program.groups.map((group, index) => (
                       <ArtistCard key={`${program.year}-${group.name}-${index}`} group={group} accent={cardAccents[index % cardAccents.length]} />
                     ))}

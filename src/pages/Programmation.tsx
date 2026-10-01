@@ -176,7 +176,11 @@ const Programmation = () => {
                     <BonhommeDecoratif emplacement={5 + yearIndex} miroir={yearIndex % 2 === 0} petit />
                   </div>
                   <div className={`program-card-stack mt-8 grid gap-6 lg:grid-cols-3 ${program.year === "2027" ? "program-card-stack-upcoming" : ""}`}>
-                    {program.groups.map((group, index) => (
+                    {program.groups
+                      .map((group, index) => ({ group, index }))
+                      .sort((first, second) =>
+                        (first.group.displayOrder ?? (first.group.professional ? 0 : 1)) - (second.group.displayOrder ?? (second.group.professional ? 0 : 1)))
+                      .map(({ group, index }) => (
                       <ArtistCard key={`${program.year}-${group.name}-${index}`} group={group} accent={cardAccents[index % cardAccents.length]} />
                     ))}
                   </div>

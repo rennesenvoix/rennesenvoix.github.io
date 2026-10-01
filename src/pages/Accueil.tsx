@@ -1,10 +1,11 @@
+import { VideoAccueil } from "@/components/VideoAccueil";
 import { BonhommeDecoratif } from "@/components/BonhommeDecoratif";
 import { PiedDePage } from "@/components/PiedDePage";
 import { Entete } from "@/components/Entete";
 import groupeColore from "@/assets/groupe-coloré.png";
 import titleLogo from "@/assets/Titre ReV.png";
 import festivalVenue from "@/assets/2026/Le Festival/B_L'Orangerie (c) Noé Michaud Arche Production.jpg";
-import { Volume2, VolumeX, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -75,10 +76,6 @@ const PartnerLogos = () => {
 };
 
 const Accueil = () => {
-  const videoContainerRef = useRef<HTMLDivElement>(null);
-  const videoIframeRef = useRef<HTMLIFrameElement>(null);
-  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
-  const [isVideoMuted, setIsVideoMuted] = useState(true);
   const photoDialogRef = useRef<HTMLDialogElement>(null);
   const [isPhotoOpen, setIsPhotoOpen] = useState(false);
 
@@ -93,30 +90,6 @@ const Accueil = () => {
       document.body.style.overflow = previousOverflow;
     };
   }, [isPhotoOpen]);
-
-  useEffect(() => {
-    const videoContainer = videoContainerRef.current;
-    if (!videoContainer) return;
-
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setShouldLoadVideo(true);
-        observer.disconnect();
-      }
-    }, { threshold: 0.35 });
-
-    observer.observe(videoContainer);
-    return () => observer.disconnect();
-  }, []);
-
-  const toggleVideoSound = () => {
-    videoIframeRef.current?.contentWindow?.postMessage(JSON.stringify({
-      event: "command",
-      func: isVideoMuted ? "unMute" : "mute",
-      args: [],
-    }), "*");
-    setIsVideoMuted((muted) => !muted);
-  };
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
@@ -149,36 +122,8 @@ const Accueil = () => {
 
         {/* Présentation courte du festival. */}
         <section className="home-snap-section container-wide py-8 md:py-12">
-          <div className="overflow-hidden rounded-3xl border border-festival-blue/40 bg-festival-blue/10 p-4 md:grid md:grid-cols-[0.75fr_1.25fr] md:items-center md:gap-6 md:p-5 lg:gap-8">
-            <div className="mx-auto flex w-full max-w-[352px] items-stretch gap-3">
-              <div className="min-w-0 flex-1">
-                <div ref={videoContainerRef} className="aspect-[9/16] overflow-hidden rounded-2xl border border-white/70 bg-black shadow-xl">
-                  {shouldLoadVideo && (
-                    <iframe
-                      ref={videoIframeRef}
-                      className="h-full w-full"
-                      src="https://www.youtube-nocookie.com/embed/n21b2hTy0OQ?autoplay=1&mute=1&start=5&loop=1&playlist=n21b2hTy0OQ&controls=0&playsinline=1&rel=0&enablejsapi=1"
-                      title="Vidéo récapitulative de Rennes en Voix 2026"
-                      allow="autoplay; encrypted-media; picture-in-picture"
-                      referrerPolicy="strict-origin-when-cross-origin"
-                    />
-                  )}
-                </div>
-              </div>
-              <div className="relative flex w-11 shrink-0 items-center justify-center py-1">
-                <p className="absolute left-0 top-1 -translate-x-3 whitespace-nowrap text-xs text-foreground/70 [writing-mode:vertical-rl]">Vidéo © Louise Guyon</p>
-                <button
-                  type="button"
-                  onClick={toggleVideoSound}
-                  disabled={!shouldLoadVideo}
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-festival-purple text-white shadow-lg transition-transform hover:scale-105 disabled:cursor-wait disabled:opacity-50"
-                  aria-label={isVideoMuted ? "Activer le son de la vidéo" : "Couper le son de la vidéo"}
-                  title={isVideoMuted ? "Activer le son" : "Couper le son"}
-                >
-                  {isVideoMuted ? <VolumeX size={19} /> : <Volume2 size={19} />}
-                </button>
-              </div>
-            </div>
+          <div className="overflow-hidden rounded-3xl border border-festival-blue/40 bg-festival-blue/10 p-4 md:grid md:grid-cols-2 md:items-center md:gap-6 md:p-5 lg:gap-8">
+            <VideoAccueil videoId="8eUK53WOZR8" year="2025" credit="Quentin Trigodet" creditUrl="https://www.instagram.com/quentin_trigodet/" />
             <div className="flex h-full flex-col gap-5 px-3 py-5 md:px-0 md:py-4 md:pr-5">
               <div>
                 <h2 className="font-display text-3xl font-bold leading-tight md:text-4xl">Un festival vocal à Rennes-sur-Loue</h2>
@@ -194,17 +139,17 @@ const Accueil = () => {
                   </Link>
                 </div>
               </div>
-              <figure className="mt-auto flex items-start gap-2">
+              <figure className="mt-auto">
                 <button
                   type="button"
                   onClick={() => setIsPhotoOpen(true)}
                   aria-label="Afficher la photo de l’Orangerie en grand"
-                  className="min-w-0 flex-1 cursor-zoom-in rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-festival-purple focus-visible:ring-offset-2"
+                  className="block w-full cursor-zoom-in rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-festival-purple focus-visible:ring-offset-2"
                 >
                   <img src={festivalVenue} alt="L’Orangerie illuminée pendant le festival" loading="lazy" className="aspect-[9/4] w-full rounded-2xl object-cover object-top shadow-md" />
                 </button>
-                <figcaption className="shrink-0 text-xs text-foreground/70 [writing-mode:vertical-rl]">
-                  Photo © Noé Michaud — Arche Production
+                <figcaption className="mt-1.5 text-right text-[11px] text-foreground/50">
+                  Photo © <a href="https://www.archeproduction.com/" target="_blank" rel="noreferrer noopener" className="underline underline-offset-2 hover:opacity-80">Noé Michaud — Arche Production</a>
                 </figcaption>
               </figure>
             </div>
@@ -213,7 +158,8 @@ const Accueil = () => {
 
         {/* Défilement des logos des partenaires du festival. */}
         <section className="home-snap-section border-y border-border bg-card/50 py-10 md:py-14">
-          <div className="container-wide">
+          <div className="container-wide grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_260px] lg:gap-12">
+            <div className="min-w-0">
             <span className="mb-5 block h-2 w-24 rounded-full bg-festival-green" aria-hidden="true" />
             <div className="flex items-center justify-between gap-6">
               <h2 className="text-headline">Nos partenaires</h2>
@@ -226,6 +172,10 @@ const Accueil = () => {
               <Link to="/soutien" className="inline-flex rounded-full border-2 border-festival-purple px-6 py-2.5 text-sm font-bold uppercase tracking-wider text-festival-purple transition-colors hover:bg-festival-purple hover:text-white">
                 Devenir partenaire
               </Link>
+            </div>
+            </div>
+            <div className="mx-auto w-full max-w-[260px]">
+              <VideoAccueil videoId="n21b2hTy0OQ" year="2026" credit="Louise Guyon" portrait />
             </div>
           </div>
         </section>
@@ -251,7 +201,7 @@ const Accueil = () => {
               <X size={24} />
             </button>
             <img src={festivalVenue} alt="L’Orangerie illuminée pendant le festival, vue complète" className="mx-auto max-h-[80dvh] max-w-full object-contain" />
-            <p className="mt-3 text-center text-xs text-white/80">Photo © Noé Michaud — Arche Production</p>
+            <p className="mt-3 text-center text-[11px] text-white/50">Photo © <a href="https://www.archeproduction.com/" target="_blank" rel="noreferrer noopener" className="underline underline-offset-2 hover:opacity-80">Noé Michaud — Arche Production</a></p>
           </div>
         )}
       </dialog>

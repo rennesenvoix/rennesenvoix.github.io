@@ -5,6 +5,8 @@ export type ProgramArtist = {
   photo: string;
   photoFit?: "cover" | "contain";
   comingSoon?: boolean;
+  professional?: boolean;
+  displayOrder?: number;
   time: string;
   instagram: string;
   youtube: string;
@@ -79,6 +81,7 @@ export const yearPrograms: YearProgram[] = [
       },
       {
         name: "A Bocca Chiusa",
+        professional: true,
         style: "Chansons actuelles et classiques francophones",
         bio: "Dans son spectacle Sans Cible, A Bocca Chiusa porte un répertoire exclusivement francophone, relie les chansons entre elles et construit une narration collective à quatre voix.",
         photo: aBoccaChiusaPhoto,
@@ -117,6 +120,7 @@ export const yearPrograms: YearProgram[] = [
       },
       {
         name: "Nana Sila",
+        professional: true,
         style: "Trio vocal féminin — polyphonies des Balkans",
         bio: "Trois voix réunies autour des cultures vocales populaires des Balkans, accompagnées de violon, de percussions et de flûte, entre puissance, poésie et fantaisie.",
         photo: nanaSilaPhoto,
@@ -146,6 +150,8 @@ export const yearPrograms: YearProgram[] = [
     groups: [
       {
         name: "L'Atelier",
+        displayOrder: 1,
+        professional: true,
         style: "Ensemble vocal — pop, rock, jazz et soul",
         bio: "­Cet ensemble vocal éclectique interprète des morceaux pop, rock, jazz, soul & gospel dans une version a cappella originale et subtile.",
         photo: atelier2024Photo,
@@ -156,6 +162,7 @@ export const yearPrograms: YearProgram[] = [
       },
       {
         name: "Vocalypso",
+        displayOrder: 0,
         style: "Jazz vocal, swing et musiques latines",
         bio: "Un ensemble vocal d'une quinzaine de chanteurs au répertoire jazz, accompagné d'un pianiste.",
         photo: vocalypsoPhoto,

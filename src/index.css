@@ -90,30 +90,26 @@
 
   html {
     scroll-behavior: smooth;
-  }
-
-  html.page-scroll-snap {
     scroll-snap-type: y proximity;
     scroll-padding-top: 4rem;
   }
 
-  .page-scroll-snap main,
-  .page-scroll-snap .home-snap-section,
-  .page-scroll-snap .page-snap-section,
-  .page-scroll-snap footer {
+  main,
+  .home-snap-section,
+  .page-snap-section,
+  footer {
     scroll-snap-align: start;
-    scroll-snap-stop: always;
+    scroll-snap-stop: normal;
   }
 
-  @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
-    html.page-scroll-snap {
-      scroll-snap-type: y mandatory;
+  @media (min-width: 768px) {
+    html {
       scroll-padding-top: 5rem;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    html.page-scroll-snap {
+    html {
       scroll-behavior: auto;
       scroll-snap-type: none;
     }

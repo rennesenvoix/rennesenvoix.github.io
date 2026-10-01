@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense, useLayoutEffect } from "react";
 import { HashRouter, Routes, Route, useLocation } from "react-router-dom";
 import Accueil from "./pages/Accueil";
 
@@ -10,12 +10,11 @@ const PageIntrouvable = lazy(() => import("./pages/PageIntrouvable"));
 const Festival = lazy(() => import("./pages/Festival"));
 const Frequentation = lazy(() => import("./pages/Frequentation"));
 
-const PageScrollSnap = () => {
+const ScrollToTop = () => {
   const { pathname } = useLocation();
 
-  useEffect(() => {
-    document.documentElement.classList.add("page-scroll-snap");
-    return () => document.documentElement.classList.remove("page-scroll-snap");
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, [pathname]);
 
   return null;
@@ -23,8 +22,8 @@ const PageScrollSnap = () => {
 
 const App = () => (
   <HashRouter>
-    <PageScrollSnap />
     <Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-background text-foreground">Chargement…</div>}>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Accueil />} />
         <Route path="/le-festival" element={<Festival />} />

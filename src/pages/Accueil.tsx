@@ -96,7 +96,7 @@ const Accueil = () => {
       <Entete />
       <main className="flex-1 pt-16 md:pt-20">
         {/* Informations essentielles de la prochaine édition. */}
-        <section className="home-snap-section relative overflow-hidden">
+        <section className="relative overflow-hidden">
           <img src={groupeColore} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-10" />
           <div className="container-wide relative w-full pb-8 pt-4 md:py-10">
             <div className="grid items-center gap-5 md:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)] md:gap-8 lg:gap-12">
@@ -121,7 +121,7 @@ const Accueil = () => {
         </section>
 
         {/* Présentation courte du festival. */}
-        <section className="home-snap-section container-wide py-8 md:py-12">
+        <section className="container-wide py-8 md:py-12">
           <div className="overflow-hidden rounded-3xl border border-festival-blue/40 bg-festival-blue/10 p-4 md:grid md:grid-cols-2 md:items-center md:gap-6 md:p-5 lg:gap-8">
             <VideoAccueil videoId="8eUK53WOZR8" year="2025" credit="Quentin Trigodet" creditUrl="https://www.instagram.com/quentin_trigodet/" />
             <div className="flex h-full flex-col gap-5 px-3 py-5 md:px-0 md:py-4 md:pr-5">
@@ -157,7 +157,7 @@ const Accueil = () => {
         </section>
 
         {/* Défilement des logos des partenaires du festival. */}
-        <section className="home-snap-section border-y border-border bg-card/50 py-10 md:py-14">
+        <section className="border-y border-border bg-card/50 py-10 md:py-14">
           <div className="container-wide grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_260px] lg:gap-12">
             <div className="min-w-0">
             <span className="mb-5 block h-2 w-24 rounded-full bg-festival-green" aria-hidden="true" />

@@ -162,7 +162,7 @@ const Programmation = () => {
                   key={program.year}
                   ref={(element) => { sectionRefs.current[yearIndex] = element; }}
                   id={`program-${program.year}`}
-                  className="page-snap-section scroll-mt-20 md:scroll-mt-24 lg:scroll-mt-0"
+                  className="scroll-mt-20 md:scroll-mt-24 lg:scroll-mt-0"
                   aria-labelledby={`program-title-${program.year}`}
                 >
                   <div className="flex items-center justify-between gap-6">

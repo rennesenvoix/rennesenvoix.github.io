@@ -492,7 +492,7 @@ const SouvenezVous = () => {
                   key={gallery.year}
                   ref={(element) => { sectionRefs.current[yearIndex] = element; }}
                   id={`gallery-${gallery.year}`}
-                  className="page-snap-section min-w-0 max-w-full scroll-mt-28"
+                  className="min-w-0 max-w-full scroll-mt-28"
                   aria-labelledby={`gallery-title-${gallery.year}`}
                 >
                   <span className={`block h-2 w-16 rounded-full ${sectionColors[yearIndex]}`} aria-hidden="true" />

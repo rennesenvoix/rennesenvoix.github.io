@@ -1,0 +1,17 @@
+import fs from "node:fs";
+const source = fs.readFileSync("src/assets/bourgogne-franche-comte-postcodes.svg", "utf8");
+const codes = new Set(["25", "39", "70", "90"]);
+const departments = [...source.matchAll(/<path data-department="([^"]+)" d="([^"]+)"[^>]*\/>/g)].filter(m => codes.has(m[1]));
+if (departments.length !== 4) throw new Error("Les quatre départements de Franche-Comté sont requis.");
+const points = departments.flatMap(m => [...m[2].matchAll(/[ML]([\d.-]+) ([\d.-]+)/g)].map(p => [Number(p[1]), Number(p[2])]));
+const xs = points.map(p => p[0]), ys = points.map(p => p[1]);
+const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys);
+const padding = 8;
+let svg = source.replace(/viewBox="[^"]+"/, `viewBox="${minX-padding} ${minY-padding} ${maxX-minX+padding*2} ${maxY-minY+padding*2}"`);
+svg = svg.replace(/<g class="department-backgrounds">[\s\S]*?<\/g>/, '<g class="department-backgrounds">'+departments.map(m=>m[0]).join('')+'</g>');
+svg = svg.replace(/<path\b[^>]*data-postcode="([^"]+)"[^>]*>[\s\S]*?<\/path>/g, (path, code) => codes.has(code.slice(0,2)) ? path : '');
+svg = svg.replace(/<g class="neighbor-countries">[\s\S]*?<\/g>/, '');
+svg = svg.replace(/<path class="(?:national-border|region-border)"[^>]*\/>/g, '');
+svg = svg.replace(/(<path class="department-border" d=")[^"]+/, '$1'+departments.map(m=>m[2]).join(''));
+svg = svg.replace(/<title id="title">[^<]+/, '<title id="title">Fréquentation en Franche-Comté').replace(/<desc id="description">[\s\S]*?<\/desc>/, '<desc id="description">Doubs, Jura, Haute-Saône et Territoire de Belfort. Les zones colorées représentent la fréquentation par code postal.</desc>');
+fs.writeFileSync("src/assets/franche-comte-postcodes.svg", svg);

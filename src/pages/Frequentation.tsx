@@ -1,20 +1,21 @@
-import { useEffect } from "react";
+import attendanceSource from "@/data/frequentation-2026.json?raw";
+import { useEffect, useState } from "react";
 import { BonhommeDecoratif } from "@/components/BonhommeDecoratif";
 import brushHero1 from "@/assets/brush-hero1.png";
 import { CarteFrequentation } from "@/components/CarteFrequentation";
 import { PiedDePage } from "@/components/PiedDePage";
 import { Entete } from "@/components/Entete";
 
-const departmentAttendance = [
-  ["Doubs", 181],
-  ["Jura", 62],
-  ["Haute-Saône", 4],
-] as const;
-const otherDepartmentsTotal = 53;
-const totalVisitors = 300;
+const attendance: { entries: { postcode: string; visitors: number }[] } = JSON.parse(attendanceSource);
+const totalVisitors = attendance.entries.reduce((sum, entry) => sum + entry.visitors, 0);
+const departmentAttendance = [["25", "Doubs"], ["39", "Jura"], ["70", "Haute-Saône"]].map(([code, name]) => [
+  name, attendance.entries.filter(entry => entry.postcode.startsWith(code)).reduce((sum, entry) => sum + entry.visitors, 0),
+] as const);
+const otherDepartmentsTotal = totalVisitors - departmentAttendance.reduce((sum, [, visitors]) => sum + visitors, 0);
 const percent = (visitors: number) => new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 0 }).format((visitors / totalVisitors) * 100);
 
 const Frequentation = () => {
+  const [regionOnly, setRegionOnly] = useState(false);
   useEffect(() => {
     const existing = document.querySelector<HTMLMetaElement>('meta[name="robots"]');
     const previous = existing?.getAttribute("content");
@@ -41,7 +42,7 @@ const Frequentation = () => {
               <BonhommeDecoratif emplacement={2} miroir />
             </div>
         <p className="mt-5 max-w-3xl text-lg leading-relaxed text-foreground/80">
-          Cette carte de Franche-Comté met en lumière les codes postaux représentés parmi l’ensemble des {totalVisitors} visiteurs recensés.
+          Cette carte présente la France continentale, sans la Corse, avec les limites de toutes les régions. Les limites départementales et le découpage par code postal apparaissent uniquement dans les départements avec des données de fréquentation. Au total, {totalVisitors} visiteurs figurent dans les données initiales, toutes provenances confondues.
         </p>
 
         <section className="mx-auto mt-14 max-w-5xl rounded-2xl border border-border bg-card/90 p-4 shadow-lg sm:p-8" aria-labelledby="map-title">
@@ -51,19 +52,28 @@ const Frequentation = () => {
             </div>
           </div>
 
+          <div className="mt-5 flex flex-wrap gap-2" role="group" aria-label="Périmètre de la carte">
+            {[{ label: "Carte complète", regional: false }, { label: "Franche-Comté", regional: true }].map(option => (
+              <button key={option.label} type="button" aria-pressed={regionOnly === option.regional}
+                onClick={() => setRegionOnly(option.regional)}
+                className={`min-h-11 rounded-lg border px-4 text-sm font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-festival-purple ${regionOnly === option.regional ? "border-festival-purple bg-festival-purple text-white" : "border-border bg-background hover:bg-muted"}`}>
+                {option.label}
+              </button>
+            ))}
+          </div>
           <div className="attendance-map-layout mt-5">
             <div className="attendance-map-panel relative overflow-hidden rounded-xl">
-              <CarteFrequentation />
+              <CarteFrequentation key={regionOnly ? "regional" : "complete"} regionOnly={regionOnly} />
             </div>
             <aside className="attendance-map-legend rounded-xl border border-border bg-background/70 p-4" aria-label="Légende de la carte">
               <p className="text-label">Légende</p>
               <div className="mt-3 space-y-2 text-xs">
-                <p className="flex items-center gap-2"><svg className="h-3 w-8 shrink-0" viewBox="0 0 32 12" aria-hidden="true"><path d="M1 6H31" stroke="hsl(145 63% 35%)" strokeWidth="2.4" strokeLinecap="round" /></svg> CC Loue-Lison</p>
-                <p className="flex items-center gap-2"><svg className="h-3 w-8 shrink-0" viewBox="0 0 32 12" aria-hidden="true"><path d="M1 6H31" stroke="hsl(205 85% 40%)" strokeWidth="2.4" strokeLinecap="round" /></svg> CC du Val d’Amour</p>
+                <p className="flex items-center gap-2"><svg className="h-3 w-8 shrink-0" viewBox="0 0 32 12" aria-hidden="true"><path d="M1 6H31" stroke="hsl(145 63% 35%)" strokeWidth="3.3" strokeLinecap="round" /></svg> CC Loue-Lison</p>
+                <p className="flex items-center gap-2"><svg className="h-3 w-8 shrink-0" viewBox="0 0 32 12" aria-hidden="true"><path d="M1 6H31" stroke="hsl(205 85% 40%)" strokeWidth="3.3" strokeLinecap="round" /></svg> CC du Val d’Amour</p>
                 <p className="flex items-center gap-2"><span className="relative h-4 w-4 shrink-0 rounded-full border-[3px] border-white bg-festival-red shadow-sm" aria-hidden="true"><span className="absolute left-1/2 top-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" /></span> Rennes-sur-Loue</p>
               </div>
               <div className="mt-5 border-t border-border pt-4">
-                <p className="text-label">Répartition par département</p>
+                <p className="text-label">Franche-Comté</p>
                 <ul className="mt-3 space-y-1.5 text-xs leading-snug">
                   {departmentAttendance.map(([department, visitors]) => (
                     <li key={department} className="flex items-baseline justify-between gap-2">
@@ -72,7 +82,7 @@ const Frequentation = () => {
                     </li>
                   ))}
                   <li className="flex items-baseline justify-between gap-2 border-t border-border pt-1.5">
-                    <span>Autres (Bourgogne, Auvergne-Rhône-Alpes, Île-de-France, Grand Est, Suisse ... )</span>
+                    <span>Autres (Bourgogne, Auvergne-Rhône-Alpes, Île-de-France, Grand Est, Pays-Bas, Suisse, Allemagne ... )</span>
                     <span className="shrink-0 font-bold">{percent(otherDepartmentsTotal)} %</span>
                   </li>
                 </ul>
@@ -85,7 +95,9 @@ const Frequentation = () => {
             <p className="mt-1">
               Codes postaux : <a className="underline underline-offset-2 hover:text-foreground" href="https://www.data.gouv.fr/datasets/codes-postaux-de-france-metropolitaine" target="_blank" rel="noreferrer">fond de carte ouvert</a>
               <span className="mx-2" aria-hidden="true">·</span>
-              Limites administratives : <a className="underline underline-offset-2 hover:text-foreground" href="https://www.data.gouv.fr/dataservices/api-decoupage-administratif-api-geo" target="_blank" rel="noreferrer">API Géo</a>
+              Limites administratives : <a className="underline underline-offset-2 hover:text-foreground" href="https://www.data.gouv.fr/dataservices/api-decoupage-administratif-api-geo" target="_blank" rel="noreferrer">API Géo</a>{" et "}<a className="underline underline-offset-2 hover:text-foreground" href="https://github.com/gregoiredavid/france-geojson" target="_blank" rel="noreferrer">France GeoJSON</a>
+              <span className="mx-2" aria-hidden="true">·</span>
+              Pays frontaliers : <a className="underline underline-offset-2 hover:text-foreground" href="https://www.naturalearthdata.com/" target="_blank" rel="noreferrer">Natural Earth</a>
               <span className="mx-2" aria-hidden="true">·</span>
               Fréquentation : données Rennes en Voix
             </p>

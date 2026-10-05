@@ -28,8 +28,8 @@ const projectionMetadata = svg.match(/<metadata id="map-projection">([^<]+)<\/me
 const projection = projectionMetadata ? JSON.parse(projectionMetadata[1]) : null;
 const scale = projection?.scale ?? numerator / denominator;
 const coordinate = point => projection
-  ? [((point[0] - projection.minX) * scale + projection.padding).toFixed(1), ((projection.maxY - point[1]) * scale + projection.padding).toFixed(1)]
-  : point.map((v,axis)=>(means[axis].s+(v-means[axis].w)*scale*(axis===0?1:-1)).toFixed(1));
+  ? [((point[0] - projection.minX) * scale + projection.padding).toFixed(3), ((projection.maxY - point[1]) * scale + projection.padding).toFixed(3)]
+  : point.map((v,axis)=>(means[axis].s+(v-means[axis].w)*scale*(axis===0?1:-1)).toFixed(3));
 for(const p of points) if(coordinate(p.world).some((v,i)=>Math.abs(Number(v)-p.screen[i])>0.15)) throw new Error("Projection mismatch");
 const data=JSON.parse(fs.readFileSync("scripts/data/val-amour.geojson","utf8"));
 const rings=data.geometry.type==="Polygon"?data.geometry.coordinates:data.geometry.coordinates.flat();
@@ -37,7 +37,13 @@ const d=rings.map(r=>r.map((p,i)=>(i?"L":"M")+coordinate(toLambert93(p)).join(" 
 svg=svg.replace(/<path class="val-amour-border"[^>]*\/>/g,"");
 const outline='<path class="val-amour-border" d="'+d+'" fill="none" stroke="hsl(205 85% 40%)" stroke-width="3.3" stroke-linejoin="round"/>';
 svg=svg.replace('<g class="map-marker"',outline+'<g class="map-marker"');
-svg=svg.replace('les départements et la Communauté de communes Loue-Lison.', 'les départements et les communautés de communes Loue-Lison et du Val d’Amour.');
+svg=svg.replace('les départements et la Communauté de communes Loue-Lison.', 'les départements et les communautés de communes Loue-Lison, du Val d’Amour et Cœur du Jura.');
+const coeurData=JSON.parse(fs.readFileSync("scripts/data/coeur-du-jura.geojson","utf8"));
+const coeurRings=coeurData.geometry.type==="Polygon"?coeurData.geometry.coordinates:coeurData.geometry.coordinates.flat();
+const coeurD=coeurRings.map(r=>r.map((p,i)=>(i?"L":"M")+coordinate(toLambert93(p)).join(" ")).join("")+"Z").join("");
+svg=svg.replace(/<path class="coeur-du-jura-border"[^>]*\/>/g,"");
+const coeurOutline='<path class="coeur-du-jura-border" d="'+coeurD+'" fill="none" stroke="hsl(25 90% 45%)" stroke-width="3.3" stroke-linejoin="round"/>';
+svg=svg.replace('<path class="val-amour-border"',coeurOutline+'<path class="val-amour-border"');
 // Keep projection references as metadata, without displaying department capitals.
 const referenceData = Object.fromEntries(cities.map(([name], i) => [name, points[i].screen]));
 svg = svg.replace(/<metadata id="projection-references">[^<]+<\/metadata>/g, "");
@@ -80,7 +86,7 @@ const nearestBorder = ([x, y]) => {
 };
 const geographicPath = geometry => {
   const rings = geometry.type === "Polygon" ? geometry.coordinates : geometry.coordinates.flat();
-  const format = p => p.map(v => Number(v).toFixed(1)).join(" ");
+  const format = p => p.map(v => Number(v).toFixed(3)).join(" ");
   return rings.map(ring => {
     // Densifier pour couper les tronçons communs sans refermer les tracés.
     const points = [];

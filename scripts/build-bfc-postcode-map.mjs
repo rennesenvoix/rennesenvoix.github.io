@@ -10,11 +10,13 @@ const maxPostcodeVisitors = Math.max(...postcodeVisits.values());
 // possèdent un découpage postal. Aucun filtre de continuité ou de seuil.
 const departmentsWithVisitors = new Set([...postcodeVisits]
   .filter(([, visitors]) => visitors > 0).map(([postcode]) => postcode.slice(0, 2)));
+// Exception d’affichage : détailler Belfort même sans visiteurs renseignés.
+const postalDepartments = new Set([...departmentsWithVisitors, "90"]);
 const departmentFeatures = JSON.parse(fs.readFileSync(path.join(sourceDirectory, "departements.geojson"), "utf8")).features;
 const mappedDepartmentPrefixes = new Set(departmentFeatures
   .filter(feature => /^\d{2}$/.test(feature.properties.code))
   .map(feature => feature.properties.code));
-console.log("Départements avec découpage postal :", [...departmentsWithVisitors].sort().join(", "));
+console.log("Départements avec découpage postal :", [...postalDepartments].sort().join(", "));
 
 // Le fond postal est déjà en Lambert-93 : utiliser ses coordonnées sans décalage.
 const dbf = fs.readFileSync(path.join(sourceDirectory, "F_Codes Postaux_2025.dbf"));
@@ -33,7 +35,7 @@ for (let offset = 100, recordIndex = 0; offset < shp.length; recordIndex += 1) {
   const start = offset + 8;
   const postcode = postcodes[recordIndex];
   offset = start + contentLength;
-  if (!departmentsWithVisitors.has(postcode.slice(0, 2))) continue;
+  if (!postalDepartments.has(postcode.slice(0, 2))) continue;
   const type = shp.readInt32LE(start);
   if (type !== 5) continue;
   const parts = shp.readInt32LE(start + 36);
@@ -63,7 +65,7 @@ const readGeometry = (filePath, selectedCodes = null) => {
   });
 };
 const mainlandRings = readGeometry(path.join(sourceDirectory, "departements.geojson"), mappedDepartmentPrefixes);
-const departmentRings = readGeometry(path.join(sourceDirectory, "departements.geojson"), departmentsWithVisitors);
+const departmentRings = readGeometry(path.join(sourceDirectory, "departements.geojson"), postalDepartments);
 const loueLisonRings = readGeometry(path.join(sourceDirectory, "loue-lison.geojson"));
 const allPoints = [
   ...polygons.flatMap((polygon) => polygon.rings.flat()),
@@ -79,8 +81,8 @@ const width = 760;
 const scale = (width - padding * 2) / (bounds.maxX - bounds.minX);
 const height = Math.ceil((bounds.maxY - bounds.minY) * scale + padding * 2);
 const coordinate = ([x, y]) => [
-  ((x - bounds.minX) * scale + padding).toFixed(1),
-  ((bounds.maxY - y) * scale + padding).toFixed(1),
+  ((x - bounds.minX) * scale + padding).toFixed(3),
+  ((bounds.maxY - y) * scale + padding).toFixed(3),
 ];
 const [rennesLoueX, rennesLoueY] = coordinate(toLambert93([5.8609, 47.0168]));
 const cityMarkers = [
@@ -97,9 +99,28 @@ const colorFor = (visitors) => {
   const lightness = 85 - intensity * 38;
   return `hsl(282 44% ${lightness.toFixed(1)}%)`;
 };
-// Les contours source sont très détaillés. Garder un point sur cinq suffit à
-// distinguer chaque zone postale tout en évitant de charger plusieurs mégaoctets.
-const simplifyRing = (ring) => ring.length < 12 ? ring : ring.filter((_, index) => index === 0 || index === ring.length - 1 || index % 5 === 0);
+// Simplification géométrique bornée, au lieu de supprimer un sommet sur cinq.
+// Erreur maximale : 0,005 unité SVG, sous le pixel même au zoom régional ×12.
+const simplifyRing = ring => {
+  if (ring.length < 4) return ring;
+  const toleranceSquared = (0.005 / scale) ** 2;
+  const kept = new Set([0, ring.length - 1]);
+  const pending = [[0, ring.length - 1]];
+  while (pending.length) {
+    const [start, end] = pending.pop();
+    const [ax, ay] = ring[start], [bx, by] = ring[end];
+    const dx = bx - ax, dy = by - ay;
+    let maximum = toleranceSquared, furthest = -1;
+    for (let i = start + 1; i < end; i++) {
+      const [x, y] = ring[i];
+      const t = Math.max(0, Math.min(1, ((x - ax) * dx + (y - ay) * dy) / (dx * dx + dy * dy || 1)));
+      const distance = (x - ax - t * dx) ** 2 + (y - ay - t * dy) ** 2;
+      if (distance > maximum) { maximum = distance; furthest = i; }
+    }
+    if (furthest >= 0) { kept.add(furthest); pending.push([start, furthest], [furthest, end]); }
+  }
+  return [...kept].sort((a, b) => a - b).map(i => ring[i]);
+};
 const pathFor = (ring) => simplifyRing(ring).map((point, index) => `${index ? "L" : "M"}${coordinate(point).join(" ")}`).join("") + "Z";
 const boundaryPathFor = (ring) => ring.map((point, index) => `${index ? "L" : "M"}${coordinate(point).join(" ")}`).join("") + "Z";
 const entries = polygons.map(({ postcode, rings }) => {
@@ -136,7 +157,7 @@ const regionalBorder = [...mainlandEdges.values()].filter(edge => edge.regions.s
   .map(edge => edge.points.map((p, i) => (i ? "L" : "M") + coordinate(toLambert93(p)).join(" ")).join("")).join("");
 if (!regionalBorder) throw new Error("Aucune limite régionale générée.");
 const blackCityMarkers = cityMarkers.map(({ name, position: [x, y] }) => `<g class="map-marker" aria-label="${name}"><title>${name}</title><circle class="map-marker-outer city-marker-outer" cx="${x}" cy="${y}" r="5" fill="#111111" stroke="white" stroke-width="2"/><circle class="map-marker-center city-marker-center" cx="${x}" cy="${y}" r="1.2" fill="white"/></g>`).join("");
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="title description"><title id="title">Fréquentation en France continentale</title><desc id="description">Carte de France continentale avec les limites de toutes les régions. Seuls les départements avec des données de fréquentation sont découpés par code postal. Les zones colorées correspondent aux codes postaux représentés. Les contours renforcés indiquent les départements et la Communauté de communes Loue-Lison.</desc><g class="department-backgrounds">${departmentBackgrounds}</g><g class="postcode-lines" stroke="#000000" stroke-opacity="0.5" stroke-width="0.55" stroke-linejoin="round">${entries}</g><path class="national-border" d="${nationalBorder}" fill="none" stroke="#111111" stroke-opacity="0.9" stroke-width="1.2"/><path class="department-border" d="${overlayPath(departmentRings)}" fill="none" stroke="#111111" stroke-opacity="0.9" stroke-width="1.6" stroke-linejoin="round"/><path class="region-border" d="${regionalBorder}" fill="none" stroke="#111111" stroke-opacity="0.9" stroke-width="1.2" stroke-linejoin="round"/><path class="loue-lison-border" d="${overlayPath(loueLisonRings)}" fill="none" stroke="hsl(145 63% 35%)" stroke-width="3.3" stroke-linejoin="round"/><g class="map-marker" aria-label="Rennes-sur-Loue"><title>Rennes-sur-Loue</title><circle class="map-marker-outer rennes-marker-outer" cx="${rennesLoueX}" cy="${rennesLoueY}" r="8" fill="hsl(6 78% 57%)" stroke="white" stroke-width="3"/><circle class="map-marker-center rennes-marker-center" cx="${rennesLoueX}" cy="${rennesLoueY}" r="2" fill="white"/></g>${blackCityMarkers}<metadata id="map-projection">${JSON.stringify({ scale, minX: bounds.minX, maxY: bounds.maxY, padding })}</metadata></svg>`;
+const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="title description"><title id="title">Fréquentation en France continentale</title><desc id="description">Carte de France continentale avec les limites de toutes les régions. Les départements avec des données de fréquentation et le Territoire de Belfort sont découpés par code postal. Les zones colorées correspondent aux codes postaux représentés. Les contours renforcés indiquent les départements et la Communauté de communes Loue-Lison.</desc><g class="department-backgrounds">${departmentBackgrounds}</g><g class="postcode-lines" stroke="#000000" stroke-opacity="0.5" stroke-width="0.55" stroke-linejoin="round">${entries}</g><path class="national-border" d="${nationalBorder}" fill="none" stroke="#111111" stroke-opacity="0.9" stroke-width="1.2"/><path class="department-border" d="${overlayPath(departmentRings)}" fill="none" stroke="#111111" stroke-opacity="0.9" stroke-width="1.6" stroke-linejoin="round"/><path class="region-border" d="${regionalBorder}" fill="none" stroke="#111111" stroke-opacity="0.9" stroke-width="1.2" stroke-linejoin="round"/><path class="loue-lison-border" d="${overlayPath(loueLisonRings)}" fill="none" stroke="hsl(145 63% 35%)" stroke-width="3.3" stroke-linejoin="round"/><g class="map-marker" aria-label="Rennes-sur-Loue"><title>Rennes-sur-Loue</title><circle class="map-marker-outer rennes-marker-outer" cx="${rennesLoueX}" cy="${rennesLoueY}" r="8" fill="hsl(6 78% 57%)" stroke="white" stroke-width="3"/><circle class="map-marker-center rennes-marker-center" cx="${rennesLoueX}" cy="${rennesLoueY}" r="2" fill="white"/></g>${blackCityMarkers}<metadata id="map-projection">${JSON.stringify({ scale, minX: bounds.minX, maxY: bounds.maxY, padding })}</metadata></svg>`;
 fs.writeFileSync("src/assets/bourgogne-franche-comte-postcodes.svg", svg);
 await import("./add-val-amour-map.mjs");
 

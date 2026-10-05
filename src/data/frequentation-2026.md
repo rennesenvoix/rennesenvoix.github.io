@@ -15,3 +15,5 @@ La page Fréquentation et le générateur `scripts/build-bfc-postcode-map.mjs` u
 Les limites régionales sont affichées partout, y compris dans les zones sans fréquentation. La correspondance département–région provient de https://geo.api.gouv.fr/departements et est conservée dans `scripts/data/departements-regions.json`.
 
 Données complémentaires fournies, conservées en attente d’intégration : Allemagne 2, Pays-Bas 3, Suisse 3. Leur affichage et leur inclusion dans le total ont été annulés à la demande de l’organisateur.
+
+Exception : les codes postaux du Territoire de Belfort (90) sont affichés dans les deux cartes, même sans fréquentation renseignée. Aucun effectif n’est ajouté.

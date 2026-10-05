@@ -4,7 +4,11 @@ import completeMap from "@/assets/bourgogne-franche-comte-postcodes.svg?raw";
 
 import regionalMap from "@/assets/franche-comte-postcodes.svg?raw";
 
-function prepareMap(map: string) {
+function prepareMap(map: string, showCommunities = true) {
+if (!showCommunities) {
+  map = map.replace(/<path class="(?:loue-lison|val-amour|coeur-du-jura)-border"[^>]*\/>/g, "");
+  map = map.replace(/Les contours renforcés indiquent[^<]+/, "Les contours renforcés indiquent les départements.");
+}
 const initial = map.match(/viewBox="([^"]+)"/)![1].split(/\s+/).map(Number);
 const [left, top, width, height] = initial;
 const minZoom = 1;
@@ -22,7 +26,7 @@ const mapContent = { __html: map
 
 return { left, top, width, height, minZoom, maxZoom, markerX, markerY, mapContent };
 }
-const maps = { complete: prepareMap(completeMap), regional: prepareMap(regionalMap) };
+const maps = { complete: prepareMap(completeMap, false), regional: prepareMap(regionalMap) };
 
 export function CarteFrequentation({ regionOnly = false }: { regionOnly?: boolean }) {
   const { left, top, width, height, minZoom, maxZoom, markerX, markerY, mapContent } = maps[regionOnly ? "regional" : "complete"];
@@ -59,7 +63,7 @@ export function CarteFrequentation({ regionOnly = false }: { regionOnly?: boolea
       <button type="button" className={button} aria-label="Réduire la carte" disabled={view.zoom <= minZoom} onClick={() => zoom(1 / 1.5)}><Minus size={18} /></button>
       <button type="button" className={button} aria-label="Réinitialiser la carte" onClick={() => setView({ x: left, y: top, zoom: 1 })}><RotateCcw size={18} /></button>
     </div>
-    <div ref={container} role="group" aria-label="Carte de fréquentation. Contours vert : Loue-Lison ; bleu : Val d’Amour. Utilisez les boutons pour zoomer, puis faites glisser la carte ou utilisez les flèches du clavier."
+    <div ref={container} role="group" aria-label={`Carte de fréquentation. ${regionOnly ? "Contours vert : Loue-Lison ; bleu : Val d’Amour ; orange : Cœur du Jura. " : ""}Utilisez les boutons pour zoomer, puis faites glisser la carte ou utilisez les flèches du clavier.}`}
       tabIndex={0}
       className="attendance-map-graphic mx-auto w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-festival-purple"
       style={{ touchAction: view.zoom > 1 ? "none" : "pan-y", cursor: view.zoom > 1 ? "grab" : "default" }}

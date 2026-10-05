@@ -15,7 +15,7 @@ const otherDepartmentsTotal = totalVisitors - departmentAttendance.reduce((sum, 
 const percent = (visitors: number) => new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 0 }).format((visitors / totalVisitors) * 100);
 
 const Frequentation = () => {
-  const [regionOnly, setRegionOnly] = useState(false);
+  const [regionOnly, setRegionOnly] = useState(true);
   useEffect(() => {
     const existing = document.querySelector<HTMLMetaElement>('meta[name="robots"]');
     const previous = existing?.getAttribute("content");
@@ -42,13 +42,13 @@ const Frequentation = () => {
               <BonhommeDecoratif emplacement={2} miroir />
             </div>
         <p className="mt-5 max-w-3xl text-lg leading-relaxed text-foreground/80">
-          Cette carte présente la France continentale, sans la Corse, avec les limites de toutes les régions. Les limites départementales et le découpage par code postal apparaissent uniquement dans les départements avec des données de fréquentation. Au total, {totalVisitors} visiteurs figurent dans les données initiales, toutes provenances confondues.
+          Cette carte présente la France continentale, sans la Corse, avec les limites de toutes les régions. Les limites départementales et le découpage par code postal apparaissent dans les départements avec des données de fréquentation, ainsi que dans le Territoire de Belfort. Au total, {totalVisitors} visiteurs figurent dans les données initiales, toutes provenances confondues.
         </p>
 
         <section className="mx-auto mt-14 max-w-5xl rounded-2xl border border-border bg-card/90 p-4 shadow-lg sm:p-8" aria-labelledby="map-title">
           <div>
             <div>
-              <h2 id="map-title" className="font-display text-2xl font-bold">Fréquentation par codes postaux et départements en 2026</h2>
+              <h2 id="map-title" className="font-display text-2xl font-bold">Fréquentation par codes postaux en 2026</h2>
             </div>
           </div>
 
@@ -70,6 +70,7 @@ const Frequentation = () => {
               <div className="mt-3 space-y-2 text-xs">
                 <p className="flex items-center gap-2"><svg className="h-3 w-8 shrink-0" viewBox="0 0 32 12" aria-hidden="true"><path d="M1 6H31" stroke="hsl(145 63% 35%)" strokeWidth="3.3" strokeLinecap="round" /></svg> CC Loue-Lison</p>
                 <p className="flex items-center gap-2"><svg className="h-3 w-8 shrink-0" viewBox="0 0 32 12" aria-hidden="true"><path d="M1 6H31" stroke="hsl(205 85% 40%)" strokeWidth="3.3" strokeLinecap="round" /></svg> CC du Val d’Amour</p>
+                <p className="flex items-center gap-2"><svg className="h-3 w-8 shrink-0" viewBox="0 0 32 12" aria-hidden="true"><path d="M1 6H31" stroke="hsl(25 90% 45%)" strokeWidth="3.3" strokeLinecap="round" /></svg> CC Cœur du Jura</p>
                 <p className="flex items-center gap-2"><span className="relative h-4 w-4 shrink-0 rounded-full border-[3px] border-white bg-festival-red shadow-sm" aria-hidden="true"><span className="absolute left-1/2 top-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" /></span> Rennes-sur-Loue</p>
               </div>
               <div className="mt-5 border-t border-border pt-4">

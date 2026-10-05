@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import { BonhommeDecoratif } from "@/components/BonhommeDecoratif";
 import brushHero1 from "@/assets/brush-hero1.png";
-import bfcPostcodeMap from "@/assets/bourgogne-franche-comte-postcodes.svg?raw";
+import { CarteFrequentation } from "@/components/CarteFrequentation";
 import { PiedDePage } from "@/components/PiedDePage";
 import { Entete } from "@/components/Entete";
 
@@ -14,6 +15,20 @@ const totalVisitors = 300;
 const percent = (visitors: number) => new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 0 }).format((visitors / totalVisitors) * 100);
 
 const Frequentation = () => {
+  useEffect(() => {
+    const existing = document.querySelector<HTMLMetaElement>('meta[name="robots"]');
+    const previous = existing?.getAttribute("content");
+    const meta = existing ?? document.createElement("meta");
+    meta.name = "robots";
+    meta.content = "noindex, nofollow";
+    if (!existing) document.head.appendChild(meta);
+    return () => {
+      if (!existing) meta.remove();
+      else if (previous === null) meta.removeAttribute("content");
+      else if (previous !== undefined) meta.content = previous;
+    };
+  }, []);
+
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
     <Entete />
@@ -38,17 +53,13 @@ const Frequentation = () => {
 
           <div className="attendance-map-layout mt-5">
             <div className="attendance-map-panel relative overflow-hidden rounded-xl">
-              <div
-                role="img"
-                aria-label="Carte de la Franche-Comté découpée par code postal. Les zones colorées correspondent aux codes postaux représentés."
-                className="attendance-map-graphic pointer-events-none mx-auto w-full"
-                dangerouslySetInnerHTML={{ __html: bfcPostcodeMap }}
-              />
+              <CarteFrequentation />
             </div>
             <aside className="attendance-map-legend rounded-xl border border-border bg-background/70 p-4" aria-label="Légende de la carte">
               <p className="text-label">Légende</p>
               <div className="mt-3 space-y-2 text-xs">
-                <p className="flex items-center gap-2"><svg className="h-3 w-8 shrink-0" viewBox="0 0 32 12" aria-hidden="true"><path d="M1 6H31" stroke="hsl(145 63% 35%)" strokeWidth="5" strokeLinecap="round" /></svg> CC Loue-Lison</p>
+                <p className="flex items-center gap-2"><svg className="h-3 w-8 shrink-0" viewBox="0 0 32 12" aria-hidden="true"><path d="M1 6H31" stroke="hsl(145 63% 35%)" strokeWidth="2.4" strokeLinecap="round" /></svg> CC Loue-Lison</p>
+                <p className="flex items-center gap-2"><svg className="h-3 w-8 shrink-0" viewBox="0 0 32 12" aria-hidden="true"><path d="M1 6H31" stroke="hsl(205 85% 40%)" strokeWidth="2.4" strokeLinecap="round" /></svg> CC du Val d’Amour</p>
                 <p className="flex items-center gap-2"><span className="relative h-4 w-4 shrink-0 rounded-full border-[3px] border-white bg-festival-red shadow-sm" aria-hidden="true"><span className="absolute left-1/2 top-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" /></span> Rennes-sur-Loue</p>
               </div>
               <div className="mt-5 border-t border-border pt-4">

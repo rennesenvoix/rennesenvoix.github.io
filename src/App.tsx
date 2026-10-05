@@ -8,6 +8,7 @@ const Soutien = lazy(() => import("./pages/Soutien"));
 const SouvenezVous = lazy(() => import("./pages/SouvenezVous"));
 const PageIntrouvable = lazy(() => import("./pages/PageIntrouvable"));
 const Festival = lazy(() => import("./pages/Festival"));
+const InformationsLegales = lazy(() => import("./pages/InformationsLegales"));
 const Frequentation = lazy(() => import("./pages/Frequentation"));
 
 const ScrollToTop = () => {
@@ -32,6 +33,8 @@ const App = () => (
         <Route path="/soutien" element={<Soutien />} />
         <Route path="/medias" element={<SouvenezVous />} />
         <Route path="/frequentation" element={<Frequentation />} />
+        <Route path="/mentions-legales" element={<InformationsLegales />} />
+        <Route path="/confidentialite" element={<InformationsLegales confidentialite />} />
         <Route path="*" element={<PageIntrouvable />} />
       </Routes>
     </Suspense>

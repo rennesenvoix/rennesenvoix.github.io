@@ -104,20 +104,28 @@ export function PiedDePage() {
           </div>
         </div>
 
-        <p className="mt-12 text-xs text-foreground/70">
-          © 2026 Rennes en Voix. Tous droits réservés.
-        </p>
-        <p className="mt-2 text-xs text-foreground/70">
-          Identité visuelle : ©{" "}
-          <a
-            href="https://www.instagram.com/la_mu.__/#"
-            target="_blank"
-            rel="noreferrer noopener"
-            className="underline underline-offset-4 transition-colors hover:text-foreground"
-          >
-            La MU
-          </a>
-        </p>
+        <div className="mt-10 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 text-xs text-foreground/70">
+          <p className="shrink-0">
+            Identité visuelle : ©{" "}
+            <a
+              href="https://www.instagram.com/la_mu.__/#"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="underline underline-offset-4 transition-colors hover:text-foreground"
+            >
+              La MU
+            </a>
+          </p>
+          <div className="ml-auto flex flex-wrap items-center justify-end gap-x-3">
+            <p>© 2026 Rennes en Voix. Tous droits réservés.</p>
+            <span aria-hidden="true">-</span>
+            <nav aria-label="Informations légales" className="flex flex-wrap items-center justify-end gap-x-3">
+              <Link to="/mentions-legales" className="inline-flex min-h-11 items-center underline-offset-4 hover:underline focus-visible:underline">Mentions légales</Link>
+              <span aria-hidden="true">-</span>
+              <Link to="/confidentialite" className="inline-flex min-h-11 items-center underline-offset-4 hover:underline focus-visible:underline">Confidentialité</Link>
+            </nav>
+          </div>
+        </div>
       </div>
     </footer>
   );

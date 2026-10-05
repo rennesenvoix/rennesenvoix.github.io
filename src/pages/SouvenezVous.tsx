@@ -76,57 +76,12 @@ const photoRows2026 = [
 ];
 const photos2026 = photoRows2026.flat();
 
-const photoEntries2025 = Object.entries(
-  import.meta.glob<string>("/src/assets/2025/**/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", {
-    eager: true,
-    query: "?url",
-    import: "default",
-  }),
-)
-  .filter(([path]) => !path.split("/").pop()?.startsWith("._"))
-  .sort(([firstPath], [secondPath]) => firstPath.localeCompare(secondPath, "fr", { numeric: true }));
-
-const groups2025 = Object.entries(
-  photoEntries2025.reduce<Record<string, string[]>>((groups, [path, url]) => {
-    const groupName = path.match(/\/2025\/([^/]+)\//)?.[1] ?? "Autres photos";
-    groups[groupName] = [...(groups[groupName] ?? []), url];
-    return groups;
-  }, {}),
-)
-  .map(([name, photos]) => ({ name, photos: shuffle(photos) }))
-  .sort((firstGroup, secondGroup) => firstGroup.name.localeCompare(secondGroup.name, "fr"));
-
-const photos2025 = groups2025.flatMap((group) => group.photos);
-
 const getGroupId = (year: string, groupName: string) =>
   `gallery-${year}-${groupName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`;
 
 const scrollToGroup = (year: string, groupName: string) => {
   document.getElementById(getGroupId(year, groupName))?.scrollIntoView({ behavior: "smooth", block: "start" });
 };
-
-const placeholderPhotoUrls = [
-  "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1501281668745-f7f66f4a8c66?w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1531058020387-3be344556be6?w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1524650359799-842906ca1c06?w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1521337581100-8ca9a73a5f79?w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1504704911898-68304a7d2807?w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1485872299829-c673f5194813?w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=900&auto=format&fit=crop",
-];
 
 const galleryYears = [
   {
@@ -141,20 +96,17 @@ const galleryYears = [
   },
   {
     year: "2025",
-    description: "Photos",
-    credit: {
-      label: "© Quentin Trigodet",
-      url: "https://www.instagram.com/quentin_trigodet/",
-    },
-    groups: groups2025,
-    photos: photos2025,
+    description: "À venir",
+    credit: null,
+    groups: [] as { name: string; photos: string[] }[],
+    photos: [] as string[],
   },
   {
     year: "2024",
-    description: "Retour sur la première édition.",
+    description: "À venir",
     credit: null,
-    groups: [{ name: "Souvenirs de l'édition", photos: placeholderPhotoUrls.slice(14) }],
-    photos: placeholderPhotoUrls.slice(14),
+    groups: [] as { name: string; photos: string[] }[],
+    photos: [] as string[],
   },
 ] as const;
 
@@ -448,7 +400,7 @@ const SouvenezVous = () => {
                         </span>
                       </button>
 
-                      {gallery.year !== "2026" && <ul className="relative z-10 ml-11 hidden border-l border-festival-blue/40 pb-2 pl-4 lg:block">
+                      {gallery.year !== "2026" && gallery.groups.length > 0 && <ul className="relative z-10 ml-11 hidden border-l border-festival-blue/40 pb-2 pl-4 lg:block">
                         {gallery.groups.map((group) => (
                           <li key={group.name}>
                             <button
@@ -468,7 +420,7 @@ const SouvenezVous = () => {
                 })}
               </ol>
 
-              {galleryYears[activeIndex].year !== "2026" && <div className="mt-2 flex gap-2 overflow-x-auto pb-1 lg:hidden" aria-label={`Groupes de l'édition ${galleryYears[activeIndex].year}`}>
+              {galleryYears[activeIndex].year !== "2026" && galleryYears[activeIndex].groups.length > 0 && <div className="mt-2 flex gap-2 overflow-x-auto pb-1 lg:hidden" aria-label={`Groupes de l'édition ${galleryYears[activeIndex].year}`}>
                 {galleryYears[activeIndex].groups.map((group) => (
                   <button
                     key={group.name}
@@ -504,7 +456,7 @@ const SouvenezVous = () => {
                     )}
                   </p>
 
-                  <div className="mt-8 min-w-0 max-w-full space-y-10 md:mt-10 md:space-y-14">
+                  {gallery.groups.length > 0 && <div className="mt-8 min-w-0 max-w-full space-y-10 md:mt-10 md:space-y-14">
                     {gallery.groups.map((group) => (
                       <section
                         key={group.name}
@@ -528,7 +480,7 @@ const SouvenezVous = () => {
                         />
                       </section>
                     ))}
-                  </div>
+                  </div>}
                 </section>
               ))}
             </div>

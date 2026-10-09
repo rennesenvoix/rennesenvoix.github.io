@@ -76,6 +76,18 @@ const photoRows2026 = [
 ];
 const photos2026 = photoRows2026.flat();
 
+const photos2025 = Object.values(import.meta.glob<string>(
+  "/src/assets/2025/**/*.{jpg,JPG,jpeg,JPEG,png,webp}",
+  { eager: true, query: "?url", import: "default" },
+));
+const photos2024 = Object.entries(import.meta.glob<string>(
+  "/src/assets/2024/**/*.{jpg,JPG,jpeg,JPEG,png,webp}",
+  { eager: true, query: "?url", import: "default" },
+))
+  // Cette copie est strictement identique à l’original, conservé dans la galerie.
+  .filter(([path]) => !path.endsWith("DFF0AEDE-4397-454C-A51B-39E57C603727 (1).JPG"))
+  .map(([, url]) => url);
+
 const getGroupId = (year: string, groupName: string) =>
   `gallery-${year}-${groupName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`;
 
@@ -96,17 +108,20 @@ const galleryYears = [
   },
   {
     year: "2025",
-    description: "À venir",
-    credit: null,
-    groups: [] as { name: string; photos: string[] }[],
-    photos: [] as string[],
+    description: "Photos",
+    credit: {
+      label: "© Quentin Trigodet",
+      url: "https://www.instagram.com/quentin_trigodet/",
+    },
+    groups: [{ name: "2025", photos: photos2025 }],
+    photos: photos2025,
   },
   {
     year: "2024",
-    description: "À venir",
+    description: "Photos",
     credit: null,
-    groups: [] as { name: string; photos: string[] }[],
-    photos: [] as string[],
+    groups: [{ name: "2024", photos: photos2024 }],
+    photos: photos2024,
   },
 ] as const;
 
@@ -129,7 +144,9 @@ const ScrollingGallery = ({ groupName, groupPhotos, year, yearIndex, yearPhotos,
   const rowOffsets = useRef<number[]>([0, 0, 0]);
   const rows = year === "2026"
     ? photoRows2026
-    : [0, 1, 2].map((rowIndex) => groupPhotos.filter((_, photoIndex) => photoIndex % 3 === rowIndex));
+    : year === "2024"
+    ? [groupPhotos]
+    : [0, 1].map((rowIndex) => groupPhotos.filter((_, photoIndex) => photoIndex % 2 === rowIndex));
 
   const finishTouch = () => {
     rowRefs.current.forEach((row, rowIndex) => {
@@ -400,7 +417,7 @@ const SouvenezVous = () => {
                         </span>
                       </button>
 
-                      {gallery.year !== "2026" && gallery.groups.length > 0 && <ul className="relative z-10 ml-11 hidden border-l border-festival-blue/40 pb-2 pl-4 lg:block">
+                      {gallery.groups.length > 1 && <ul className="relative z-10 ml-11 hidden border-l border-festival-blue/40 pb-2 pl-4 lg:block">
                         {gallery.groups.map((group) => (
                           <li key={group.name}>
                             <button
@@ -420,7 +437,7 @@ const SouvenezVous = () => {
                 })}
               </ol>
 
-              {galleryYears[activeIndex].year !== "2026" && galleryYears[activeIndex].groups.length > 0 && <div className="mt-2 flex gap-2 overflow-x-auto pb-1 lg:hidden" aria-label={`Groupes de l'édition ${galleryYears[activeIndex].year}`}>
+              {galleryYears[activeIndex].groups.length > 1 && <div className="mt-2 flex gap-2 overflow-x-auto pb-1 lg:hidden" aria-label={`Groupes de l'édition ${galleryYears[activeIndex].year}`}>
                 {galleryYears[activeIndex].groups.map((group) => (
                   <button
                     key={group.name}
@@ -464,7 +481,7 @@ const SouvenezVous = () => {
                         className="min-w-0 max-w-full scroll-mt-28 overflow-visible"
                         aria-labelledby={`${getGroupId(gallery.year, group.name)}-title`}
                       >
-                        <div className={gallery.year === "2026" ? "sr-only" : "mb-3 border-b border-border pb-2 md:mb-5 md:pb-3"}>
+                        <div className={gallery.groups.length === 1 ? "sr-only" : "mb-3 border-b border-border pb-2 md:mb-5 md:pb-3"}>
                           <h3 id={`${getGroupId(gallery.year, group.name)}-title`} className="font-display text-xl font-bold md:text-3xl">
                             {group.name}
                           </h3>

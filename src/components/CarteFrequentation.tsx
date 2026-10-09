@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { Minus, Plus, RotateCcw } from "lucide-react";
+import { MapPin, Minus, Plus, RotateCcw } from "lucide-react";
 import completeMap from "@/assets/bourgogne-franche-comte-postcodes.svg?raw";
 
 import regionalMap from "@/assets/franche-comte-postcodes.svg?raw";
@@ -28,7 +28,7 @@ return { left, top, width, height, minZoom, maxZoom, markerX, markerY, mapConten
 }
 const maps = { complete: prepareMap(completeMap, false), regional: prepareMap(regionalMap) };
 
-export function CarteFrequentation({ regionOnly = false }: { regionOnly?: boolean }) {
+export function CarteFrequentation({ regionOnly = false, hiddenCommunities = [], showRennes = true }: { regionOnly?: boolean; hiddenCommunities?: string[]; showRennes?: boolean }) {
   const { left, top, width, height, minZoom, maxZoom, markerX, markerY, mapContent } = maps[regionOnly ? "regional" : "complete"];
   const container = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -99,12 +99,16 @@ export function CarteFrequentation({ regionOnly = false }: { regionOnly?: boolea
         role="img"
         aria-labelledby="title description"
       >
-        <g dangerouslySetInnerHTML={mapContent} />
-        <g aria-label="Rennes-sur-Loue">
+        <g className={[
+          hiddenCommunities.includes("loue-lison") ? "[&_.loue-lison-border]:hidden" : "",
+          hiddenCommunities.includes("val-amour") ? "[&_.val-amour-border]:hidden" : "",
+          hiddenCommunities.includes("coeur-du-jura") ? "[&_.coeur-du-jura-border]:hidden" : "",
+        ].join(" ")} dangerouslySetInnerHTML={mapContent} />
+        {showRennes && <g aria-label="Rennes-sur-Loue" transform={`translate(${markerX} ${markerY}) scale(${1.25 / (baseScale * view.zoom)})`}>
           <title>Rennes-sur-Loue</title>
-          <circle cx={markerX} cy={markerY} r={8 / (baseScale * view.zoom)} fill="hsl(6 78% 57%)" stroke="white" strokeWidth={3} vectorEffect="non-scaling-stroke" />
-          <circle cx={markerX} cy={markerY} r={2 / (baseScale * view.zoom)} fill="white" />
-        </g>
+          <MapPin x={-12} y={-22} width={24} height={24} fill="hsl(6 78% 57%)" stroke="white" strokeWidth={1.8} />
+        </g>}
+
       </svg>
     </div>
   </>;

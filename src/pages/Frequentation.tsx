@@ -1,3 +1,4 @@
+import { MapPin } from "lucide-react";
 import attendanceSource from "@/data/frequentation-2026.json?raw";
 import { useEffect, useState } from "react";
 import { BonhommeDecoratif } from "@/components/BonhommeDecoratif";
@@ -16,6 +17,8 @@ const percent = (visitors: number) => new Intl.NumberFormat("fr-FR", { maximumFr
 
 const Frequentation = () => {
   const [regionOnly, setRegionOnly] = useState(true);
+  const [showRennes, setShowRennes] = useState(true);
+  const [hiddenCommunities, setHiddenCommunities] = useState<string[]>([]);
   useEffect(() => {
     const existing = document.querySelector<HTMLMetaElement>('meta[name="robots"]');
     const previous = existing?.getAttribute("content");
@@ -63,15 +66,38 @@ const Frequentation = () => {
           </div>
           <div className="attendance-map-layout mt-5">
             <div className="attendance-map-panel relative overflow-hidden rounded-xl">
-              <CarteFrequentation key={regionOnly ? "regional" : "complete"} regionOnly={regionOnly} />
+              <CarteFrequentation key={regionOnly ? "regional" : "complete"} regionOnly={regionOnly} hiddenCommunities={hiddenCommunities} showRennes={showRennes} />
             </div>
             <aside className="attendance-map-legend rounded-xl border border-border bg-background/70 p-4" aria-label="Légende de la carte">
               <p className="text-label">Légende</p>
               <div className="mt-3 space-y-2 text-xs">
-                <p className="flex items-center gap-2"><svg className="h-3 w-8 shrink-0" viewBox="0 0 32 12" aria-hidden="true"><path d="M1 6H31" stroke="hsl(145 63% 35%)" strokeWidth="3.3" strokeLinecap="round" /></svg> CC Loue-Lison</p>
-                <p className="flex items-center gap-2"><svg className="h-3 w-8 shrink-0" viewBox="0 0 32 12" aria-hidden="true"><path d="M1 6H31" stroke="hsl(205 85% 40%)" strokeWidth="3.3" strokeLinecap="round" /></svg> CC du Val d’Amour</p>
-                <p className="flex items-center gap-2"><svg className="h-3 w-8 shrink-0" viewBox="0 0 32 12" aria-hidden="true"><path d="M1 6H31" stroke="hsl(25 90% 45%)" strokeWidth="3.3" strokeLinecap="round" /></svg> CC Cœur du Jura</p>
-                <p className="flex items-center gap-2"><span className="relative h-4 w-4 shrink-0 rounded-full border-[3px] border-white bg-festival-red shadow-sm" aria-hidden="true"><span className="absolute left-1/2 top-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" /></span> Rennes-sur-Loue</p>
+                {[
+                  { id: "loue-lison", label: "CC Loue-Lison", color: "hsl(145 63% 35%)" },
+                  { id: "val-amour", label: "CC du Val d’Amour", color: "hsl(205 85% 40%)" },
+                  { id: "coeur-du-jura", label: "CC Cœur du Jura", color: "hsl(25 90% 45%)" },
+                ].map(community => (
+                  <label key={community.id} className={`flex min-h-11 items-center gap-2 ${regionOnly ? "cursor-pointer" : ""}`}>
+                    {regionOnly && <input
+                      type="checkbox"
+                      checked={!hiddenCommunities.includes(community.id)}
+                      onChange={event => {
+                        const checked = event.target.checked;
+                        setHiddenCommunities(previous => checked
+                          ? previous.filter(id => id !== community.id)
+                          : [...previous, community.id]);
+                      }}
+                      className="h-4 w-4 shrink-0 accent-festival-purple focus-visible:outline focus-visible:outline-2 focus-visible:outline-festival-purple"
+                    />}
+                    <svg className="h-3 w-8 shrink-0" viewBox="0 0 32 12" aria-hidden="true"><path d="M1 6H31" stroke={community.color} strokeWidth="3.3" strokeLinecap="round" /></svg>
+                    {community.label}
+                  </label>
+                ))}
+                <label className="flex min-h-11 cursor-pointer items-center gap-2">
+                  <input type="checkbox" checked={showRennes} onChange={event => setShowRennes(event.target.checked)}
+                    className="h-4 w-4 shrink-0 accent-festival-purple focus-visible:outline focus-visible:outline-2 focus-visible:outline-festival-purple" />
+                  <MapPin className="h-6 w-8 shrink-0 fill-festival-red stroke-white" strokeWidth={1.8} aria-hidden="true" />
+                  Rennes-sur-Loue
+                </label>
               </div>
               <div className="mt-5 border-t border-border pt-4">
                 <p className="text-label">Franche-Comté</p>

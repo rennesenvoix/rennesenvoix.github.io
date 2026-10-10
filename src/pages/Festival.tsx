@@ -22,10 +22,10 @@ const Festival = () => {
   return (
   <div className="flex min-h-screen flex-col bg-background text-foreground">
     <Entete />
-    <main className="flex-1 px-6 pb-10 pt-20 text-center md:pb-10 md:pt-20 lg:text-left">
-      <div className="container-wide lg:grid lg:grid-cols-[minmax(220px,0.32fr)_minmax(0,0.68fr)] lg:items-center lg:gap-8">
+    <main className="flex-1 px-6 pb-10 pt-[88px] text-center md:pb-10 md:pt-[120px] lg:text-left">
+      <div className="container-wide lg:grid lg:grid-cols-[minmax(220px,0.32fr)_minmax(0,0.68fr)] lg:items-start lg:gap-8">
         <div>
-          <span className="mx-auto mb-3 block h-2 w-24 rounded-full bg-festival-purple lg:mx-0" aria-hidden="true" />
+          <span className="mx-auto mb-4 block h-2 w-24 rounded-full bg-festival-purple lg:mx-0" aria-hidden="true" />
           <h1 className="text-headline">Le festival</h1>
           <p className="mx-auto mt-2 max-w-2xl text-lg leading-relaxed text-foreground/70 lg:mx-0">
             La page est encore en construction. En attendant, replongez dans l’ambiance des dernières éditions.

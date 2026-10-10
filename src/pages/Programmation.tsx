@@ -101,7 +101,7 @@ const Programmation = () => {
       <Entete />
       <main className="relative flex-1 pt-16 md:pt-20">
         <img src={brushHero1} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25" />
-        <div className="container-wide relative py-8 md:py-14">
+        <div className="container-wide relative pb-8 pt-6 md:pb-14 md:pt-10">
           <div className="grid gap-10 lg:grid-cols-[12rem_minmax(0,1fr)]">
             <nav className="sticky top-16 z-20 -mx-6 self-start border-y border-border bg-background/95 px-6 py-2 shadow-sm backdrop-blur lg:top-28 lg:mx-0 lg:rounded-xl lg:border lg:p-4" aria-label="Éditions de la programmation">
               <ol className="relative flex lg:hidden">

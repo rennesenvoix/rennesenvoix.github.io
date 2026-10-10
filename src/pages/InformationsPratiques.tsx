@@ -17,7 +17,7 @@ const InformationsPratiques = () => {
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25"
         />
-        <div className="container-wide relative py-10 md:py-8">
+        <div className="container-wide relative pb-10 pt-6 md:pb-8 md:pt-10">
           <span className="mb-4 block h-2 w-24 rounded-full bg-festival-red" aria-hidden="true" />
           <div className="flex items-center justify-between gap-6">
               <h1 className="text-headline">Infos Pratiques</h1>

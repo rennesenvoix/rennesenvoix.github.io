@@ -98,7 +98,7 @@ const Accueil = () => {
         {/* Informations essentielles de la prochaine édition. */}
         <section className="relative overflow-hidden">
           <img src={groupeColore} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-10" />
-          <div className="container-wide relative w-full pb-8 pt-4 md:py-10">
+          <div className="container-wide relative w-full pb-8 pt-6 md:pb-10 md:pt-10">
             <div className="grid items-center gap-5 md:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)] md:gap-8 lg:gap-12">
               <h1 className="w-full max-w-[460px] md:max-w-[540px]">
                 <img src={titleLogo} alt="Rennes en Voix" className="h-auto w-full" />

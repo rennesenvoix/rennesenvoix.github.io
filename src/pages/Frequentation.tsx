@@ -38,8 +38,8 @@ const Frequentation = () => {
     <Entete />
     <main className="relative flex-1 overflow-hidden pt-16 md:pt-20">
       <img src={brushHero1} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-15" />
-      <div className="container-wide relative py-20 md:py-28">
-        <span className="mb-8 block h-2 w-24 rounded-full bg-festival-blue" aria-hidden="true" />
+      <div className="container-wide relative pb-20 pt-6 md:pb-28 md:pt-10">
+        <span className="mb-4 block h-2 w-24 rounded-full bg-festival-blue" aria-hidden="true" />
         <div className="flex items-center justify-between gap-6">
               <h1 className="text-headline">D’où viennent nos festivaliers ?</h1>
               <BonhommeDecoratif emplacement={2} miroir />

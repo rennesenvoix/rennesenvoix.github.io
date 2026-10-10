@@ -14,8 +14,8 @@ export default function InformationsLegales({ confidentialite = false }: { confi
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
       <Entete />
-      <main className="flex-1 pt-20">
-        <div className="container-wide py-10 md:py-14">
+      <main className="flex-1 pt-16 md:pt-20">
+        <div className="container-wide pb-10 pt-6 md:pb-14 md:pt-10">
           <article className="mx-auto max-w-3xl space-y-8 leading-relaxed text-foreground/80 [&_h2]:mb-3 [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-foreground [&_a]:underline [&_a]:underline-offset-4">
             <h1 className="text-headline text-foreground">{confidentialite ? "Politique de confidentialité" : "Mentions légales"}</h1>
             {confidentialite ? <>

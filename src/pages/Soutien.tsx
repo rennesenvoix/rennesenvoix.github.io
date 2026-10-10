@@ -9,9 +9,9 @@ const Soutien = () => (
     <Entete />
     <main className="relative flex-1 overflow-hidden pt-16 md:pt-20">
       <img src={brushHero1} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25" />
-      <div className="container-wide relative flex min-h-[60vh] items-center justify-center py-20 text-center md:py-28">
+      <div className="container-wide relative flex min-h-[60vh] items-start justify-center pb-20 pt-6 text-center md:pb-28 md:pt-10">
         <div className="max-w-2xl">
-          <span className="mx-auto mb-8 block h-2 w-24 rounded-full bg-festival-orange" aria-hidden="true" />
+          <span className="mx-auto mb-4 block h-2 w-24 rounded-full bg-festival-orange" aria-hidden="true" />
           <h1 className="text-headline">Soutenir le festival</h1>
           <p className="mt-5 text-xl font-semibold text-foreground/75">Bientôt disponible</p>
           <p className="mt-4 text-lg leading-relaxed text-foreground/70">
